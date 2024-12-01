@@ -1,4 +1,5 @@
 # ZigZag
+
 - 💰 Low cost (0.2$ / 600 request)
 - 🔊 Speacker detection -> SpeechToText -> GPT4o-Mini -> textToSpeech
 - 🌤️ WeatherService
