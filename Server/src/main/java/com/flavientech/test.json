@@ -1,0 +1,355 @@
+{
+    "status": "success",
+    "data": {
+      "query": {
+        "locale": "fr_fr",
+        "query": "dernières sorties cinéma octobre 2024",
+        "offset": 0,
+        "queryContext": {
+          "originalQuery": "dernières sorties cinéma octobre 2024"
+        }
+      },
+      "search_id": "48e277f0-92fc-11ef-bd62-df04a4a7a3db",
+      "result": {
+        "denied": 0,
+        "total": 4,
+        "items": {
+          "headline": [],
+          "mainline": [
+            {
+              "serpContextId": 1000,
+              "type": "web",
+              "count": 1,
+              "items": [
+                {
+                  "title": "Sorties cinéma du mois d'octobre 2024",
+                  "favicon": "https://s.qwant.com/v1/fav/9LInHSSMQLVYLj1CuTu7lZmsiWpUenw1btq3zdo6cVVF1oIqbh4eTNtS5P%2FI6pE72dacXV9%2BKo82ox2CStttLg%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.cinefil.com/sorties-cinema-du-mois/mois-2024-10",
+                  "urlPingSuffix": "DevEx,5138.1",
+                  "source": "https://www.cinefil.com/sorties-cinema-du-mois/mois-2024-10",
+                  "desc": "2024 | 1h58min | Action. De Lu Chuan. Sortie le 01 octobre 2024. L’histoire d’un jeune homme qui est entraîné dans un mystérieux bureau de lutte contre le crime au moment même où une catastrophe est déclenchée par des créatures inconnues se propageant à travers le monde.",
+                  "_id": "b774b8158067ace5ffb9216333c957ef",
+                  "isFamilyFriendly": true
+                }
+              ]
+            },
+            {
+              "serpContextId": 1001,
+              "type": "videos",
+              "count": 10,
+              "items": [
+                {
+                  "title": "TOUS les PLUS GROS FILMS de 2024 ! (40 au total)",
+                  "duration": 780000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=SBTnmppDWlQ",
+                  "thumbnail": "https://s2.qwant.com/thumbr/160x120/6/6/3e06b025fcb74488596c37972d361cf74c27e11db6024d1efb115a323d92c5/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.HE7uqW6cVXNj9u9PARnChAHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1703086204,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "Au cinéma en 2024 : voici les 30 films les plus attendus ! Dune 2, Furiosa, Monte Cristo...",
+                  "duration": 99000,
+                  "width": 160,
+                  "height": 67,
+                  "url": "https://www.allocine.fr/article/fichearticle_gen_carticle=1000054692.html",
+                  "thumbnail": "https://s1.qwant.com/thumbr/160x67/8/5/c75396d63bd1b9769a427e5a267f5ed11ba583ad3cd1b8d11d32e81c125990/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.fAZd7EY9vmFEYBChS4frcQIIDa%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1704528000,
+                  "source": "AlloCiné"
+                },
+                {
+                  "title": "Le films les plus attendus de 2024 par Le HuffPost",
+                  "duration": 693000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=PecEJqQ5URw",
+                  "thumbnail": "https://s2.qwant.com/thumbr/160x120/f/b/08f891c36ea65b016b7eaef926c970bdbcd321a1ecf9d006b6d4e7eb48c443/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.YFZMIgii6k5-ZshR9rhE5QHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1705125615,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "Top Meilleurs Nouveau Films À Venir En 2024",
+                  "duration": 57000,
+                  "width": 89,
+                  "height": 160,
+                  "url": "https://www.youtube.com/watch?v=E1Rwy33VRF8",
+                  "thumbnail": "https://s2.qwant.com/thumbr/89x160/e/f/b5071eb289c52e4fb8248af3db326600919315ebf65bc798f6c04306a3a65e/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.1I9SMDCKwCfTQUif1rNOaAEkII%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1704580274,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "Cinéma : les films les plus attendus en 2024",
+                  "duration": 28000,
+                  "width": 89,
+                  "height": 160,
+                  "url": "https://www.youtube.com/watch?v=UxSdYAcDyJk",
+                  "thumbnail": "https://s2.qwant.com/thumbr/89x160/e/c/732d695483224bea4af4b2ed0ef26895d9e954cc2a55c02523ab5a4c0b606c/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.CgeKoGXEogGRi4-66jUy-QEkII%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1704174147,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "Les Grosses Sorties Cinéma en 2024",
+                  "duration": 1263000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=yu7mUqgQkT8",
+                  "thumbnail": "https://s1.qwant.com/thumbr/160x120/2/c/26aaf8a08c28bc8e2bc010e2561e474652fa5688d3154f7fca0a6a728f0f2c/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.EKAuMuP9mFeiEkZruoI4qQHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1703689239,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "10 MEILLEURS FILMS 2024",
+                  "duration": 848000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=ZArhBqCnEkI",
+                  "thumbnail": "https://s2.qwant.com/thumbr/160x120/e/e/be045dcbd4bfcb825feb380ca89ae8e0225ceafc3882900bea2111f5c64119/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.mvPKpI9ATeq-92UfYwUSugHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1680346916,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "TOUS LES FILMS DE SUPER-HÉROS QUI SORTIRONT EN 2024 !",
+                  "duration": 422000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=ulxPQg6ofbQ",
+                  "thumbnail": "https://s2.qwant.com/thumbr/160x120/d/3/a200c479284cd0e409adbc4d9e203236d578935f443cf580a5b3f198d652cf/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.7HKCC0eqDfHpi5ZfeM_NPAHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1690725641,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "COCORICO Bande Annonce (2024) Christian Clavier, Didier Bourdon",
+                  "duration": 136000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=xZiBL1ARsgA",
+                  "thumbnail": "https://s1.qwant.com/thumbr/160x120/8/b/14156c6410f5165109ffc7e46aaaa6c4a6ff83619ea67ab4042e58f2b7a170/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.yVhZsZcFruF9TsuzPcXGbQHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1701077669,
+                  "source": "YouTube"
+                },
+                {
+                  "title": "CONSTELLATION Bande Annonce VF (2024) Noomi Rapace",
+                  "duration": 152000,
+                  "width": 160,
+                  "height": 120,
+                  "url": "https://www.youtube.com/watch?v=ya3UrlpswpE",
+                  "thumbnail": "https://s2.qwant.com/thumbr/160x120/e/f/4393de410f8e359336dc8300c021de1601027db9dd2269ebb7b8542d8315b4/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOVP.G6W66h-aN5-M5YvESW5mYAHgFo%26pid%3DApi&q=0&b=1&p=0&a=0",
+                  "date": 1705931098,
+                  "source": "YouTube"
+                }
+              ]
+            },
+            {
+              "serpContextId": 1002,
+              "type": "web",
+              "count": 9,
+              "items": [
+                {
+                  "title": "Sorties cinéma octobre 2024 - AlloCiné",
+                  "favicon": "https://s.qwant.com/v1/fav/9LInHSSMQLVYLj1CuTu7lVcVI4ijCbokLc2%2FVZ3tNnK2U6W6rS%2BiivW4nmJMcAyJJsK7jXA702Agh17Gn9VVaQ%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.allocine.fr/film/agenda/mois/",
+                  "urlPingSuffix": "DevEx,5162.1",
+                  "source": "https://www.allocine.fr/film/agenda/mois",
+                  "desc": "Films sortis en salles la semaine du 16 octobre 2024. L'Amour ouf De Gilles Lellouche - Avec Adèle Exarchopoulos, François Civil, Mallory Wanecque. C'est le monde à l'envers ! De Nicolas...",
+                  "_id": "b5eafd8eeb6e6f508a22447176fb46f7",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "SORTIES | Les films d'octobre 2024 à voir au cinéma",
+                  "favicon": "https://s.qwant.com/v1/fav/%2BLCKkT7xZ6vNWHwuLeRUBt3QMt1nsTbb9DdaD4vpEpQwAt5BT4v4CIKFWUE9xGU6S%2FkNHwlMck6qmhTfOXgt8Q%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.lebleudumiroir.fr/sorties-films-octobre-2024/",
+                  "urlPingSuffix": "DevEx,5186.1",
+                  "source": "https://www.lebleudumiroir.fr/sorties-films-octobre-2024",
+                  "desc": "Découvrez notre agenda critique des films à voir en salle au mois d'octobre 2024 avec Anora (Palme d'Or), Flow, Sauvages, Totem, The outrun...",
+                  "_id": "ae07c61fa75559b8f0ce4f06e724327b",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Prochaine sortie cinéma - Sorties cinéma du mercredi 30 octobre 2024 ...",
+                  "favicon": "https://s.qwant.com/v1/fav/9LInHSSMQLVYLj1CuTu7lVcVI4ijCbokLc2%2FVZ3tNnK2U6W6rS%2BiivW4nmJMcAyJJsK7jXA702Agh17Gn9VVaQ%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.allocine.fr/film/agenda/",
+                  "urlPingSuffix": "DevEx,5215.1",
+                  "thumbnailUrl": "https://s1.qwant.com/thumbr/0x0/8/4/a622855a0a28e0aa169cd903f129ce65b31b4792e85cc72cf3442fcb7ead6b/th.jpg?u=https%3A%2F%2Fwww.bing.com%2Fth%3Fid%3DOIP.rAbLvcC_GilCMBIrYuIDmwAAAA%26w%3D160%26h%3D160%26c%3D7%26pid%3D5.1&q=0&b=1&p=0&a=0",
+                  "source": "https://www.allocine.fr/film/agenda",
+                  "desc": "Découvrez tous les films qui sortent la semaine du mercredi 30 octobre 2024, comme Juré n°2, Venom: The Last Dance, Anora",
+                  "_id": "7090b90bcefdc669349603a59fa338db",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Sorties Cinéma Octobre 2024 : les films à voir - Écran Large",
+                  "favicon": "https://s.qwant.com/v1/fav/FTS0C5ZD5KN%2F1MpVjTMeII44IZU46OokFo3qS%2Fs9WFoxR8fmQ2Pt3p%2FNvIHJ%2Fi7kDJgA41e34J948AW8k84Vcg%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.ecranlarge.com/films/sorties/mois",
+                  "urlPingSuffix": "DevEx,5241.1",
+                  "thumbnailUrl": "https://s2.qwant.com/thumbr/0x0/d/a/11582c18e0d9e6c40bb8323c653ab6f5c998b2c12584cd42fafb40ec6f70b0/th.jpg?u=https%3A%2F%2Fwww.bing.com%2Fth%3Fid%3DOIP.IAFHqj7QitA2VbZ2pLazXAHaLH%26w%3D160%26h%3D160%26c%3D7%26pid%3D5.1&q=0&b=1&p=0&a=0",
+                  "source": "https://www.ecranlarge.com/films/sorties/mois",
+                  "desc": "Toutes les sorties cinéma de Octobre 2024, films à voir ce mois-ci classés par popularité : bandes-annonces, casting, critiques, news et dossiers.",
+                  "_id": "98efd0289c2e7cab0e8e368832d8f586",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Agenda des sorties Cinéma du mois d’octobre 2024",
+                  "favicon": "https://s.qwant.com/v1/fav/kBL3x%2B2U1c2v02LJwykk4aHCgYL0EWcLkvr4%2BAm5wOPcOTpBtaJISm0FxF0khCB7Ik0YRsy5elPK7GaTpEPSkg%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.geekgeneration.fr/agenda-sorties-cinema-films-octobre-2024/",
+                  "urlPingSuffix": "DevEx,5265.1",
+                  "source": "https://www.geekgeneration.fr/agenda-sorties-cinema-films-octobre-2024",
+                  "desc": "Joker: Folie à Deux, Terrifier 3, Smile 2, Transformers : le commencement, Venom: The Last Dance… découvrez les sorties cinéma du mois d'octobre 2024.",
+                  "_id": "c475ca7d6eb9c744fe880ff27c097ba6",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Les films d’octobre 2024 - Actualités Cinémas Pathé (ex Gaumont)",
+                  "favicon": "https://s.qwant.com/v1/fav/9DfNxu1IEJIVVe9U3kEmtREon3jyrfRIMZjXnxOvWZ1YLJzcaj%2BAMI9DXNC%2Bd70RHRqEnStUNrpt%2BOKZBubzpw%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.pathe.fr/actualites/les-films-d-octobre-2024",
+                  "urlPingSuffix": "DevEx,5289.1",
+                  "source": "https://www.pathe.fr/actualites/les-films-d-octobre-2024",
+                  "desc": "La suite de Joker, le biopic sur Charles Aznavour, l’origine des Transformers, le nouveau Clint Eastwood, la Palme d’Or… Le choix est variés pour ce mois d’octobre 2024 dans les Cinémas Pathé, et ce n’est pas tout : Joker : Folie à Deux de Todd Phillips - 2 octobre - IMAX, Dolby Cinema, 4DX, ScreenX",
+                  "_id": "bdf5a33cc13362b8b5b6a4e887d60281",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Sorties cinéma en Octobre 2024 | Cinéhorizons - cinehorizons.net",
+                  "favicon": "https://s.qwant.com/v1/fav/RRkh4M5QEzhDdSAwLxjRoH7g0xQ%2Fgae7x7o53ym%2FiJgyFhc3i%2FVdiCZd6lD%2FTjKoIS6ygF2JpvZGIOg3ZaRFog%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.cinehorizons.net/film/2024/sorties-cine-octobre-2024",
+                  "urlPingSuffix": "DevEx,5309.1",
+                  "source": "https://www.cinehorizons.net/film/2024/sorties-cine-octobre-2024",
+                  "desc": "SORTIES CINE - LES FILMS AU CINEMA EN Octobre 2024. Sorties ciné classées par année et mois : Choisissez une période pour voir la liste des films à venir. Les dates de sorties peuvent subir des modifications.",
+                  "_id": "c85fbb7e6107ff6d2b71125858d79512",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Le nouveau Clint Eastwood, Didier Bourdon - AlloCiné",
+                  "favicon": "https://s.qwant.com/v1/fav/9LInHSSMQLVYLj1CuTu7lVcVI4ijCbokLc2%2FVZ3tNnK2U6W6rS%2BiivW4nmJMcAyJJsK7jXA702Agh17Gn9VVaQ%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.allocine.fr/article/fichearticle_gen_carticle=1000102686.html",
+                  "urlPingSuffix": "DevEx,5334.1",
+                  "source": "https://www.allocine.fr/article/fichearticle_gen_carticle=1000102686.html",
+                  "desc": "Le nouveau Clint Eastwood, Didier Bourdon + Gérard Lanvin, un film français ambitieux au casting 5 étoiles : voici les 24 films à voir au cinéma en octobre 2024 ! Mis à jour le 30 sept. 2024...",
+                  "_id": "6d0f3d1772e30e02382ebed06e371fa7",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Sorties cinéma octobre 2024 : Films et horaires près de chez vous",
+                  "favicon": "https://s.qwant.com/v1/fav/PP4MGhGfnJcB7aevqi%2F015YNj%2FWNYuDwjgm18FOtAcufmddCsrILWZIajy%2BWbRwnHQGR%2FuVgeT4NEo90D0Ou6g%3D%3D:f57b609d64291580641cf6e2ac180774",
+                  "url": "https://www.sortiraparis.com/loisirs/cinema/guides/197195-sorties-cinema-octobre-2024-films-et-horaires-pres-de-chez-vous",
+                  "urlPingSuffix": "DevEx,5361.1",
+                  "thumbnailUrl": "https://s1.qwant.com/thumbr/0x0/b/e/6449e52a48bf947defbc00ce374c2fea05dcf5d72eadeaa14a041e483645e0/th.jpg?u=https%3A%2F%2Fwww.bing.com%2Fth%3Fid%3DOIP.tiTNgm9JA1j-YOj_0hIv3wAAAA%26w%3D160%26h%3D160%26c%3D7%26pid%3D5.1&q=0&b=1&p=0&a=0",
+                  "source": "https://www.sortiraparis.com/loisirs/cinema/guides/197195-",
+                  "desc": "Découvrez tous les films en salle en octobre 2024 avec les horaires près de chez vous. Ne manquez aucune sortie cinéma !",
+                  "_id": "71f29774d580cc28af07bf0cfd0446a8",
+                  "isFamilyFriendly": true
+                }
+              ]
+            },
+            {
+              "serpContextId": 1003,
+              "type": "related_searches",
+              "count": 8,
+              "items": [
+                {
+                  "query": "meilleures sorties cinéma 2023",
+                  "text": "meilleures sorties cinéma 2023"
+                },
+                {
+                  "query": "sorties cinéma 2023 bandait annoncées",
+                  "text": "sorties cinéma 2023 bandait annoncées"
+                },
+                {
+                  "query": "dernière sortie cinéma 2023",
+                  "text": "dernière sortie cinéma 2023"
+                },
+                {
+                  "query": "film actuellement au cinéma 2023",
+                  "text": "film actuellement au cinéma 2023"
+                },
+                {
+                  "query": "meilleur sort de cinéma 2023",
+                  "text": "meilleur sort de cinéma 2023"
+                },
+                {
+                  "query": "nouveaux films au cinéma 2023",
+                  "text": "nouveaux films au cinéma 2023"
+                },
+                {
+                  "query": "liste film cinéma 2023",
+                  "text": "liste film cinéma 2023"
+                },
+                {
+                  "query": "nouveauté cinéma 2023",
+                  "text": "nouveauté cinéma 2023"
+                }
+              ]
+            }
+          ],
+          "sidebar": [
+            {
+              "serpContextId": 2000,
+              "type": "related_searches",
+              "count": 3,
+              "items": [
+                {
+                  "query": "meilleures sorties cinéma 2023",
+                  "text": "meilleures sorties cinéma 2023"
+                },
+                {
+                  "query": "sorties cinéma 2023 bandait annoncées",
+                  "text": "sorties cinéma 2023 bandait annoncées"
+                },
+                {
+                  "query": "dernière sortie cinéma 2023",
+                  "text": "dernière sortie cinéma 2023"
+                }
+              ]
+            }
+          ],
+          "bottomline": []
+        },
+        "filters": {
+          "freshness": {
+            "label": "Freshness",
+            "name": "freshness",
+            "type": "dropdown",
+            "selected": "all",
+            "values": [
+              {
+                "value": "all",
+                "label": "All time",
+                "translate": true
+              },
+              {
+                "value": "day",
+                "label": "Past 24 hours",
+                "translate": true
+              },
+              {
+                "value": "week",
+                "label": "Past week",
+                "translate": true
+              },
+              {
+                "value": "month",
+                "label": "Past month",
+                "translate": true
+              }
+            ]
+          }
+        },
+        "lastPage": false,
+        "onlyProductAds": false,
+        "topClassification": {
+          "query": [
+            "movie"
+          ],
+          "intention": [
+            "shopping"
+          ],
+          "ads": [
+            "Movies"
+          ]
+        }
+      },
+      "cache": {
+        "status": "hit",
+        "key": "8c32936dfeb02e840bf2088db24cf2cdf"
+      }
+    }
+  }

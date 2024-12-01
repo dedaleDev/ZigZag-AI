@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <!-- Version du modèle POM -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Coordonnées Maven du projet -->
+  <groupId>com.flavientech</groupId>
+  <artifactId>homebox</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <!-- Emballage du projet (par défaut : jar) -->
+  <packaging>jar</packaging>
+
+  <!-- Configuration de l'environnement -->
+  <properties>
+    <maven.compiler.source>22</maven.compiler.source>
+    <maven.compiler.target>22</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- Dépendances du projet -->
+  <!-- Dépendances du projet -->
+  <dependencies>
+    <dependency>
+      <groupId>ai.picovoice</groupId>
+      <artifactId>leopard-java</artifactId>
+      <version>2.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>5.0.0-alpha.14</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>org.json</artifactId>
+      <version>chargebee-1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>de.dfki.mary</groupId>
+        <artifactId>marytts</artifactId>
+        <version>5.2.1</version>
+        <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.15.4</version>
+</dependency>
+  </dependencies>
+
+  <!-- Configuration de build -->
+  <build>
+    <plugins>
+      <!-- Plugin Maven Compiler pour gérer la version de Java -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>22</source>
+          <target>22</target>
+        </configuration>
+      </plugin>
+
+      <!-- Plugin Surefire pour exécuter les tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.1.2</version>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <!-- Références des dépôts pour Maven Central -->
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+
+</project>
