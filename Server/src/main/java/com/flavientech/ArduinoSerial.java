@@ -1,50 +1,82 @@
 package com.flavientech;
-import com.fazecast.jSerialComm.SerialPort;
 
-import java.util.Scanner;
+import com.fazecast.jSerialComm.*;
+import java.nio.ByteBuffer;
 
 public class ArduinoSerial {
 
-    private String portName;
-    private SerialPort serialPort;
+    private SerialPort comPort;
+    private ByteBuffer buffer = ByteBuffer.allocate(1024);
+    private static final byte PREAMBLE_EXPECTED = (byte) 0b11100001;
 
-    public int ArduinoSerial(String portName) {
-        this.portName = portName;
-        this.serialPort = SerialPort.getCommPort(portName);
-        this.serialPort.setComPortParameters(9600, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
-        this.serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 1000, 0);
-
-        if (!serialPort.openPort()) {
-            System.err.println("\u001B[31m ❌ Impossible d'ouvrir le port série : " + portName + "\n Communication avec l'Arduino impossible.\u001B[0m");
-            return -1;
+    public ArduinoSerial(String comArduino) {
+        comPort = SerialPort.getCommPort(comArduino);
+        comPort.setBaudRate(9600);
+        comPort.openPort();
+        
+        // Vider le buffer initial
+        while (comPort.bytesAvailable() > 0) {
+            comPort.readBytes(new byte[comPort.bytesAvailable()], comPort.bytesAvailable());
         }
-
-        System.out.println("\u001B[32m ✅ Port série ouvert avec succès : " + portName + "\u001B[0m");
-
-        // Écouter les messages reçus depuis l'Arduino
-        new Thread(() -> {
-            Scanner scanner = new Scanner(serialPort.getInputStream());
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                System.out.println("Reçu depuis Arduino : " + line);
-            }
-            scanner.close();
-        }).start();
-
-        return 0;
-    }
-
-    public void send(String message){
-        try (Scanner userInput = new Scanner(message)) {
-                message = userInput.nextLine();
-                serialPort.getOutputStream().write((message + "\n").getBytes());
-                serialPort.getOutputStream().flush();
-        } catch (Exception e) {
+        
+        // Attendre que l'Arduino soit prêt
+        try {
+            Thread.sleep(1000); // attendre 2 secondes
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
+        comPort.addDataListener(new MessageListener());
     }
 
-    public void close() {
-        serialPort.closePort();
+    private class MessageListener implements SerialPortDataListener {
+
+        @Override
+        public int getListeningEvents() {
+            return SerialPort.LISTENING_EVENT_DATA_AVAILABLE;
+        }
+
+        @Override
+        public void serialEvent(SerialPortEvent event) {
+            byte[] newData = new byte[comPort.bytesAvailable()];
+            int numRead = comPort.readBytes(newData, newData.length);
+            buffer.put(newData, 0, numRead);
+            processBuffer();
+        }
+    }
+
+    private void processBuffer() {
+        buffer.flip();
+        while (buffer.remaining() >= 5) { // Préambule + en-tête
+            buffer.mark();
+            byte preamble = buffer.get();
+            if (preamble != PREAMBLE_EXPECTED) {
+                //System.out.println("Préambule incorrect : " + Integer.toBinaryString(preamble & 0xFF)); //ingnorer l'avertissement, cela indique simplement que l'arduino n'a pas encore envoyé de données
+                continue; 
+            }
+            if (buffer.remaining() < 4) {
+                buffer.reset();
+                break;
+            }
+            int frameNumber = ((buffer.get() & 0xFF) << 8) | (buffer.get() & 0xFF);
+            int dataLength = ((buffer.get() & 0xFF) << 8) | (buffer.get() & 0xFF);
+
+            if (buffer.remaining() < dataLength) {
+                buffer.reset();
+                break;
+            }
+
+            byte[] data = new byte[dataLength];
+            buffer.get(data, 0, dataLength);
+            processMessage(preamble, frameNumber, dataLength, data);
+        }
+        buffer.compact();
+    }
+
+    private void processMessage(byte preamble, int frameNumber, int dataLength, byte[] data) {
+        System.out.println("Preamble : " + Integer.toBinaryString(preamble & 0xFF));
+        System.out.println("Frame Number: " + frameNumber);
+        System.out.println("Data Length: " + dataLength);
+        System.out.println("Data: " + new String(data));
     }
 }

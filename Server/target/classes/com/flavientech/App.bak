@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 
 public class App {
     private final String apiKeyPicoVoice = "NA0NuP+5Orn3NUuj8UHB6Sj1VaolSuM2qvYlQeeWbYs6epGzsACtYA==";  
@@ -16,7 +15,7 @@ public class App {
     private final String comArduino = "/dev/tty.usbmodem14301"; // port série pour la communication avec l'Arduino
 
     private ArduinoSerial arduinoSerial;
-    private final CountDownLatch latch = new CountDownLatch(1);
+    private static final int MAX_DATA_SIZE = 57;
 
     public static void main(String[] args) {
         App app = new App();
@@ -28,18 +27,124 @@ public class App {
     }
 
     public void run() {
-        // Initialiser la communication série avec l'Arduino
-        arduinoSerial = new ArduinoSerial(comArduino);
-        // Garder le thread principal actif pour continuer à écouter les événements
+        this.arduinoSerial = new ArduinoSerial(comArduino);
+        while (true) {
+            try {
+                // Lire les données reçues de l'Arduino
+                byte[] receivedData = readFromArduino();
+                if (receivedData != null) {
+                    processReceivedData(receivedData);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Lecture des données reçues de l'Arduino
+     */
+    private byte[] readFromArduino() {
         try {
-            latch.await(); // Attendre indéfiniment
-        } catch (InterruptedException e) {
+            InputStream inputStream = arduinoSerial.getSerialPort().getInputStream();
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    
+            // Lire les 5 premiers octets (préambule + en-tête)
+            long startTime = System.currentTimeMillis();
+            while (buffer.size() < 5) {
+                if (inputStream.available() > 0) {
+                    buffer.write(inputStream.read());
+                }
+                // Timeout si aucune donnée n'arrive dans un délai raisonnable
+                if (System.currentTimeMillis() - startTime > 1000) {
+                    System.err.println("⚠️ Timeout : aucune donnée reçue.");
+                    return null;
+                }
+            }
+    
+            // Récupérer la longueur des données (2 derniers octets de l'en-tête)
+            byte[] header = buffer.toByteArray();
+            int dataLength = ByteBuffer.wrap(header, 3, 2).getShort();
+    
+            // Lire les données et la trame de stop
+            while (buffer.size() < 5 + dataLength + 1) {
+                if (inputStream.available() > 0) {
+                    buffer.write(inputStream.read());
+                }
+                if (System.currentTimeMillis() - startTime > 2000) {
+                    System.err.println("⚠️ Timeout : données incomplètes.");
+                    return null;
+                }
+            }
+            return buffer.toByteArray();
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+        return null;
     }
+     /**
+     * Traitement des données reçues en fonction du préambule
+     */
+    private void processReceivedData(byte[] receivedData) throws IOException {
+        if (receivedData == null || receivedData.length < 6) {
+            System.err.println("⚠️ Données invalides ou trop courtes.");
+            return;
+        }
+    
+        byte preamble = receivedData[0];
+        int unsignedPreamble = preamble & 0xFF;
+    
+        if (unsignedPreamble != 0b11100001 && unsignedPreamble != 0b11100010 && unsignedPreamble != 0b10100001) {
+            System.err.println("⚠️ Préambule inconnu ou corrompu : " + Integer.toBinaryString(unsignedPreamble));
+            return;
+        }
+    
+        System.out.println("🔄 Préambule valide reçu : " + Integer.toBinaryString(unsignedPreamble));
+        byte[] header = new byte[4];
+        System.arraycopy(receivedData, 1, header, 0, 4); // En-tête (4 octets)
+        int numFrame = ByteBuffer.wrap(header, 0, 2).getShort(); // extraction des 2 premiers octets : numéro de trame en short
+        int dataLength = ByteBuffer.wrap(header, 2, 2).getShort(); // 2 octets suivants : longueur des données
+        // Validation de la longueur des données
+        if (dataLength < 0 || dataLength > MAX_DATA_SIZE) {
+            System.err.println("⚠️ Longueur de données incorrecte ERR0: " + dataLength);
+            return;
+        }
+
+        // Vérification de la longueur totale des données reçues
+        if (receivedData.length < 5 + dataLength + 1) {
+            System.err.println("⚠️ Données reçues incomplètes pour la taille annoncée. ERR1");
+            return;
+        }
+
+        if (dataLength > MAX_DATA_SIZE) {
+            System.err.println("⚠️ Taille des données trop grande : " + dataLength + " les données seront tronquées. ERR 3 Pour  : " + unsignedPreamble + header + numFrame);
+            dataLength = MAX_DATA_SIZE;
+        }
+        // Données
+        byte[] data = new byte[dataLength];
+        System.arraycopy(receivedData, 5, data, 0, dataLength);
+
+        // Gestion des différents préambules
+        switch (unsignedPreamble) {
+            case 0b11100001: // Transmission audio
+                System.out.println("🔄 Réception d'une donnée audio (trame " + numFrame + ")");
+                break;
+
+            case  0b11100010: // Création d'utilisateur
+                System.out.println("🔄 Réception d'une demande de création d'utilisateur (trame " + numFrame + ")");
+                break;
+
+            case  0b10100001: // Trame de stop
+                System.out.println("⏹ Réception d'une trame de stop.");
+                break;
+
+            default:
+                System.err.println("⚠️ Préambule inconnu : " + unsignedPreamble);
+        }
     }
-    public void stop() {
-        latch.countDown(); // Permettre au thread principal de se terminer
-    }
+
+
 
     /** -----------------------------------------------------------------runVoiceAI------------------------------------------------------
      * Exécute l'assistant vocal.

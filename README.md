@@ -8,6 +8,9 @@
 - 🔍 Secure and Confident Online Web Search with Qwant !
 - 🎛️ Custom voice speaker
 
-# Requirements : 
-    - mysql
+# Requirement :
+# Installation :
+
+## phpmyadmin :
+
 
