@@ -1,10 +1,6 @@
 //Auteur: Flavien Diéval
 package com.flavientech;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -15,6 +11,7 @@ public class App {
     private final String apiKeyWeather = "e7e87ddf5ee17846572597c477aa9b95"; 
     private final String comArduino = "/dev/tty.usbmodem14301"; // port série pour la communication avec l'Arduino
 
+    @SuppressWarnings("unused")
     private ArduinoSerial arduinoSerial;
     private final CountDownLatch latch = new CountDownLatch(1);
 
