@@ -1,22 +1,43 @@
+//Auteur: Flavien Diéval
 package com.flavientech;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import com.fazecast.jSerialComm.SerialPort;
 
 public class App {
     private final String apiKeyPicoVoice = "NA0NuP+5Orn3NUuj8UHB6Sj1VaolSuM2qvYlQeeWbYs6epGzsACtYA==";  
     private final String apiKeyOpenAi = "sk-svcacct-zjaiQzqp_UELmtfRWJJdISaTt3ICHrOkeOU3tufzXe_ijWOoff8uWskYJK3yFxPT3BlbkFJeH3bRVzGMlZqLrrrynoDlsjKOl9ekB5QuKFTcJ6E0jM5-KqRgeiz2z2d43TW4AA";  
     private final String apiKeyWeather = "e7e87ddf5ee17846572597c477aa9b95"; 
+    private final String comArduino = "/dev/tty.usbmodem14301"; // port série pour la communication avec l'Arduino
 
     public static void main(String[] args) {
         App app = new App();
-        app.run();
+        Thread appThread = new Thread(() -> app.run());
+        appThread.start();
+
+        //run web server
+        ServeurWeb();
     }
 
-    /**
-     * Exécute l'assistant vocal.
-     */
     public void run() {
+        while (true) {
+            //Read serial liaison on comArduino
+            String message = SerialLiaison.read(comArduino);
+            if (message != null and message != "1110 0001") {
+                System.out.println("Message reçu de l'Arduino : " + message);
+                if (message.equals("start")) {
+                    runVoiceAI();
+                }
+            }
+
+        }
+    }
+
+    /** -----------------------------------------------------------------runVoiceAI------------------------------------------------------
+     * Exécute l'assistant vocal.
+     -----------------------------------------------------------------------------------------------------------------------------------------*/
+    public void runVoiceAI() {
         List<String> users = EagleController.getUsersVoiceList();
         // show users 
         System.out.println("Liste des utilisateurs : " + users);
@@ -49,11 +70,12 @@ public class App {
         }).join();  // Attendre que toutes les tâches soient terminées avant de terminer le programme.
     }
 
-    /**
+
+    /**------------------------------------------------------detectSpeakingUser------------------------------------------------------
      * Détecte l'utilisateur avec EagleController et exécute la reconnaissance vocale pour chaque utilisateur.
      * Retourne l'utilisateur avec le score le plus élevé.
      * @param users Liste des utilisateurs à tester
-     */
+     -----------------------------------------------------------------------------------------------------------------------------------------*/
     private String detectSpeakingUser(List<String> users) {
         if (users == null || users.isEmpty()) {
             System.out.println("Aucun utilisateur trouvé.");
@@ -95,9 +117,9 @@ public class App {
         return detectedUser;
     }
 
-    /**
+    /** ------------------------------------------------------runSpeechToText------------------------------------------------------
      * Exécute la reconnaissance vocale pour convertir la voix en texte.
-     */
+     -----------------------------------------------------------------------------------------------------------------------------------------*/
     private String runSpeechToText() {
         try {
             long startTime = System.currentTimeMillis();
@@ -115,9 +137,9 @@ public class App {
         return null;
     }
 
-    /**
+    /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
      * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.
-     */
+     -----------------------------------------------------------------------------------------------------------------------------------------*/
     private String interactWithOpenAI(String currentUser, String userRequest) {
         System.out.println("Waiting for inference...");
         OpenAI api = new OpenAI(this.apiKeyOpenAi);
