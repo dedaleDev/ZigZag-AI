@@ -1,132 +1,133 @@
 package com.flavientech;
 
-import com.fazecast.jSerialComm.*;
-import java.nio.ByteBuffer;
+import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortDataListener;
+import com.fazecast.jSerialComm.SerialPortEvent;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ArduinoSerial {
 
-    private SerialPort comPort;
-    private ByteBuffer buffer = ByteBuffer.allocate(1024);
-    private static final byte PREAMBLE_EXPECTED = (byte) 0b11100001;
-    private static final byte PREAMBLE_STOP = (byte) 0b10100001;
-    private FileOutputStream fileOutputStream = null;
-    private String outputFilePath = "request.ogg";
-    private int expectedFrameNumber = 0; // Ajouté pour suivre la séquence des trames
+    private final String serialPortName;
+    private final int baudRate = 500000; // Doit correspondre à celui défini sur l'Arduino
+    private final String outputFileName = "RECEIVED.ogg"; // Nom du fichier de sortie
 
-    public ArduinoSerial(String comArduino) {
-        comPort = SerialPort.getCommPort(comArduino);
-        comPort.setBaudRate(9600);
-        comPort.openPort();
-        
-        // Vider le buffer initial
-        while (comPort.bytesAvailable() > 0) {
-            comPort.readBytes(new byte[comPort.bytesAvailable()], comPort.bytesAvailable());
-        }
-        
-        // Attendre que l'Arduino soit prêt
+    private SerialPort serialPort;
+    private int previousFrameNumber = -1; // Dernier numéro de trame reçu
+    private long startTime = 0;
+
+    public ArduinoSerial(String serialPortName) {
+        this.serialPortName = serialPortName;
+    }
+
+    public void start() {
         try {
-            Thread.sleep(2000); // attendre 2 secondes
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        comPort.addDataListener(new MessageListener());
-    }
+            // Ouvrir le port série
+            serialPort = SerialPort.getCommPort(serialPortName);
+            serialPort.setBaudRate(baudRate);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
 
-    private class MessageListener implements SerialPortDataListener {
-
-        @Override
-        public int getListeningEvents() {
-            return SerialPort.LISTENING_EVENT_DATA_AVAILABLE;
-        }
-
-        @Override
-        public void serialEvent(SerialPortEvent event) {
-            byte[] newData = new byte[comPort.bytesAvailable()];
-            int numRead = comPort.readBytes(newData, newData.length);
-            buffer.put(newData, 0, numRead);
-            processBuffer();
-        }
-    }
-
-    private void processBuffer() {
-        buffer.flip();
-        while (buffer.remaining() >= 5) { // Préambule + en-tête
-            buffer.mark();
-            byte preamble = buffer.get();
-            if (preamble == PREAMBLE_EXPECTED) {
-                if (buffer.remaining() < 4) {
-                    buffer.reset();
-                    break;
-                }
-                int frameNumber = ((buffer.get() & 0xFF) << 8) | (buffer.get() & 0xFF);
-                int dataLength = ((buffer.get() & 0xFF) << 8) | (buffer.get() & 0xFF);
-    
-                // Ajouter vérification de la longueur des données
-                if (dataLength > 57) {
-                    System.out.println("Avertissement : Longueur des données trop grande : " + dataLength);
-                    buffer.position(buffer.position() + dataLength); // Ignorer les données incorrectes
-                    continue;
-                }
-    
-                if (buffer.remaining() < dataLength) {
-                    buffer.reset();
-                    break;
-                }
-    
-                byte[] data = new byte[dataLength];
-                buffer.get(data, 0, dataLength);
-                processMessage(preamble, frameNumber, dataLength, data);
-            } else if (preamble == PREAMBLE_STOP) {
-                System.out.println("Transmission terminée.");
-                closeFile();
-            } else {
-                //System.out.println("Avertissement : Préambule incorrect : " + Integer.toBinaryString(preamble & 0xFF));
-            }
-        }
-        buffer.compact();
-    }
-
-    private void processMessage(byte preamble, int frameNumber, int dataLength, byte[] data) {
-        if (preamble == PREAMBLE_EXPECTED) {
-            // Vérifier la séquence des numéros de trame
-            if (frameNumber != expectedFrameNumber) {
-                System.out.println("Avertissement : Numéro de trame inattendu. Attendu " + expectedFrameNumber + " mais reçu " + frameNumber);
-                expectedFrameNumber = frameNumber + 1; // Synchronisation
-            } else {
-                expectedFrameNumber++;
-            }
-
-            // Vérifier la longueur des données
-            if (dataLength > 57) {
-                System.out.println("Avertissement : Longueur des données dépasse la limite de 57 octets. Longueur reçue : " + dataLength);
+            if (!serialPort.openPort()) {
+                System.err.println("Erreur : Impossible d'ouvrir le port série.");
                 return;
             }
 
-            try {
-                if (fileOutputStream == null) {
-                    fileOutputStream = new FileOutputStream(outputFilePath);
-                    System.out.println("Fichier " + outputFilePath + " ouvert pour l'écriture.");
+            System.out.println("Port série ouvert avec succès : " + serialPortName);
+
+            // Ajouter un écouteur pour les données entrantes
+            serialPort.addDataListener(new SerialPortDataListener() {
+                @Override
+                public int getListeningEvents() {
+                    return SerialPort.LISTENING_EVENT_DATA_AVAILABLE;
                 }
-                fileOutputStream.write(data);
-                System.out.println("Frame AUDIO Number : " + frameNumber + ", Data Length: " + dataLength);
-            } catch (IOException e) {
-                System.out.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
-            }
+
+                @Override
+                public void serialEvent(SerialPortEvent event) {
+                    if (event.getEventType() == SerialPort.LISTENING_EVENT_DATA_AVAILABLE) {
+                        processIncomingData();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la configuration du port série : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    private void closeFile() {
-        if (fileOutputStream != null) {
-            try {
-                fileOutputStream.close();
-                System.out.println("Fichier " + outputFilePath + " fermé.");
-                fileOutputStream = null;
-            } catch (IOException e) {
-                System.out.println("Erreur lors de la fermeture du fichier : " + e.getMessage());
+    private void processIncomingData() {
+        try (FileOutputStream outputStream = new FileOutputStream(outputFileName, true)) {
+            while (serialPort.bytesAvailable() > 0) {
+                // Lire le préambule (1 octet)
+                byte[] preamble = new byte[1];
+                serialPort.readBytes(preamble, 1);
+
+                if (preamble[0] != (byte) 0xE1) { // Préambule attendu : 1110 1001
+                    continue;
+                }
+
+                // Démarrer un chrono si c'est la première trame
+                if (previousFrameNumber == -1) {
+                    startTime = System.currentTimeMillis();
+                }
+
+                // Lire l'en-tête (4 octets)
+                byte[] header = new byte[4];
+                serialPort.readBytes(header, 4);
+
+                if (header.length < 4) {
+                    System.err.println("Erreur : En-tête incomplet.");
+                    continue;
+                }
+
+                // Extraire le numéro de trame et la longueur des données
+                int frameNumber = ((header[0] & 0xFF) << 8) | (header[1] & 0xFF);
+                int dataLength = ((header[2] & 0xFF) << 8) | (header[3] & 0xFF);
+
+                // Vérifier la cohérence du numéro de trame
+                if (previousFrameNumber != -1 && frameNumber != previousFrameNumber + 1) {
+                    System.err.println("Erreur : Trame attendue " + (previousFrameNumber + 1) +
+                            ", reçue " + frameNumber + ". Temps écoulé : " + (System.currentTimeMillis() - startTime) + " ms");
+                    break;
+                }
+
+                // Lire les données
+                byte[] data = new byte[dataLength];
+                int bytesRead = serialPort.readBytes(data, dataLength);
+
+                if (bytesRead != dataLength) {
+                    System.err.println("Erreur : Longueur des données incorrecte.");
+                    break;
+                }
+
+                // Lire le caractère de stop (1 octet)
+                byte[] stopByte = new byte[1];
+                serialPort.readBytes(stopByte, 1);
+
+                if (stopByte[0] != (byte) 0xAE) { // Stop attendu : 1010 1110
+                    System.err.println("Erreur : Caractère de fin de trame incorrect.");
+                    break;
+                }
+
+                // Écrire les données dans le fichier de sortie
+                outputStream.write(data);
+                System.out.println("Trame " + frameNumber + " reçue, taille : " + dataLength + " octets. Temps écoulé : " +
+                        (System.currentTimeMillis() - startTime) + " ms");
+
+                // Mettre à jour le numéro de trame précédent
+                previousFrameNumber = frameNumber;
             }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void stop() {
+        if (serialPort != null && serialPort.isOpen()) {
+            serialPort.closePort();
+            System.out.println("Port série fermé.");
         }
     }
 }
