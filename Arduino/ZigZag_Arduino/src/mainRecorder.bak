@@ -1,0 +1,124 @@
+#include <SPI.h>
+#include <Adafruit_VS1053.h>
+#include <SD.h>
+
+#define CS 9
+#define MISO 12
+#define MOSI 11
+#define SCK 13
+#define XCS 6
+#define XRESET 8
+#define XDSC 7
+#define DREQ 2
+
+#define RECBUFFSIZE 256
+
+Adafruit_VS1053_FilePlayer musicPlayer = Adafruit_VS1053_FilePlayer(XRESET, XCS, XDSC, DREQ, CS);
+File recording;
+uint8_t recording_buffer[RECBUFFSIZE];
+
+uint16_t saveRecordedData(boolean isrecord) {
+  //This function saves the recorded data to the SD card
+
+    uint16_t written = 0;
+    uint16_t wordsWaiting = musicPlayer.recordedWordsWaiting();
+    while (wordsWaiting > 0) {
+        uint16_t toRead = min(wordsWaiting, RECBUFFSIZE / 2); // Lecture limitée à la taille du buffer
+        for (uint16_t addr = 0; addr < toRead * 2; addr += 2) {
+            uint16_t t = musicPlayer.recordedReadWord();
+            recording_buffer[addr] = t >> 8;
+            recording_buffer[addr + 1] = t;
+        }
+        // Écrire les données dans le fichier
+        if (!recording.write(recording_buffer, toRead * 2)) {
+            Serial.println("Couldn't write to file!");
+            while (1);
+        }
+        written += toRead; // Nombre de mots écrits
+        wordsWaiting -= toRead; // Nombre de mots restants
+    }
+
+    if (!isrecord) {// Arrêter la lecture si nécessaire
+        // Lire le dernier mot de l'enregistrement si nécessaire
+        musicPlayer.sciRead(VS1053_SCI_AICTRL3);
+        if (!(musicPlayer.sciRead(VS1053_SCI_AICTRL3) & (1 << 2))) {
+            uint16_t lastWord = musicPlayer.recordedReadWord();
+            recording.write(lastWord & 0xFF);
+            written++;
+        }
+    }
+    return written;
+}
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(10, OUTPUT); // déclarer la broche 10 comme sortie
+    pinMode(4, INPUT);    // déclarer la broche 4 comme entrée
+    Serial.println("Adafruit VS1053 Ogg record");
+    delay(10);
+
+    if (!musicPlayer.begin()) {
+        Serial.println("VS1053 not found");
+        while (1);
+    }
+
+    musicPlayer.sineTest(0x44, 500);// Test de la puce
+
+    if (!SD.begin(CS)) {
+        Serial.println("SD failed, or not present");
+        while (1);
+    }
+    Serial.println("SD OK!");
+
+    musicPlayer.setVolume(10, 10);
+
+    if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {// Charger le plugin de l'enregistreur Ogg
+        Serial.println("Couldn't load plugin!");
+        while (1);
+    }
+}
+
+uint8_t isRecording = false;
+
+void loop() {
+    if (!isRecording) {
+        Serial.println("Begin recording");
+        isRecording = true;
+
+        // Trouver un nom de fichier unique
+        char filename[15];
+        strcpy(filename, "RECORD00.OGG");
+        for (uint8_t i = 0; i < 100; i++) {
+            filename[6] = '0' + i / 10;
+            filename[7] = '0' + i % 10;
+            if (!SD.exists(filename)) {
+                break;
+            }
+        }
+
+        Serial.print("Recording to ");
+        Serial.println(filename);
+        recording = SD.open(filename, FILE_WRITE);// Ouvrir le fichier pour l'enregistrement
+        if (!recording) {
+            Serial.println("Couldn't open file to record!");
+            while (1);
+        }
+        musicPlayer.startRecordOgg(true);
+    }
+    if (isRecording) {
+        unsigned long startTime = millis();
+        while (millis() - startTime < 7000) {
+            uint16_t written = saveRecordedData(isRecording);
+            if (written < 32) {
+                delay(1);
+            }
+        }
+        musicPlayer.stopRecordOgg();
+        isRecording = false;
+        saveRecordedData(isRecording);// Enregistrer les données restantes à la fin de l'enregistrement
+        recording.flush();
+        recording.close();
+        Serial.println("End recording");
+        while (1);
+    }
+}

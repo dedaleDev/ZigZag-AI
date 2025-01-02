@@ -1,0 +1,72 @@
+#include <SD.h>  // Bibliothèque pour la carte SD
+#include <SPI.h> // Bibliothèque pour le protocole SPI
+#include <Adafruit_VS1053.h>
+#define SD_CS_PIN 9              // Broche CS pour la carte SD
+#define CHUNK_SIZE 57            // Taille maximale des données dans une trame
+#define SERIAL_BAUD_RATE 500000  // Vitesse de la liaison série
+
+File oggFile;             // Fichier à lire sur la carte SD
+uint16_t frameNumber = 0; // Numéro de trame
+
+// Fonction pour envoyer une trame
+void sendFrame(uint8_t preamble, uint8_t *data, size_t length) {
+  // Envoi du préambule
+  Serial.write(preamble);
+
+  // Envoi de l'en-tête
+  Serial.write((uint8_t)(frameNumber >> 8));    // Numéro de trame (MSB)
+  Serial.write((uint8_t)(frameNumber & 0xFF)); // Numéro de trame (LSB)
+  Serial.write((uint8_t)(length >> 8));        // Longueur des données (MSB)
+  Serial.write((uint8_t)(length & 0xFF));      // Longueur des données (LSB)
+
+  // Envoi des données
+  Serial.write(data, length);
+
+  Serial.write(0b10101110); 
+
+  // Incrémentation du numéro de trame
+  frameNumber++;
+}
+
+void setup() {
+  Serial.begin(SERIAL_BAUD_RATE); // Initialiser la liaison série
+  while (!Serial) {
+    ; // Attendre que la liaison série soit prête
+  }
+
+  // Initialisation de la carte SD
+  if (!SD.begin(SD_CS_PIN)) {
+    Serial.println("Erreur : Carte SD non détectée !");
+    while (1);
+  }
+
+  // Ouverture du fichier OGG
+  oggFile = SD.open("RECORD00.ogg", FILE_READ);
+  if (!oggFile) {
+    Serial.println("Erreur : Fichier RECORD00.ogg introuvable !");
+    while (1);
+  }
+
+  Serial.println("Début de l'envoi du fichier...");
+}
+
+void loop() {
+  if (oggFile.available()) {
+    // Lecture d'une trame de données
+    uint8_t buffer[CHUNK_SIZE];
+    size_t bytesRead = oggFile.read(buffer, CHUNK_SIZE);
+
+    // Envoi de la trame avec le préambule 0b11100001 (transmission audio)
+    sendFrame(0b11100001, buffer, bytesRead);
+  } else {
+    // Envoi de la trame de stop
+    uint8_t dummyData[0] = {};
+    sendFrame(0b10100001, dummyData, 0);
+
+    // Fin de transmission
+    oggFile.close();
+    Serial.println("Fichier envoyé !");
+    while (1)
+      ; // Arrêter le programme
+  }
+}

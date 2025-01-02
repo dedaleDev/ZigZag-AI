@@ -5,7 +5,7 @@
     import java.util.concurrent.CompletableFuture;
     import java.util.concurrent.CountDownLatch;
 
-    public class App {
+    public class App implements AudioFileListener {
         private final String apiKeyPicoVoice = "NA0NuP+5Orn3NUuj8UHB6Sj1VaolSuM2qvYlQeeWbYs6epGzsACtYA==";  
         private final String apiKeyOpenAi = "sk-svcacct-zjaiQzqp_UELmtfRWJJdISaTt3ICHrOkeOU3tufzXe_ijWOoff8uWskYJK3yFxPT3BlbkFJeH3bRVzGMlZqLrrrynoDlsjKOl9ekB5QuKFTcJ6E0jM5-KqRgeiz2z2d43TW4AA";  
         private final String apiKeyWeather = "e7e87ddf5ee17846572597c477aa9b95"; 
@@ -27,17 +27,27 @@
         public void run() {
             // Initialiser la communication série avec l'Arduino
             arduinoSerial = new ArduinoSerial(comArduino);
+            arduinoSerial.setAudioFileListener(this);
             arduinoSerial.start();
             // Garder le thread principal actif pour continuer à écouter les événements
             try {
                 latch.await(); // Attendre indéfiniment
             } catch (InterruptedException e) {
                 e.printStackTrace();
-        }
+            }
         }
         public void stop() {
             latch.countDown(); // Permettre au thread principal de se terminer
         }
+
+        @Override
+        public void onAudioFileReceived(String filePath) {
+            System.out.println("NOUVEAU FICHIER RECU : " + filePath);
+            // Convertir le fichier audio en format WAV
+            new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(pathChecker.getCachesDir() + "RECEIVED.ogg", pathChecker.getCachesDir() + "request.wav");
+            //runVoiceAI();
+        }
+
 
         /** -----------------------------------------------------------------runVoiceAI------------------------------------------------------
          * Exécute l'assistant vocal.
