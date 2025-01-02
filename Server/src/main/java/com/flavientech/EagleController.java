@@ -10,8 +10,8 @@ import java.util.List;
 
 public class EagleController extends Thread {
 
-    private static final String SCRIPT_PATH = "src/main/java/com/flavientech/voiceRecognition.py";
-    private static final String USERS_DIR = "src/caches/users";
+    private static final String SCRIPT_PATH = pathChecker.checkPath("voiceRecognition.py");
+    private static final String USERS_DIR = pathChecker.getCachesDir() +"users";
 
     /**
      * Exécute la commande Python pour l'enrôlement d'un utilisateur.

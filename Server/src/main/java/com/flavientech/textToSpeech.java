@@ -13,7 +13,7 @@ public class textToSpeech {
     public void runEdgeTTS() {
         try {
             // Échapper correctement le texte pour qu'il soit entouré de guillemets
-            String command = "python3 src/main/java/com/flavientech/edgeTTS.py \"" + this.textVoice + "\"";
+            String command = "python3 "+ pathChecker.checkPath("edgeTTS.py")+" \"" + this.textVoice + "\"";
             
             ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
             

@@ -14,7 +14,7 @@
 
 #define RECBUFFSIZE 256
 #define CHUNK_SIZE 57// Taille maximale des données dans une trame
-#define SERIAL_BAUD_RATE 500000  // Vitesse de la liaison série
+#define SERIAL_BAUD_RATE 9600  // Vitesse de la liaison série
 
 Adafruit_VS1053_FilePlayer musicPlayer = Adafruit_VS1053_FilePlayer(XRESET, XCS, XDSC, DREQ, SD_CS);
 File recording;

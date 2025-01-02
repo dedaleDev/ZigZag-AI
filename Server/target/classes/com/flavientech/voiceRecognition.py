@@ -7,6 +7,13 @@ from pvrecorder import PvRecorder
 from pydub import AudioSegment
 from pydub import AudioSegment
 import os
+from pathlib import Path
+
+def get_caches_dir():
+    current_dir = Path.cwd()
+    if current_dir.name.endswith("ZigZag"):
+        return str(current_dir / "Server/src/caches/")
+    return str(current_dir.parent / "flavientech/com/java/caches/")#à changer plus tard
 
 # Constantes globales
 PV_RECORDER_FRAME_LENGTH = 512
@@ -206,8 +213,8 @@ if __name__ == '__main__':
             if not args.audio_path or not os.path.exists(args.audio_path):
                 parser.error("\u001B[31m Le chemin du fichier audio n'existe pas ou est manquant.\u001B[0m")
             
-            optimize_audio_file(args.audio_path, "src/caches/users/optimized.wav")
-            test_voice(args.model_path, "src/caches/users/optimized.wav", args.access_key)
+            optimize_audio_file(args.audio_path, get_caches_dir()+"users/optimized.wav")
+            test_voice(args.model_path, get_caches_dir()+"/users/optimized.wav", args.access_key)
         
         else:
             print("\u001B[31m Action non valide. Choisissez 'enroll' ou 'test'.\u001B[0m")

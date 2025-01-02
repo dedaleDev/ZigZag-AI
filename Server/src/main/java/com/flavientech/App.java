@@ -4,6 +4,9 @@
     import java.util.*;
     import java.util.concurrent.CompletableFuture;
     import java.util.concurrent.CountDownLatch;
+    
+    import org.json.JSONException;
+    import org.json.JSONObject;
 
     public class App implements AudioFileListener {
         private final String apiKeyPicoVoice = "NA0NuP+5Orn3NUuj8UHB6Sj1VaolSuM2qvYlQeeWbYs6epGzsACtYA==";  
@@ -45,7 +48,7 @@
             System.out.println("NOUVEAU FICHIER RECU : " + filePath);
             // Convertir le fichier audio en format WAV
             new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(pathChecker.getCachesDir() + "RECEIVED.ogg", pathChecker.getCachesDir() + "request.wav");
-            //runVoiceAI();
+            runVoiceAI();
         }
 
 
@@ -103,7 +106,7 @@
                 String user = users.get(i);
                 int index = i;
                 futures.add(CompletableFuture.runAsync(() -> {
-                    scoreBoard[index] = EagleController.runTest(apiKeyPicoVoice, user, "src/caches/request.wav");
+                    scoreBoard[index] = EagleController.runTest(apiKeyPicoVoice, user, pathChecker.getCachesDir() + "request.wav");
                     System.out.println("Utilisateur: " + user + ", Score: " + scoreBoard[index]);
                 }));
             }
@@ -139,7 +142,7 @@
             try {
                 long startTime = System.currentTimeMillis();
                 speechToText recognizer = new speechToText(apiKeyPicoVoice);
-                String result = recognizer.run("src/caches/request.wav");
+                String result = recognizer.run(pathChecker.getCachesDir() + "request.wav");
                 System.out.println("\u001B[33mRequête utilisateur : " + result + "\u001B[0m");
                 System.out.println("Temps d'exécution : du speech to text " + (System.currentTimeMillis() - startTime) + " ms");
                 return result;
@@ -168,7 +171,18 @@
             Memory.refreshFlashMemory("Question précédentes : ".concat(userRequest).concat("\nTu avais répondu : ").concat(api.cleanResponse(apiResponse).split("@")[0]));
 
             // --------   Vérifier s'il y a une action spéciale à effectuer
-            String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest);
+            //String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest); //à compléter si le temps
+            try {
+                JSONObject json = new JSONObject(apiResponse);
+                String content = json.getJSONArray("choices")
+                                    .getJSONObject(0)
+                                    .getJSONObject("message")
+                                    .getString("content");
+                apiResponse = content;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String finalResponse = apiResponse;
         
             //met à jour la mémoire avec la réponse finale
         if (finalResponse != null) {

@@ -12,8 +12,9 @@
 #define XDSC 7
 #define DREQ 2
 
-#define RECBUFFSIZE 32
+#define RECBUFFSIZE 256
 #define CHUNK_SIZE 57// Taille maximale des données dans une trame
+#define SERIAL_BAUD_RATE 9600  // Vitesse de la liaison série
 
 Adafruit_VS1053_FilePlayer musicPlayer = Adafruit_VS1053_FilePlayer(XRESET, XCS, XDSC, DREQ, SD_CS);
 File recording;
@@ -21,6 +22,7 @@ uint8_t recording_buffer[RECBUFFSIZE];
 
 File oggFile;
 uint16_t frameNumber = 0; // Numéro de trame
+
 
 uint16_t saveRecordedData(boolean isrecord) {
     // Fonction pour enregistrer les données sur la carte SD
@@ -51,35 +53,50 @@ uint16_t saveRecordedData(boolean isrecord) {
     return written;
 }
 
+
 void sendFrame(uint8_t preamble, uint8_t *data, size_t length) {
+    // Fonction pour envoyer une trame
+    // Envoi du préambule
     Serial.write(preamble);
+
+    // Envoi de l'en-tête
     Serial.write((uint8_t)(frameNumber >> 8));    // Numéro de trame (MSB)
     Serial.write((uint8_t)(frameNumber & 0xFF)); // Numéro de trame (LSB)
     Serial.write((uint8_t)(length >> 8));        // Longueur des données (MSB)
     Serial.write((uint8_t)(length & 0xFF));      // Longueur des données (LSB)
+
+    // Envoi des données
     Serial.write(data, length);
+
     Serial.write(0b10101110); 
+
+    // Incrémentation du numéro de trame
     frameNumber++;
 }
 
 void sendAudio(){
-    while (true){
-        if (oggFile.available()) {
-            uint8_t buffer[CHUNK_SIZE];
-            size_t bytesRead = oggFile.read(buffer, CHUNK_SIZE);
-            sendFrame(0b11100001, buffer, bytesRead);
-        } else {
-            uint8_t dummyData[0] = {};
-            sendFrame(0b10100001, dummyData, 0);
-            oggFile.close();
-            break;
-        }
+    if (oggFile.available()) {
+        // Lecture d'une trame de données
+        uint8_t buffer[CHUNK_SIZE];
+        size_t bytesRead = oggFile.read(buffer, CHUNK_SIZE);
+
+        // Envoi de la trame avec le préambule 0b11100001 (transmission audio)
+        sendFrame(0b11100001, buffer, bytesRead);
+    } else {
+        // Envoi de la trame de stop
+        uint8_t dummyData[0] = {};
+        sendFrame(0b10100001, dummyData, 0);
+
+        // Fin de transmission
+        oggFile.close();
+        Serial.println("Fichier envoyé !");
+        while (1)
+        ; // Arrêter le programme
     }
-    Serial.println("Fichier envoyé !");
 }
 
 void setup() {
-    Serial.begin(500000);
+    Serial.begin(SERIAL_BAUD_RATE); 
     Serial.println("Adafruit VS1053 Ogg record");
 
     if (!musicPlayer.begin()) {
@@ -150,14 +167,17 @@ void loop() {
         Serial.println("End recording");
         digitalWrite(10, LOW);
 
+        // Envoi du fichier enregistré
         oggFile = SD.open("RECORD.ogg", FILE_READ);
         if (!oggFile) {
             Serial.println("Erreur : Fichier RECORD.ogg introuvable !");
             while (1);
         }
+        Serial.println("Début de l'envoi du fichier...");
         sendAudio();
+        Serial.println("Fichier envoyé !");
 
-        if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {
+        if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {// Recharger le plugin pour la prochaine session de record
             Serial.println("Couldn't load plugin!");
             while (1);
         }
