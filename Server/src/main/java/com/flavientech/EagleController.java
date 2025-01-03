@@ -64,6 +64,7 @@ public class EagleController extends Thread {
             return null;
         }
 
+        @SuppressWarnings("unused")
         FilenameFilter filter = (dir, name) -> name.endsWith(".eagle");
         String[] files = directory.list(filter);
         if (files == null) {
@@ -85,15 +86,15 @@ public class EagleController extends Thread {
     private static List<String> buildEnrollCommand(String accessKey, String userName) {
         List<String> command = new ArrayList<>();
         command.add("python3");
-        command.add(SCRIPT_PATH);
+        command.add(SCRIPT_PATH.trim());
         command.add("enroll");
-        command.add(accessKey);
+        command.add(accessKey.trim());
         command.add("--user_name");
-        command.add(userName);
+        command.add(userName.trim());
         command.add("--audio_path");
         command.add(pathChecker.getCachesDir()+ "enroll.wav");
         command.add("--output_profile_path");
-        command.add(USERS_DIR + "/" + userName + ".eagle");
+        command.add(USERS_DIR + "/" + userName.trim() + ".eagle");
         return command;
     }
 

@@ -25,11 +25,17 @@ public class ArduinoSerial {
     private int frameNumberSend = 0;
     private static final int CHUNK_SIZE = 57;
 
-    public ArduinoSerial(String serialPortName) {
+
+    private final String apiKeyPicoVoice;
+    private short newUser = 0;
+    private String nameUser = "";
+
+    public ArduinoSerial(String serialPortName, String apiKeyPicoVoice) {
         this.serialPortName = serialPortName;
+        this.apiKeyPicoVoice = apiKeyPicoVoice;
     }
 
-    private void sendFrame(byte preamble, byte[] data, int length) throws IOException, InterruptedException {
+    private void sendFrame(byte preamble, byte[] data, int length)  {
         if (length > CHUNK_SIZE) {
             throw new IllegalArgumentException("La taille des données dépasse la limite de 57 octets.");
         }
@@ -40,7 +46,11 @@ public class ArduinoSerial {
         frame.write((length >> 8) & 0xFF);
         frame.write(length & 0xFF);
         if (length > 0 && data != null) {
-            frame.write(data);
+            try {
+                frame.write(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         frame.write(0xAE);
         byte[] frameBytes = frame.toByteArray();
@@ -48,35 +58,6 @@ public class ArduinoSerial {
         frameNumberSend = (frameNumberSend + 1) & 0xFFFF;
         System.out.println("Trame envoyée : " + frameNumberSend + ", taille : " + length + " octets");
         //Thread.sleep(10); 
-    }
-
-    public void sendAudioFileToArduino(String audioFilePath) {
-        this.frameNumberSend = 0;
-        System.out.println("Sending audio file to Arduino...");
-        File audioFile = new File(audioFilePath);
-        if (!audioFile.exists()) {
-            System.err.println("Erreur : Le fichier audio spécifié n'existe pas.");
-            return;
-        }
-        try (FileInputStream fis = new FileInputStream(audioFile)) {
-            byte[] buffer = new byte[CHUNK_SIZE];
-            int bytesRead;
-            // Envoyer les chunks du fichier audio
-            while ((bytesRead = fis.read(buffer)) != -1) {
-                if (bytesRead > 0) {
-                    byte[] dataToSend = Arrays.copyOf(buffer, bytesRead);
-                    sendFrame((byte) 0xE4, dataToSend, bytesRead); 
-                }
-            }
-            // Envoyer la trame de fin de fichier audio
-            sendFrame((byte) 0xA1, new byte[0], 0);
-            System.out.println("Fichier envoyé !");
-        } catch (IOException e) {
-            System.err.println("Erreur lors de l'envoi du fichier audio : " + e.getMessage());
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-                    e.printStackTrace();
-        }
     }
 
     public void setAudioFileListener(AudioFileListener listener) {
@@ -218,11 +199,32 @@ public class ArduinoSerial {
                     previousFrameNumber = -1;
 
                     // Notifier le listener
-                    if (audioFileListener != null) {
+                    if (audioFileListener != null && this.newUser == 0) {
                         audioFileListener.onAudioFileReceived(outputFileName);
+                    } else if (audioFileListener != null && this.newUser ==1) { //Suite procédure state 1 nouveau utilisateur, j'ai conscience que c'est pas très propre, mais je n'ai pas trouvé d'autre solution
+                        speechToText recognizer = new speechToText(apiKeyPicoVoice);
+                        new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, pathChecker.getCachesDir() + "nameUser.wav");
+                        String result = recognizer.run(pathChecker.getCachesDir() + "nameUser.wav");
+                        if (result == null || result.isEmpty() || result.split(" ").length < 1) {
+                            new soundPlayer(pathChecker.checkPath("userCreation3_Error.wav"));
+                            this.newUser = 0;
+                            this.nameUser = "";
+                            return;
+                        }
+                        this.nameUser = result.split(" ")[0].trim();
+                        System.out.println("Nom utilisateur : " + this.nameUser);
+                        this.newUser = 2;
+                        new soundPlayer(pathChecker.checkPath("userCreation2.wav"));
+                        sendFrame((byte) 0xE9, new byte[0],  0);
+                    } else if (audioFileListener != null && this.newUser == 2) { //Suite procédure state 2 nouveau utilisateur
+                        new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, pathChecker.getCachesDir() + "enroll.wav");
+                        EagleController.runEnroll(apiKeyPicoVoice, this.nameUser);
+                        new soundPlayer(pathChecker.checkPath("userCreation4.wav"));
+                        this.newUser = 0;
+                        this.nameUser = "";
                     }
                 } else if (preamble[0] == (byte) 0xE2) { // Préambule attendu : 1110 0010 -> NOUVEAU UTILISATEUR
-                    System.out.println("Nouveau utilisateur 0");
+                    System.out.println("Nouveau utilisateur State : 0");
                     byte[] header = new byte[4];
                     serialPort.readBytes(header, 4);
                     if (header.length < 4) {
@@ -234,7 +236,10 @@ public class ArduinoSerial {
                     serialPort.readBytes(data, dataLength); 
 
                     if (data[0] == (byte) 0x01) {
-                        soundPlayer sound = new soundPlayer(pathChecker.checkPath("userCreation1.mp3"));
+                        new soundPlayer(pathChecker.checkPath("userCreation1.wav"));
+                        this.newUser = 1;
+                        sendFrame((byte) 0xE8, new byte[0], 0);
+                        System.out.println("Nouveau utilisateur State : 1");
                     }
                 }
             }

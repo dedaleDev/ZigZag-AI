@@ -23,7 +23,20 @@ File oggFile;
 uint16_t frameNumber = 0; // Numéro de trame
 
 File receivedFile;
-bool createNewUser = false;
+int8_t createNewUserState = 0;
+bool toRecord = false;
+
+bool receiveMinimalFrame(uint8_t preamble) {
+    while (true) {
+        if (Serial.available() >= 6) { // Ensure there are enough bytes to read
+            uint8_t buffer[6];
+            Serial.readBytes(buffer, 6);
+            if (buffer[0] == preamble && buffer[5] == 0b10101110) {
+                return true;
+            }
+        }
+    }
+}
 
 uint16_t saveRecordedData(boolean isrecord) {
     // Fonction pour enregistrer les données sur la carte SD
@@ -65,7 +78,12 @@ void sendFrame(uint8_t preamble, uint8_t *data, size_t length) {
     frameNumber++;
 }
 
-void sendAudio(){
+void sendAudio(String path){
+    oggFile = SD.open(path, FILE_READ);
+    if (!oggFile) {
+        Serial.println("Erreur : Fichier RECORD.ogg introuvable !");
+        while (1);
+    }
     while (true){
         if (oggFile.available()) {
             uint8_t buffer[CHUNK_SIZE];
@@ -79,96 +97,78 @@ void sendAudio(){
         }
     }
     Serial.println("Fichier envoyé !");
+    if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {
+        Serial.println("Couldn't load plugin!");
+        while (1);
+    }
 }
 
 void setup() {
     Serial.begin(500000);
-    Serial.println("Adafruit VS1053 Ogg record");
-
+    Serial.println("ZigZag");
     if (!musicPlayer.begin()) {
         Serial.println("VS1053 not found");
         while (1);
     }
-
-    musicPlayer.sineTest(0x44, 500);
-
     if (!SD.begin(SD_CS)) {
         Serial.println("SD failed, or not present");
         while (1);
     }
     Serial.println("SD OK!");
-
     musicPlayer.setVolume(10, 10);
-
     if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {
         Serial.println("Couldn't load plugin!");
         while (1);
     }
     pinMode(10, OUTPUT); // LED de contrôle
     pinMode(4, INPUT);   // Bouton poussoir AI
-    pinMode(3, INPUT);   // Bouton poussoir user train
-    Serial.println("Ready to record!");
+    pinMode(3, INPUT);   // Bouton poussoir enroll
+    Serial.println("Ready !");
 }
 
-uint8_t isRecording = false;
-
+void record(const char* filename, unsigned long duration = 0){
+    Serial.println("starting recording...");
+    digitalWrite(10, HIGH);
+    if (SD.exists(filename)) {
+        SD.remove(filename);
+    }
+    recording = SD.open(filename, FILE_WRITE);
+    if (!recording) {
+        Serial.println("Couldn't open file to record!");
+        while (1);
+    }
+    musicPlayer.startRecordOgg(true);
+    unsigned long startTime = millis();
+    while ((duration == 0 && digitalRead(4) != LOW) || (duration > 0 && (millis() - startTime) < duration * 1000)) {
+        uint16_t written = saveRecordedData(true);
+        if (written < 32) {
+            delay(1);
+        }
+        //faire clignoter la LED toutes les secondes sans ralentir l'enregistrement
+        if ((millis() - startTime) % 1000 < 500) {
+            digitalWrite(10, HIGH);
+        } else {
+            digitalWrite(10, LOW);
+        }
+    }
+    musicPlayer.stopRecordOgg();
+    saveRecordedData(false);
+    recording.flush();
+    recording.close();
+    digitalWrite(10, LOW);
+    sendAudio(filename);
+}
 
 void loop() {
     digitalWrite(10, LOW);
     if (digitalRead(4) == HIGH) {
-        Serial.println("Button pressed, starting recording...");
-        digitalWrite(10, HIGH);
-        isRecording = true;
-
-        const char* filename = "RECORD.OGG";
-
-        Serial.print("Recording to ");
-        Serial.println(filename);
-
-        // Supprimer le fichier existant
-        if (SD.exists(filename)) {
-            SD.remove(filename);
-            Serial.println("Fichier RECORD.OGG supprimé.");
-        }
-
-        recording = SD.open(filename, FILE_WRITE);
-        if (!recording) {
-            Serial.println("Couldn't open file to record!");
-            while (1);
-        }
-        musicPlayer.startRecordOgg(true);
-    } else if (digitalRead(3) == HIGH and createNewUser == false) {
+        record("RECORD.ogg");
+    } else if (digitalRead(3) == HIGH and createNewUserState == 0) {
         uint8_t data[1] = {0b00000001};
         sendFrame(0b11100010, data, 1); 
-        digitalWrite(10, HIGH);
-        isRecording = false;
-        createNewUser = true;
-    }
-    if (isRecording) {
-        while (digitalRead(4) != LOW) {
-            uint16_t written = saveRecordedData(isRecording);
-            if (written < 32) {
-                delay(1);
-            }
-        }
-        musicPlayer.stopRecordOgg();
-        isRecording = false;
-        saveRecordedData(isRecording);
-        recording.flush();
-        recording.close();
-        Serial.println("End recording");
-        digitalWrite(10, LOW);
-
-        oggFile = SD.open("RECORD.ogg", FILE_READ);
-        if (!oggFile) {
-            Serial.println("Erreur : Fichier RECORD.ogg introuvable !");
-            while (1);
-        }
-        sendAudio();
-
-        if (!musicPlayer.prepareRecordOgg("v44k1q05.img")) {
-            Serial.println("Couldn't load plugin!");
-            while (1);
-        }
+        receiveMinimalFrame(0b11101000);
+        record("nameUser.ogg", 3);
+        receiveMinimalFrame(0b11101001);
+        record("enroll.ogg", 20);
     }
 }

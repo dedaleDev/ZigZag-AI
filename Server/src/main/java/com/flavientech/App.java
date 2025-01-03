@@ -29,7 +29,7 @@ import org.json.JSONException;
 
         public void run() {
             // Initialiser la communication série avec l'Arduino
-            arduinoSerial = new ArduinoSerial(comArduino);
+            arduinoSerial = new ArduinoSerial(comArduino, apiKeyPicoVoice);
             arduinoSerial.setAudioFileListener(this);
             arduinoSerial.start();
             // Garder le thread principal actif pour continuer à écouter les événements
@@ -86,7 +86,7 @@ import org.json.JSONException;
                     //arduinoSerial.sendAudioFileToArduino(pathChecker.getCachesDir() + "answer.wav");
                     
                     // --------------- Lecture de la réponse vocale sur haut parleur PC ---------------
-                    
+                    new soundPlayer(pathChecker.getCachesDir() + "answer.wav");
 
                     System.out.println("Request terminé ! Temps d'exécution total : " + (System.currentTimeMillis() - startTime) + " ms");
                 } catch (Exception e) {
@@ -194,7 +194,10 @@ import org.json.JSONException;
             //met à jour la mémoire avec la réponse finale
         if (finalResponse != null) {
                 finalResponse = Memory.addData(api.cleanText(finalResponse));
-            }
+                return finalResponse;
+        } else {
+            finalResponse = "Oups, j'ai glissé chef ! Mon cerveau a dérapé... Je reviens vers vous dans un instant, une fois les dégâts réparés.";
             return finalResponse;
         }
     }
+}

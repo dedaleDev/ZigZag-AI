@@ -20,9 +20,9 @@ public class PythonController {
     private List<String> buildConvertCommand(String... args) {
         List<String> command = new ArrayList<>();
         command.add("python3");
-        command.add(SCRIPT_PATH);
+        command.add(SCRIPT_PATH.trim());
         for (String arg : args) {
-            command.add(arg);
+            command.add(arg.trim());
         }
         return command;
     }
@@ -33,6 +33,8 @@ public class PythonController {
     private static boolean executeProcess(List<String> command) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
+            //display command : process
+            processBuilder.command().forEach(System.out::println);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
@@ -55,7 +57,6 @@ public class PythonController {
     public boolean runPythonScript(String... args) {
         List<String> command = buildConvertCommand(args);
         //display command : 
-        System.out.println(command);
         return executeProcess(command);
     }
 }

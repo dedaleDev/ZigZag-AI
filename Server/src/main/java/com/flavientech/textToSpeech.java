@@ -16,7 +16,6 @@ public class textToSpeech {
             // Échapper correctement le texte pour qu'il soit entouré de guillemets
             String escapedTextVoice = this.textVoice.replace("\"", "\\\"").replace("'", "\\'");
             String command = "python3 " + pathChecker.checkPath("edgeTTS.py") + " \"\"\"" + escapedTextVoice + "\"\"\"";
-            System.out.println(command);
             ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
             
             // Démarrer le processus

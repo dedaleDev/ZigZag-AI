@@ -2,6 +2,8 @@ package com.flavientech;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.*;
 import org.json.*;
 
@@ -9,6 +11,15 @@ public class OpenAI {
     private final String API_KEY;
     private String prompt;
     private String currentUser;
+
+    private OkHttpClient createHttpClient() {//Créer un client HTTP avec un timeout de 30 secondes
+        return new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+    }
+
 
     public OpenAI(String API_KEY) {
         this.API_KEY = API_KEY;
@@ -21,7 +32,7 @@ public class OpenAI {
     }
 
     public String sendRequest(String request, String context) {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = createHttpClient();
         String jsonPayload = generateJsonPayload(request);
         Request req = new Request.Builder()
                 .url("https://api.openai.com/v1/chat/completions")
