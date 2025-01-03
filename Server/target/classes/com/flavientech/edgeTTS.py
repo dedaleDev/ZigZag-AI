@@ -1,6 +1,7 @@
 import asyncio
 import edge_tts
 import sys 
+import subprocess
 from pathlib import Path
 
 def get_caches_dir():
@@ -13,6 +14,7 @@ VOICES = [ 'fr-FR-DeniseNeural']
 TEXT = sys.argv[1]
 VOICE = VOICES[0]
 OUTPUT_FILE = get_caches_dir()+"/outputEdgeTTS.mp3"
+OUTPUT_FILE_WAV = get_caches_dir() + "/answer.wav"
 
 async def amain():
     communicate = edge_tts.Communicate(TEXT, VOICE)
@@ -23,3 +25,9 @@ try:
     loop.run_until_complete(amain())
 finally:
     loop.close()
+    
+# Convertir le fichier MP3 en WAV
+subprocess.run([
+    "ffmpeg", "-y", "-loglevel", "error", "-i", OUTPUT_FILE, 
+    "-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le", OUTPUT_FILE_WAV
+])

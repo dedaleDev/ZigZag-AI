@@ -11,7 +11,6 @@ public class Time {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String time = sdf.format(date);
-        System.out.println("Time: " + time);
         return time;
     }
 
@@ -20,7 +19,6 @@ public class Time {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String dateStr = sdf.format(date);
-        System.out.println("Date: " + dateStr);
         return dateStr;
     }
 
@@ -29,7 +27,6 @@ public class Time {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String dateTime = sdf.format(date);
-        System.out.println("Date and Time: " + dateTime);
         return dateTime;
     }
 

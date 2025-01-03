@@ -22,7 +22,7 @@ def convert_ogg_to_wav(input_file, output_file):
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage : python oggToWav.py <source.ogg> <destination.wav>")
+        print("Usage : python3 oggToWav.py <source.ogg> <destination.wav>")
         sys.exit(1)
     
     input_file = sys.argv[1]

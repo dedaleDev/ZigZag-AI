@@ -22,6 +22,9 @@ uint8_t recording_buffer[RECBUFFSIZE];
 File oggFile;
 uint16_t frameNumber = 0; // Numéro de trame
 
+File receivedFile;
+bool createNewUser = false;
+
 uint16_t saveRecordedData(boolean isrecord) {
     // Fonction pour enregistrer les données sur la carte SD
     uint16_t written = 0;
@@ -67,7 +70,7 @@ void sendAudio(){
         if (oggFile.available()) {
             uint8_t buffer[CHUNK_SIZE];
             size_t bytesRead = oggFile.read(buffer, CHUNK_SIZE);
-            sendFrame(0b11100001, buffer, bytesRead);
+            sendFrame(0b11100001, buffer, bytesRead); 
         } else {
             uint8_t dummyData[0] = {};
             sendFrame(0b10100001, dummyData, 0);
@@ -102,7 +105,8 @@ void setup() {
         while (1);
     }
     pinMode(10, OUTPUT); // LED de contrôle
-    pinMode(4, INPUT);   // Bouton poussoir
+    pinMode(4, INPUT);   // Bouton poussoir AI
+    pinMode(3, INPUT);   // Bouton poussoir user train
     Serial.println("Ready to record!");
 }
 
@@ -133,8 +137,13 @@ void loop() {
             while (1);
         }
         musicPlayer.startRecordOgg(true);
+    } else if (digitalRead(3) == HIGH and createNewUser == false) {
+        uint8_t data[1] = {0b00000001};
+        sendFrame(0b11100010, data, 1); 
+        digitalWrite(10, HIGH);
+        isRecording = false;
+        createNewUser = true;
     }
-
     if (isRecording) {
         while (digitalRead(4) != LOW) {
             uint16_t written = saveRecordedData(isRecording);

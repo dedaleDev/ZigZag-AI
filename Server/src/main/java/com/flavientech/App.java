@@ -1,11 +1,12 @@
-    //Auteur: Flavien Diéval
-    package com.flavientech;
+//Auteur: Flavien Diéval
+package com.flavientech;
 
-    import java.util.*;
-    import java.util.concurrent.CompletableFuture;
-    import java.util.concurrent.CountDownLatch;
-    
-    import org.json.JSONException;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+
+
+import org.json.JSONException;
     import org.json.JSONObject;
 
     public class App implements AudioFileListener {
@@ -14,7 +15,6 @@
         private final String apiKeyWeather = "e7e87ddf5ee17846572597c477aa9b95"; 
         private final String comArduino = "/dev/tty.usbmodem14301"; // port série pour la communication avec l'Arduino
 
-        @SuppressWarnings("unused")
         private ArduinoSerial arduinoSerial;
         private final CountDownLatch latch = new CountDownLatch(1);
 
@@ -77,11 +77,18 @@
                     System.out.println("Temps d'exécution de la detection d'utilisateur + STT : " + (endTime - startTime) + " ms");
                     // --------------- Appel à l'API OpenAI ---------------
                     String openAIResponse = interactWithOpenAI(currentSpeakingUser, userRequest);
-
                     // --------------- Synthèse vocale de la réponse ---------------
                     if (openAIResponse != null) {
                         new textToSpeech(openAIResponse);
                     }
+                    // --------------- Renvoie le fichier audio de la réponse IA à l'arduino ---------------
+                    //System.out.println("Envoi de la réponse à l'Arduino...");
+                    //arduinoSerial.sendAudioFileToArduino(pathChecker.getCachesDir() + "answer.wav");
+                    
+                    // --------------- Lecture de la réponse vocale sur haut parleur PC ---------------
+                    
+
+                    System.out.println("Request terminé ! Temps d'exécution total : " + (System.currentTimeMillis() - startTime) + " ms");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

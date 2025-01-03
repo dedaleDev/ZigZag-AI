@@ -90,6 +90,10 @@ public class EagleController extends Thread {
         command.add(accessKey);
         command.add("--user_name");
         command.add(userName);
+        command.add("--audio_path");
+        command.add(pathChecker.getCachesDir()+ "enroll.wav");
+        command.add("--output_profile_path");
+        command.add(USERS_DIR + "/" + userName + ".eagle");
         return command;
     }
 
