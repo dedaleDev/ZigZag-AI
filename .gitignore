@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Cache files
-*.wav
 *.mp3
 *.ogg
 *.eagle
@@ -20,7 +19,8 @@
 Arduino/**/*.txt
 
 # Cache files in Server directory
-Server/src/main/caches/**/*.txt
+Server/src/main/caches/*.txt
+Server/src/main/caches/*.wav
 
 # Package files
 *.jar
