@@ -75,10 +75,16 @@ public class WebController {
     @GetMapping("/api/getVoiceList")
     public ResponseEntity<Map<String, Object>> getVoicesList() {
         List<String> voiceList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("models/eaglesVoices.txt"))) {
+        String currentVoiceString = LoadConf.getVoice();
+        try (BufferedReader br = new BufferedReader(new FileReader(pathChecker.checkPath("eagleVoices.txt")))) {
             String line;
+            voiceList.add(currentVoiceString);
             while ((line = br.readLine()) != null) {
+                if (line.equals(currentVoiceString)) {
+                    continue;
+                }
                 voiceList.add(line);
+                
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,17 +126,18 @@ public class WebController {
 
     @PostMapping("/api/selectVoiceAI")
     public ResponseEntity<Map<String, String>> selectVoiceAI(@RequestBody Map<String, String> requestJson) {
-        if (requestJson.get("voice") == null || requestJson.get("voice").split(" ").length > 1) {
+        String voice = requestJson.get("voice").split(":")[0].trim();
+        if (voice == null || voice.split(" ").length > 1) {
             Map<String, String> response = new HashMap<>();
             response.put("status", "error");
             response.put("message", "Voice not found or incorrect");
             return ResponseEntity.ok(response);
         }
         List<String> voiceList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("models/eaglesVoices.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(pathChecker.checkPath("eagleVoices.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
-                voiceList.add(line);
+                voiceList.add(line.split(":")[0].trim());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,18 +146,17 @@ public class WebController {
             response.put("message", "Voice name incorrect");
             return ResponseEntity.ok(response);
         }
-        if (!voiceList.contains(requestJson.get("voice"))) {
+        if (!voiceList.contains(voice)) {
             Map<String, String> response = new HashMap<>();
             response.put("status", "error");
             response.put("message", "Voice not found or incorrect");
             return ResponseEntity.ok(response);
         }
-        LoadConf.writeEagleVoice(requestJson.get("voice"));
+        LoadConf.writeEagleVoice(voice);
 
         Map<String, String> response = new HashMap<>();
         response.put("status", "success");
-        System.out.println("Voice changed to " + requestJson.get("voice"));
-        response.put("message", "voice changed");
+        response.put("message", "voice changed or updated");
         return ResponseEntity.ok(response);
     }
 

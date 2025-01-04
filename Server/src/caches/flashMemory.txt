@@ -1,5 +1,11 @@
 
-Question précédentes : Salut !
-Tu avais répondu : Salut Jean ! Comment ça va aujourd'hui ? Prêt à discuter de quelque chose de délicieux ou de littéraire ?
-Question précédentes : à l'usine
-Tu avais répondu : Salut Clair ! Tu veux savoir quelque chose sur une usine ? C’est un sujet intéressant ! Dis-moi ce que tu cherches, et je suis là pour t’aider.
+Question précédentes : Du zigzag comment ça va
+Tu avais répondu : Salut Clair ! Je vais super bien, merci ! Et toi, comment ça se passe ? Prêt à plonger dans un sujet délicieux ou littéraire ?
+Question précédentes : Salut zigzag alors qu'elle voit astus aujourd'hui
+Tu avais répondu : Salut Clair ! Aujourd'hui, tu es en mode astus, c'est ça ? Prête à explorer des idées qui font vibrer ton esprit ? Qu'est-ce que tu as en tête ?
+Question précédentes : Salut ZigZag ! Tu m'explique pourquoi j'ai le sentiment qu'il y ai une régression importante enetrtre l'antiquité et lem moyen age ?
+Tu avais répondu : Salut Flavien ! Ah, la grande question des temps anciens ! Tu sais, beaucoup de gens parlent de « l'obscurantisme » du Moyen Âge par rapport à l'Antiquité. En gros, après la chute de l'Empire romain, il y a eu une perte de certaines connaissances, surtout en sciences et en littérature. 
+
+Les invasions et les guerres n'ont pas aidé non plus. Mais attention, c'est pas tout noir ! Le Moyen Âge a aussi été une période de grands développements, avec des avancées en agriculture, en architecture et même dans la philosophie. Alors, c'est un peu comme un gros nuage qui cache le soleil, mais le soleil est toujours là, prêt à briller à nouveau ! 
+
+Tu veux creuser un peu plus sur un aspect en particulier ?

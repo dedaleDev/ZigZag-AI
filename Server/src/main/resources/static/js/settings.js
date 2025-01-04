@@ -9,10 +9,9 @@ fetch('/api/getUsers', {
 .then(data => {
       console.log(data.users); // Affiche la liste des utilisateurs
       const users = data.users; // La liste des utilisateurs est déjà un tableau
+
       users.forEach(user => {
           console.log(user); // Affiche chaque utilisateur
-
-          //pour chaque utilisateur on créer : <div class="user-item">        <span>Utilisateu name</span>        <button>&times;</button>      </div> dans <div class="user-list"></div>
           const userItem = document.createElement("div");
           userItem.classList.add("user-item");
           userItem.innerHTML = `
@@ -20,6 +19,38 @@ fetch('/api/getUsers', {
             <button>&times;</button>
           `;
           document.querySelector('.user-list').appendChild(userItem);
+          //ce qui créer le code html suivant pour chaque utilisateur :
+      });
+
+      // Gestion de la suppression des utilisateurs
+      document.querySelectorAll('.user-item button').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const userItem = e.target.closest('.user-item');
+          const userName = userItem.querySelector('span').textContent;
+
+          if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${userName} ?`)) {
+            fetch('/api/deleteUser', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ name: userName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                  console.log(data.message); // Affiche le message de réponse
+                  if (data.status === 'success') {
+                    userItem.remove();
+                  } else {
+                    alert('Erreur lors de la suppression de l\'utilisateur.');
+                  }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              alert('Erreur lors de la suppression de l\'utilisateur.');
+            });
+          }
+        });
       });
 })
 .catch((error) => {
@@ -63,14 +94,6 @@ fetch('/api/getArduinoCom', {
 })
 .catch((error) => {
   console.error('Error:', error);
-});
-
-// Gestion de la suppression des utilisateurs
-document.querySelectorAll('.user-item button').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const userItem = e.target.closest('.user-item');
-    userItem.remove();
-  });
 });
 
 // Gestion du bouton de sauvegarde

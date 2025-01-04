@@ -79,6 +79,10 @@ fetch('/api/getUsers', {
             option.textContent = user;
             nameSelect.appendChild(option);
         });
+        if (users.length === 0) {
+          alert("Il n'y a pas encore d'utilisateurs enregistrés, vous pouvez en créer un avec l'Arduino.")
+          document.querySelector('.name-select').remove();
+        }
 })
 .catch((error) => {
     console.error('Error:', error);
