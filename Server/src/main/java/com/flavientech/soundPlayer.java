@@ -3,9 +3,9 @@ import javax.sound.sampled.*;
 import java.io.File;
 
 
-public class soundPlayer {
+public class SoundPlayer {
     private String path;
-    public soundPlayer(String path){
+    public SoundPlayer(String path){
         this.path = path;
         this.runSound();
     }

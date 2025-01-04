@@ -76,7 +76,7 @@ public class WebController {
     public ResponseEntity<Map<String, Object>> getVoicesList() {
         List<String> voiceList = new ArrayList<>();
         String currentVoiceString = LoadConf.getVoice();
-        try (BufferedReader br = new BufferedReader(new FileReader(pathChecker.checkPath("eagleVoices.txt")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PathChecker.checkPath("eagleVoices.txt")))) {
             String line;
             voiceList.add(currentVoiceString);
             while ((line = br.readLine()) != null) {
@@ -134,7 +134,7 @@ public class WebController {
             return ResponseEntity.ok(response);
         }
         List<String> voiceList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(pathChecker.checkPath("eagleVoices.txt")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PathChecker.checkPath("eagleVoices.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 voiceList.add(line.split(":")[0].trim());

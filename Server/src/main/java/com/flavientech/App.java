@@ -35,13 +35,13 @@ public class App implements AudioFileListener {
         System.out.println("           __/ |            __/ |_____              ");
         System.out.println("          |___/            |___/______|             ");
 
-        System.out.println("\u001B[34m\nConfiguration chargée avec succès !\n" +
-                            "-----------------------------------\n" +
-                            "API PicoVoice : " + apiKeyPicoVoice + "\n" +
-                            "API OpenAI    : " + apiKeyOpenAi + "\n" +
-                            "API Weather   : " + apiKeyWeather + "\n" +
-                            "COM Arduino   : " + comArduino + "\n" +
-                            "-----------------------------------\u001B[0m");
+        System.out.println("\u001B[32m\nConfiguration chargée avec succès !\n" +
+                "-----------------------------------\n" +
+                "API PicoVoice : " + apiKeyPicoVoice + "\n" +
+                "API OpenAI    : " + apiKeyOpenAi + "\n" +
+                "API Weather   : " + apiKeyWeather + "\n" +
+                "COM Arduino   : " + comArduino + "\n" +
+                "-----------------------------------\u001B[0m");
     }
 
     public void run() {
@@ -63,7 +63,7 @@ public class App implements AudioFileListener {
     @Override
     public void onAudioFileReceived(String filePath) {
         // Convertir le fichier audio en format WAV
-        new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(pathChecker.getCachesDir() + "RECEIVED.ogg", pathChecker.getCachesDir() + "request.wav");
+        new PythonController(PathChecker.checkPath("oggToWav.py")).runPythonScript(PathChecker.getCachesDir() + "RECEIVED.ogg", PathChecker.getCachesDir() + "request.wav");
         runVoiceAI();
     }
 
@@ -79,15 +79,15 @@ public class App implements AudioFileListener {
 
         // -------- détection de l'utilisateur et Speech To Text --------  
         CompletableFuture<String> userDetectionFuture = CompletableFuture.supplyAsync(() -> detectSpeakingUser(users));
-        CompletableFuture<String> speechToTextFuture = CompletableFuture.supplyAsync(this::runSpeechToText);
-        CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(userDetectionFuture, speechToTextFuture); //attendre la fin
+        CompletableFuture<String> SpeechToTextFuture = CompletableFuture.supplyAsync(this::runSpeechToText);
+        CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(userDetectionFuture, SpeechToTextFuture); //attendre la fin
 
         combinedFuture.thenRun(() -> {// Attendre que les deux tâches soient terminées avant de continuer
             try {
                 //récupérer les résultats
                 String currentSpeakingUser = userDetectionFuture.get();
                 System.out.println("Utilisateur courant : " + currentSpeakingUser);
-                String userRequest = speechToTextFuture.get();
+                String userRequest = SpeechToTextFuture.get();
 
                 long endTime = System.currentTimeMillis();
                 System.out.println("Temps d'exécution de la detection d'utilisateur + STT : " + (endTime - startTime) + " ms");
@@ -95,14 +95,14 @@ public class App implements AudioFileListener {
                 String openAIResponse = InteractWithOpenAI.run(this.apiKeyOpenAi, currentSpeakingUser, userRequest);
                 // --------------- Synthèse vocale de la réponse ---------------
                 if (openAIResponse != null) {
-                    new textToSpeech(openAIResponse);
+                    new TextToSpeech(openAIResponse);
                 }
                 // --------------- Renvoie le fichier audio de la réponse IA à l'arduino ---------------
                 //System.out.println("Envoi de la réponse à l'Arduino...");
-                //arduinoSerial.sendAudioFileToArduino(pathChecker.getCachesDir() + "answer.wav");
+                //arduinoSerial.sendAudioFileToArduino(PathChecker.getCachesDir() + "answer.wav");
                 
                 // --------------- Lecture de la réponse vocale sur haut parleur PC ---------------
-                new soundPlayer(pathChecker.getCachesDir() + "answer.wav");
+                new SoundPlayer(PathChecker.getCachesDir() + "answer.wav");
 
                 System.out.println("Request terminé ! Temps d'exécution total : " + (System.currentTimeMillis() - startTime) + " ms");
             } catch (Exception e) {
@@ -129,7 +129,7 @@ public class App implements AudioFileListener {
             String user = users.get(i);
             int index = i;
             futures.add(CompletableFuture.runAsync(() -> {
-                scoreBoard[index] = EagleController.runTest(apiKeyPicoVoice, user, pathChecker.getCachesDir() + "request.wav");
+                scoreBoard[index] = EagleController.runTest(apiKeyPicoVoice, user, PathChecker.getCachesDir() + "request.wav");
                 System.out.println("Utilisateur: " + user + ", Score: " + scoreBoard[index]);
             }));
         }
@@ -164,8 +164,8 @@ public class App implements AudioFileListener {
     private String runSpeechToText() {
         try {
             long startTime = System.currentTimeMillis();
-            speechToText recognizer = new speechToText(apiKeyPicoVoice);
-            String result = recognizer.run(pathChecker.getCachesDir() + "request.wav");
+            SpeechToText recognizer = new SpeechToText(this.apiKeyPicoVoice);
+            String result = recognizer.run(PathChecker.getCachesDir() + "request.wav");
             System.out.println("\u001B[33mRequête utilisateur : " + result + "\u001B[0m");
             System.out.println("Temps d'exécution : du speech to text " + (System.currentTimeMillis() - startTime) + " ms");
             return result;

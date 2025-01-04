@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 
-public class pathChecker {
+public class PathChecker {
     public static String checkPath(String fileName) {
         Path currentDir = Paths.get(System.getProperty("user.dir"));
         try {

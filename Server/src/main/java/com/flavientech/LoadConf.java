@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class LoadConf {
     private static Properties properties = new Properties();
-    private static final String CONFIG_FILE_PATH = pathChecker.checkPath("application.properties");
+    private static final String CONFIG_FILE_PATH = PathChecker.checkPath("application.properties");
 
     static {
         try (FileInputStream input = new FileInputStream(CONFIG_FILE_PATH)) {

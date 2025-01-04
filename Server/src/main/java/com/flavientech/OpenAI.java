@@ -24,7 +24,7 @@ public class OpenAI {
     public OpenAI(String API_KEY) {
         this.API_KEY = API_KEY;
         this.currentUser = "inconnu";
-        this.prompt = readFileAsString(pathChecker.checkPath("promptGPT4o-Mini.txt"));
+        this.prompt = readFileAsString(PathChecker.checkPath("promptGPT4o-Mini.txt"));
     }
 
     public void setCurrentUser(String user) {

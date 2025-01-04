@@ -12,7 +12,7 @@ public class ArduinoSerial {
 
     private final String serialPortName;
     private final int baudRate = 500000; // Doit correspondre à celui défini sur l'Arduino
-    private final String outputFileName = pathChecker.getCachesDir() + "RECEIVED.ogg"; // Nom du fichier de sortie
+    private final String outputFileName = PathChecker.getCachesDir() + "RECEIVED.ogg"; // Nom du fichier de sortie
 
     private SerialPort serialPort;
     private int previousFrameNumber = -1; // Dernier numéro de trame reçu
@@ -198,11 +198,11 @@ public class ArduinoSerial {
                     if (audioFileListener != null && this.newUser == 0) {
                         audioFileListener.onAudioFileReceived(outputFileName);
                     } else if (audioFileListener != null && this.newUser ==1) { //Suite procédure state 1 nouveau utilisateur, j'ai conscience que c'est pas très propre, mais je n'ai pas trouvé d'autre solution
-                        speechToText recognizer = new speechToText(apiKeyPicoVoice);
-                        new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, pathChecker.getCachesDir() + "nameUser.wav");
-                        String result = recognizer.run(pathChecker.getCachesDir() + "nameUser.wav");
+                        SpeechToText recognizer = new SpeechToText(apiKeyPicoVoice);
+                        new PythonController(PathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, PathChecker.getCachesDir() + "nameUser.wav");
+                        String result = recognizer.run(PathChecker.getCachesDir() + "nameUser.wav");
                         if (result == null || result.isEmpty() || result.split(" ").length < 1) {
-                            new soundPlayer(pathChecker.checkPath("userCreation3_Error.wav"));
+                            new SoundPlayer(PathChecker.checkPath("userCreation3_Error.wav"));
                             this.newUser = 0;
                             this.nameUser = "";
                             return;
@@ -210,12 +210,12 @@ public class ArduinoSerial {
                         this.nameUser = result.split(" ")[0].trim();
                         System.out.println("Nom utilisateur : " + this.nameUser);
                         this.newUser = 2;
-                        new soundPlayer(pathChecker.checkPath("userCreation2.wav"));
+                        new SoundPlayer(PathChecker.checkPath("userCreation2.wav"));
                         sendFrame((byte) 0xE9, new byte[0],  0);
                     } else if (audioFileListener != null && this.newUser == 2) { //Suite procédure state 2 nouveau utilisateur
-                        new PythonController(pathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, pathChecker.getCachesDir() + "enroll.wav");
+                        new PythonController(PathChecker.checkPath("oggToWav.py")).runPythonScript(outputFileName, PathChecker.getCachesDir() + "enroll.wav");
                         EagleController.runEnroll(apiKeyPicoVoice, this.nameUser);
-                        new soundPlayer(pathChecker.checkPath("userCreation4.wav"));
+                        new SoundPlayer(PathChecker.checkPath("userCreation4.wav"));
                         this.newUser = 0;
                         this.nameUser = "";
                     }
@@ -232,7 +232,7 @@ public class ArduinoSerial {
                     serialPort.readBytes(data, dataLength); 
 
                     if (data[0] == (byte) 0x01) {
-                        new soundPlayer(pathChecker.checkPath("userCreation1.wav"));
+                        new SoundPlayer(PathChecker.checkPath("userCreation1.wav"));
                         this.newUser = 1;
                         sendFrame((byte) 0xE8, new byte[0], 0);
                         System.out.println("Nouveau utilisateur State : 1");

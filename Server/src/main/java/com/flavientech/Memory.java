@@ -7,9 +7,9 @@ import java.nio.file.Paths;
 
 public class Memory {
 
-    private static final Path LONG_MEMORY_PATH = Paths.get(pathChecker.getCachesDir()+"longMemory.txt");
-    private static final Path FLASH_MEMORY_PATH = Paths.get(pathChecker.getCachesDir()+"/flashMemory.txt");
-    private static final Path SETTINGS_PATH = Paths.get(pathChecker.getCachesDir()+"/settings.txt");
+    private static final Path LONG_MEMORY_PATH = Paths.get(PathChecker.getCachesDir()+"longMemory.txt");
+    private static final Path FLASH_MEMORY_PATH = Paths.get(PathChecker.getCachesDir()+"/flashMemory.txt");
+    private static final Path SETTINGS_PATH = Paths.get(PathChecker.getCachesDir()+"/settings.txt");
 
     /**
      * Read data from a file

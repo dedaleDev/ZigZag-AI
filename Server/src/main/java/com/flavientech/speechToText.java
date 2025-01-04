@@ -1,13 +1,13 @@
 package com.flavientech;
 import ai.picovoice.leopard.*;
 
-public class speechToText {  // Renommé
+public class SpeechToText { 
     private Leopard leopard;
 
-    public speechToText(String apiKey) {
+    public SpeechToText(String apiKey) {
         final String accessKey = apiKey;
         try {
-            leopard = new Leopard.Builder().setAccessKey(accessKey).setModelPath(pathChecker.checkPath("ZigZag-leopard-v2.0.0-24-09-13--08-11-50.pv")).build();
+            leopard = new Leopard.Builder().setAccessKey(accessKey).setModelPath(PathChecker.checkPath("ZigZag-leopard-v2.0.0-24-09-13--08-11-50.pv")).build();
         } catch (LeopardException ex) {
             System.out.println("Error during creating audio to text: " + ex);
         }
