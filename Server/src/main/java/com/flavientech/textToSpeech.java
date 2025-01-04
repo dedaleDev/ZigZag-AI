@@ -4,9 +4,10 @@ import java.io.InputStreamReader;
 
 public class textToSpeech {
     private String textVoice;
+    private static final String VOICE_DIR = pathChecker.getCachesDir() +"eagleVoices.txt";
+    private static final String currentVoice = LoadConf.getVoice();
 
     public textToSpeech(String textVoice) {
-        //this.textVoice = textVoice.replace("*", "").replace("`", "").replace("_", "").replace("~", "");
         this.textVoice = textVoice;
         this.runEdgeTTS();
     }
@@ -15,7 +16,7 @@ public class textToSpeech {
         try {
             // Échapper correctement le texte pour qu'il soit entouré de guillemets
             String escapedTextVoice = this.textVoice.replace("\"", "\\\"").replace("'", "\\'");
-            String command = "python3 " + pathChecker.checkPath("edgeTTS.py") + " \"\"\"" + escapedTextVoice + "\"\"\"";
+            String command = "python3 " + pathChecker.checkPath("edgeTTS.py") + " \"\"\"" + escapedTextVoice + "\"\"\" " + currentVoice ;
             ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
             
             // Démarrer le processus

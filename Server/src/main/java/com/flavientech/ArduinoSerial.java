@@ -5,11 +5,8 @@ import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class ArduinoSerial {
 
@@ -21,7 +18,6 @@ public class ArduinoSerial {
     private int previousFrameNumber = -1; // Dernier numéro de trame reçu
     private long startTime = 0;
     private AudioFileListener audioFileListener;
-    private int frameNumber = 0;
     private int frameNumberSend = 0;
     private static final int CHUNK_SIZE = 57;
 
@@ -94,8 +90,8 @@ public class ArduinoSerial {
             });
 
         } catch (Exception e) {
-            System.err.println("Erreur lors de la configuration du port série : " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("\u001B[31mErreur lors de la connection au port série : " + e.getMessage() + "\u001B[0m");
+            System.err.println("\u001B[31mIndice de correction : Vérifiez les branchements et assurez-vous que le port série est correct et que l'Arduino est branché.\u001B[0m");
         }
     }
 

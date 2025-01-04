@@ -10,7 +10,14 @@ def get_caches_dir():
         return str(current_dir /"Server/src/caches/")
     return str(current_dir.parent /"flavientech/com/java/caches/")#à changer plus tard
 
-VOICES = [ 'fr-FR-DeniseNeural']
+VOICES = [str(sys.argv[2])]
+#verifier si le texte est vide
+if len(sys.argv) < 3 or sys.argv[1] == "":
+    print("Text is empty")
+    sys.exit(1)
+if len(sys.argv) < 3 or sys.argv[2] == "" or sys.argv[2] == "null":
+    print("Voice is empty")
+    sys.exit(1)
 TEXT = sys.argv[1]
 VOICE = VOICES[0]
 OUTPUT_FILE = get_caches_dir()+"/outputEdgeTTS.mp3"

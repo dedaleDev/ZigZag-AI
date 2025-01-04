@@ -78,7 +78,19 @@ public class EagleController extends Thread {
         return users;
     }
 
-    // Méthodes utilitaires
+    /**
+     * Supprime un utilisateur de la liste des utilisateurs enrôlés.
+     *
+     * @param userName Nom de l'utilisateur à supprimer.
+     * @return Retourne true si l'utilisateur est supprimé avec succès.
+     */
+    public static boolean deleteUser(String userName) {
+        File file = new File(USERS_DIR + "/" + userName + ".eagle");
+        return file.delete();
+    }
+
+
+
 
     /**
      * Construit la commande pour l'enrôlement.

@@ -9,6 +9,11 @@
 - 🎛️ Custom voice speaker
 
 # Requirement :
+
+Maven : Installez Apache Maven 3.6.3 ou une version ultérieure si ce n'est pas déjà fait2. Vous pouvez le télécharger sur maven.apache.org ou l'installer via un gestionnaire de paquets :
+Sur macOS avec Homebrew : brew install maven
+Sur Ubuntu : sudo apt-get install maven
+Sur Windows avec Chocolatey : choco install maven
 pip install pydub
 ffmpeg : 
 Sous Linux : sudo apt-get install ffmpeg

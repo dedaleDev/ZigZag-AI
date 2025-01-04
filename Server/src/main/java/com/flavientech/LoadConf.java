@@ -5,28 +5,41 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class LoadConf {
-    private Properties properties;
+    private static Properties properties = new Properties();
 
-    public LoadConf(String configFilePath) throws IOException {
-        properties = new Properties();
-        try (FileInputStream input = new FileInputStream(configFilePath)) {
+    static {
+        try (FileInputStream input = new FileInputStream(pathChecker.checkPath("application.properties"))) {
             properties.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while loading config file, please create or rename and complete the conf.example.properties file to " + pathChecker.checkPath("conf.properties"));
         }
     }
 
-    public String getApiKeyPicoVoice() {
+    public static String getApiKeyPicoVoice() {
         return properties.getProperty("apiKeyPicoVoice");
     }
 
-    public String getApiKeyOpenAi() {
+    public static String getApiKeyOpenAi() {
         return properties.getProperty("apiKeyOpenAi");
     }
 
-    public String getApiKeyWeather() {
+    public static String getApiKeyWeather() {
         return properties.getProperty("apiKeyWeather");
     }
 
-    public String getComArduino() {
+    public static String getComArduino() {
         return properties.getProperty("comArduino");
+    }
+
+    public static String getVoice() {
+        return properties.getProperty("voice");
+    }
+
+    public static String writeArduinoCom(String comArduino) {
+        return properties.setProperty("comArduino", comArduino).toString();
+    }
+
+    public static String writeEagleVoice(String voice) {
+        return properties.setProperty("voice", voice).toString();
     }
 }
