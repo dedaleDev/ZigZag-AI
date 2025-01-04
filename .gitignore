@@ -25,7 +25,9 @@
 *.zip
 *.tar.gz
 *.rar
-*.properties
+
+conf.properties
+
 
 #Python files and caches folders
 *.pyc
