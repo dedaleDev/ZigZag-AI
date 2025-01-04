@@ -26,7 +26,7 @@
 *.tar.gz
 *.rar
 
-conf.properties
+Server/conf.properties
 
 
 #Python files and caches folders
