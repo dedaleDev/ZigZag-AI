@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
+
   <!-- Version du modèle POM -->
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Coordonnées Maven du projet -->
   <groupId>com.flavientech</groupId>
-  <artifactId>homebox</artifactId>
+  <artifactId>ZigZag</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <!-- Emballage du projet (par défaut : jar) -->
@@ -21,66 +21,69 @@
   </properties>
 
   <!-- Dépendances du projet -->
-  <!-- Dépendances du projet -->
   <dependencies>
+    <!-- Speech To Text : Leopard by Picovoice -->
     <dependency>
       <groupId>ai.picovoice</groupId>
       <artifactId>leopard-java</artifactId>
-      <version>2.0.2</version>
+      <version>2.0.3</version>
     </dependency>
+
+    <!-- OkHttp -->
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>5.0.0-alpha.14</version>
     </dependency>
+
+    <!-- JSON -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>org.json</artifactId>
       <version>chargebee-1.0</version>
     </dependency>
-    <dependency>
-        <groupId>de.dfki.mary</groupId>
-        <artifactId>marytts</artifactId>
-        <version>5.2.1</version>
-        <type>pom</type>
-    </dependency>
+
+    <!-- jSerialComm -->
     <dependency>
       <groupId>com.fazecast</groupId>
       <artifactId>jSerialComm</artifactId>
-      <version>[2.0.0,3.0.0)</version>
-  </dependency>
+      <version>2.11.0</version>
+    </dependency>
+
+    <!-- Jsoup -->
     <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
-      <version>1.15.4</version>
-</dependency>
+      <version>1.18.3</version>
+    </dependency>
 
-  <!-- Spring Boot Starter Web -->
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-    <version>3.4.1</version>
-  </dependency>
+    <!-- Spring Boot Starter Web -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>3.4.1</version>
+    </dependency>
 
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter</artifactId>
-    <version>3.4.1</version>
-</dependency>
+    <!-- Spring Boot Starter -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>3.4.1</version>
+    </dependency>
 
-  <!-- Thymeleaf (optionnel pour des templates dynamiques HTML) -->
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    <version>3.4.1</version>
-  </dependency>
+    <!-- Thymeleaf (optionnel pour des templates dynamiques HTML) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <version>3.4.1</version>
+    </dependency>
 
-  <!-- Spring Boot Starter Test (optionnel pour les tests) -->
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <version>3.4.1</version>
-  </dependency>
+    <!-- Spring Boot Starter Test (optionnel pour les tests) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>3.4.1</version>
+    </dependency>
   </dependencies>
 
   <!-- Configuration de build -->
@@ -104,13 +107,14 @@
         <version>3.1.2</version>
       </plugin>
 
+      <!-- Plugin Spring Boot Maven -->
       <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
-  
+
   <!-- Références des dépôts pour Maven Central -->
   <repositories>
     <repository>
