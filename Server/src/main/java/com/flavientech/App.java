@@ -208,7 +208,7 @@ public class App implements AudioFileListener {
                 case 1:// Démarrer le serveur web
                     try {
                         app.setRunning(true);
-                        WebServeur.main(args);
+                        WebServer.main(args);
                         //afficher que le serveur à bien démarré, en vert, avec le port et l'adresse
                         System.out.println("\u001B[32mServeur web démarré avec succès sur http://localhost:8080/\u001B[0m");
                     } catch (Exception e) {
@@ -233,7 +233,7 @@ public class App implements AudioFileListener {
                         System.out.println("Erreur lors de l'exécution de la partie Arduino." + e.getMessage());
                     }
                     try {
-                        WebServeur.main(args);
+                        WebServer.main(args);
                     } catch (Exception e) {
                         System.out.println("Erreur lors du démarrage du serveur web : " + e.getMessage());
                     }
