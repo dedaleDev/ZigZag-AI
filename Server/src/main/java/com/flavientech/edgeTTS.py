@@ -1,14 +1,21 @@
 import asyncio
+import os
 import edge_tts
 import sys 
 import subprocess
 from pathlib import Path
 
 def get_caches_dir():
-    current_dir = Path.cwd()
-    if current_dir.name.endswith("ZigZag"):
-        return str(current_dir /"Server/src/caches/")
-    return str(current_dir.parent /"flavientech/com/java/caches/")#à changer plus tard
+    current_dir = Path(os.getcwd())
+    caches_dir = current_dir / "Server/src/main/caches"
+    if caches_dir.exists():
+        return str(caches_dir.resolve()) + os.sep
+    else:
+        caches_dir = current_dir / "src/main/caches"
+        if caches_dir.exists():
+            return str(caches_dir.resolve()) + os.sep
+        else:
+            return "Caches directory not found"
 
 VOICES = [str(sys.argv[2])]
 #verifier si le texte est vide
