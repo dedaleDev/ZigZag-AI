@@ -32,7 +32,7 @@ Server/src/main/caches/**/*.txt
 *.rar
 
 # Configuration files
-Server/**/application.properties
+Server/src/main/resources/application.properties
 
 # Build directories
 Server/target/
