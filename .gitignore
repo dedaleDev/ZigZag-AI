@@ -10,6 +10,13 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+#Caches files 
+*.wav
+*.mp3
+*.ogg
+*.eagle
+*.txt
+
 # Package Files #
 *.jar
 *.war
