@@ -1,14 +1,14 @@
 package com.flavientech;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class TextToSpeech {
     private String textVoice;
     private static final String VOICE_DIR = PathChecker.getCachesDir() +"eagleVoices.txt";
     private static final String currentVoice = LoadConf.getVoice();
+    private PythonController pythonController;
 
     public TextToSpeech(String textVoice) {
         this.textVoice = textVoice;
+        this.pythonController = new PythonController(PathChecker.checkPath("edgeTTS.py"));
         this.runEdgeTTS();
     }
 
@@ -16,28 +16,12 @@ public class TextToSpeech {
         try {
             // Échapper correctement le texte pour qu'il soit entouré de guillemets
             String escapedTextVoice = this.textVoice.replace("\"", "\\\"").replace("'", "\\'");
-            String command = "python3 " + PathChecker.checkPath("edgeTTS.py") + " \"\"\"" + escapedTextVoice + "\"\"\" " + currentVoice ;
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
-            
-            // Démarrer le processus
-            Process process = processBuilder.start();
-            
-            // Lire la sortie
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+            boolean success = pythonController.runPythonScript(escapedTextVoice, currentVoice);
+            if (success) {
+                System.out.println("Le script Python s'est exécuté avec succès.");
+            } else {
+                System.err.println("Le script Python a échoué.");
             }
-            
-            // Lire les erreurs
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            while ((line = errorReader.readLine()) != null) {
-                System.err.println(line);
-            }
-            
-            // Attendre que le processus se termine
-            int exitCode = process.waitFor();
-            System.out.println("Exited with code: " + exitCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
