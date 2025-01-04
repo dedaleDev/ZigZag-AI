@@ -2,7 +2,6 @@ package com.flavientech;
 
 public class TextToSpeech {
     private String textVoice;
-    private static final String VOICE_DIR = PathChecker.getCachesDir() +"eagleVoices.txt";
     private static final String currentVoice = LoadConf.getVoice();
     private PythonController pythonController;
 
