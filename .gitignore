@@ -27,6 +27,7 @@
 *.rar
 
 Server/conf.properties
+Server/target/
 
 
 #Python files and caches folders

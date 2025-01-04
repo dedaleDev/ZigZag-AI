@@ -10,16 +10,17 @@
 
 # Requirement :
 
- - Java : 
-    Windows : 
-    Linux : 
-    MacOS :
+ - Java 22
+ - Maven
 
 Importation dans Eclispe : 
 File > Import > Browse 
-And select ZigZag/Server
+And select the folder of ZigZag
 Click on "Finish"
- 
+
+Error : 
+Windows > Preferences > Java > Insalled JREs
+
 
 Sans Exclispee : 
 Maven : Installez Apache Maven 3.6.3 ou une version ultérieure si ce n'est pas déjà fait2. Vous pouvez le télécharger sur maven.apache.org ou l'installer via un gestionnaire de paquets :
