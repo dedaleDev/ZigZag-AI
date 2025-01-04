@@ -26,11 +26,11 @@ public class PathChecker {
 
     public static String getCachesDir() {
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        Path cachesDir = currentDir.resolve("Server/src/caches");
+        Path cachesDir = currentDir.resolve("Server/src/main/caches");
         if (Files.exists(cachesDir)) {
             return cachesDir.toAbsolutePath().toString() + File.separator;
         } else {
-            cachesDir = currentDir.resolve("src/caches");
+            cachesDir = currentDir.resolve("src/main/caches");
             if (Files.exists(cachesDir)) {
                 return cachesDir.toAbsolutePath().toString() + File.separator;
             } else {
