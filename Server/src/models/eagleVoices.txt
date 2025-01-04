@@ -1,0 +1,13 @@
+fr-BE-CharlineNeural:Female
+fr-BE-GerardNeural:Male
+fr-CA-AntoineNeural:Male
+fr-CA-JeanNeural:Male
+fr-CA-SylvieNeural:Female
+fr-CA-ThierryNeural:Male
+fr-CH-ArianeNeural:Female
+fr-CH-FabriceNeural:Male
+fr-FR-DeniseNeural:Female
+fr-FR-EloiseNeural:Female
+fr-FR-HenriNeural:Male
+fr-FR-RemyMultilingualNeural:Male
+fr-FR-VivienneMultilingualNeural:Female
