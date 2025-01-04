@@ -71,14 +71,14 @@
       <version>3.4.1</version>
     </dependency>
 
-    <!-- Thymeleaf (optionnel pour des templates dynamiques HTML) -->
+    <!-- Thymeleaf  -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <version>3.4.1</version>
     </dependency>
 
-    <!-- Spring Boot Starter Test (optionnel pour les tests) -->
+    <!-- Spring Boot Starter Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
