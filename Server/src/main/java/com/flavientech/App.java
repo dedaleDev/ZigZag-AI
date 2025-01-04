@@ -1,6 +1,7 @@
 //Auteur: Flavien Diéval
 package com.flavientech;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -10,13 +11,26 @@ import org.json.JSONException;
     import org.json.JSONObject;
 
     public class App implements AudioFileListener {
-        private final String apiKeyPicoVoice = "NA0NuP+5Orn3NUuj8UHB6Sj1VaolSuM2qvYlQeeWbYs6epGzsACtYA==";  
-        private final String apiKeyOpenAi = "sk-svcacct-zjaiQzqp_UELmtfRWJJdISaTt3ICHrOkeOU3tufzXe_ijWOoff8uWskYJK3yFxPT3BlbkFJeH3bRVzGMlZqLrrrynoDlsjKOl9ekB5QuKFTcJ6E0jM5-KqRgeiz2z2d43TW4AA";  
-        private final String apiKeyWeather = "e7e87ddf5ee17846572597c477aa9b95"; 
-        private final String comArduino = "/dev/tty.usbmodem14301"; // port série pour la communication avec l'Arduino
+        private String apiKeyPicoVoice;
+        private String apiKeyOpenAi;
+        private String apiKeyWeather;
+        private String comArduino;
 
         private ArduinoSerial arduinoSerial;
         private final CountDownLatch latch = new CountDownLatch(1);
+
+        public App() {
+            try {
+                LoadConf config = new LoadConf(pathChecker.checkPath("config.properties"));
+                this.apiKeyPicoVoice = config.getApiKeyPicoVoice();
+                this.apiKeyOpenAi = config.getApiKeyOpenAi();
+                this.apiKeyWeather = config.getApiKeyWeather();
+                this.comArduino = config.getComArduino();
+                System.out.println("Configuration chargée avec succès !" + "\nAPI PicoVoice : " + apiKeyPicoVoice + "\nAPI OpenAI : " + apiKeyOpenAi + "\nAPI Weather : " + apiKeyWeather + "\nCOM Arduino : " + comArduino);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         public static void main(String[] args) {
             App app = new App();
