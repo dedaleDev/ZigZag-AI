@@ -10,7 +10,7 @@
 
 # Requirement :
 
- - Java 22
+ - Java 22.0.2 or highter
  - Maven
 
 Importation dans Eclispe : 
