@@ -1,14 +1,11 @@
 //Auteur: Flavien Diéval
 package com.flavientech;
 
-import com.flavientech.service;
 import com.flavientech.service.DatabaseInitializer;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-
-import org.springframework.boot.sql.init.DatabaseInitializationSettings;
 
 public class App implements AudioFileListener {
     private String apiKeyPicoVoice;
