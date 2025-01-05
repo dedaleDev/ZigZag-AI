@@ -49,11 +49,12 @@ public class LoadConf {
         return properties.getProperty("spring.datasource.password");
     }
 
-    public static String getDatabaseDb(){
-        if (properties.getProperty("spring.datasource.url").split("/").length < 4) {
+    public static String getDatabaseName(){
+        if (properties.getProperty("spring.datasource.database-name") != null) {
+            return properties.getProperty("spring.datasource.database-name");
+        } else {
             return "zigzag";
         }
-        return properties.getProperty("spring.datasource.url").split("/")[3];
     }
 
 
