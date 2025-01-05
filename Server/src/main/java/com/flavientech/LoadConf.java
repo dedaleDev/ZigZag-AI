@@ -37,6 +37,26 @@ public class LoadConf {
         return properties.getProperty("voice");
     }
 
+    public static String getDatabaseSource() {
+        return properties.getProperty("spring.datasource.url");
+    }
+
+    public static String getDatabaseUsername() {
+        return properties.getProperty("spring.datasource.username");
+    }
+
+    public static String getDatabasePassword() {
+        return properties.getProperty("spring.datasource.password");
+    }
+
+    public static String getDatabaseDb(){
+        if (properties.getProperty("spring.datasource.url").split("/").length < 4) {
+            return "zigzag";
+        }
+        return properties.getProperty("spring.datasource.url").split("/")[3];
+    }
+
+
     public static String writeArduinoCom(String comArduino) {
         properties.setProperty("comArduino", comArduino);
         saveProperties();
