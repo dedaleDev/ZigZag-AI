@@ -2,30 +2,33 @@ package com.flavientech;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.boot.context.event.ApplicationFailedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
-import com.flavientech.exception.DatabaseConnectionException;
-
-import jakarta.activation.DataSource;
+import java.sql.SQLException;
 
 @SpringBootApplication
 public class WebServer {
     public static void main(String[] args) {
         SpringApplication.run(WebServer.class, args);
     }
+}
 
-    @Bean
-    public DataSource dataSource() {
-        try {
-            DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
-            dataSource.setUsername("user");
-            dataSource.setPassword("password");
-            return (DataSource) dataSource;
-        } catch (Exception ex) {
-            throw new DatabaseConnectionException("Erreur de connexion à la base de données : " + ex.getMessage());
+// Écouteur pour capter les erreurs au démarrage
+@Component
+class DatabaseErrorHandler implements ApplicationListener<ApplicationFailedEvent> {
+
+    @Override
+    public void onApplicationEvent(ApplicationFailedEvent event) {
+        Throwable exception = event.getException();
+        while (exception != null) {
+            if (exception instanceof SQLException) {
+                // Message coloré pour l'erreur de la base de données
+                System.out.println("\u001B[31mErreur : Mot de passe ou URL incorrect pour la base de données.\u001B[0m");
+                break;
+            }
+            exception = exception.getCause();
         }
     }
 }
