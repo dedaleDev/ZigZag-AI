@@ -38,6 +38,9 @@ public class DatabaseInitializer {
                 }
                 System.out.println("Vérification de la base de données réussie.");
             } else {
+                if (!verifyDatabase()) {
+                    throw new RuntimeException("La vérification de la base de données a échoué.");
+                }
                 System.out.println("La base de données " + DB_NAME + " existe déjà.");
             }
             return true;
