@@ -61,7 +61,7 @@ public class MemoryService {
     }
 
     public List<LongMemory> getLongMemory(String username) {
-        return longMemoryRepository.findByUser(username);
+        return longMemoryRepository.findByUserUsername(username);
     }
 
     public LongMemory createLongMemory(Long userId, String summary) {
