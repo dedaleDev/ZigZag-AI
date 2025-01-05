@@ -16,9 +16,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LongMemory> longMemories;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<FlashMemory> flashMemories;
-
     // Getters and Setters
 
     public int getId() {
@@ -43,14 +40,6 @@ public class User {
 
     public void setLongMemories(Set<LongMemory> longMemories) {
         this.longMemories = longMemories;
-    }
-
-    public Set<FlashMemory> getFlashMemories() {
-        return flashMemories;
-    }
-
-    public void setFlashMemories(Set<FlashMemory> flashMemories) {
-        this.flashMemories = flashMemories;
     }
 
     @Override
