@@ -1,29 +1,30 @@
-package com.flavientech;
+package com.flavientech.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import com.flavientech.entity.FlashMemory;
 import com.flavientech.entity.LongMemory;
 import com.flavientech.service.MemoryService;
 
+@Controller
 public class MemoryController {
 
     @Autowired
-    private static MemoryService memoryService;
+    private MemoryService memoryService;
 
-    public static void refreshFlashMemory(String newMemory) {
+    public void refreshFlashMemory(String newMemory) {
         memoryService.refreshFlashMemory(newMemory);
     }
-
 
     /**
      * Refresh long memory and clean answer take the full data, extract : @<username>, <summary>@, and save the summary in the long memory
      * @param fullData
      * @return the full data without the summary
      */
-    public static String refreshLongMemoryAndCleanAnswer(String fullData) {
+    public String refreshLongMemoryAndCleanAnswer(String fullData) {
         int startIndex = fullData.indexOf('@'); //first @
         int endIndex = fullData.indexOf('@', startIndex + 1) ; //second @
 
@@ -34,19 +35,19 @@ public class MemoryController {
         return fullData;
     }
 
-    public static void addFlashMemory(String request, String answer) {
+    public void addFlashMemory(String request, String answer) {
         memoryService.createFlashMemory(request, answer);
     }
 
-    public static void addLongMemory(Long userId, String summary) {
+    public void addLongMemory(Long userId, String summary) {
         memoryService.createLongMemory(userId, summary);
     }
 
-    public static List<LongMemory> getLongMemory(String username) {
+    public List<LongMemory> getLongMemory(String username) {
         return memoryService.getLongMemory(username);
     }
 
-    public static List<FlashMemory> getFlashMemory() {
+    public List<FlashMemory> getFlashMemory() {
         return memoryService.getFlashMemory();
     }
 }
