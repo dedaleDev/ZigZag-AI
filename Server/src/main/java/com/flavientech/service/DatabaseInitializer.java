@@ -9,6 +9,8 @@ import com.flavientech.LoadConf;
 import com.flavientech.PathChecker;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class DatabaseInitializer {
 
@@ -71,8 +73,7 @@ public class DatabaseInitializer {
         return exists;
     }
 
-    // Crée la base de données et charge le fichier SQL
-    private static void createDatabaseAndLoadSQL() throws IOException, InterruptedException {
+    private static void createDatabaseAndLoadSQL() throws IOException {
         // Étape 1 : Création de la base de données
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = connection.createStatement()) {
@@ -83,27 +84,22 @@ public class DatabaseInitializer {
             throw new RuntimeException("Erreur lors de la création de la base de données.");
         }
 
-        // Étape 2 : Charger le fichier SQL avec la commande imposée
-        ProcessBuilder processBuilder = new ProcessBuilder(
-                "mysql",
-                "-u", USER,
-                "-p" + PASSWORD,
-                DB_NAME,
-                "-e", "source " + SQL_FILE 
-        );
-
-        // Redirige les flux d'entrée et sortie pour afficher les messages d'erreur si nécessaire
-        processBuilder.redirectErrorStream(true);
-
-        // Exécute la commande
-        Process process = processBuilder.start();
-        int exitCode = process.waitFor();
-        if (exitCode == 0) {
+        // Étape 2 : Charger le fichier SQL via JDBC
+        try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
+             Statement stmt = conn.createStatement()) {
+            String sql = new String(Files.readAllBytes(Paths.get(SQL_FILE)));
+            for (String query : sql.split(";")) {
+                if (!query.trim().isEmpty()) {
+                    stmt.executeUpdate(query);
+                }
+            }
             System.out.println("Fichier SQL chargé avec succès dans la base de données " + DB_NAME + ".");
-        } else {
-            throw new RuntimeException("Erreur lors du chargement du fichier SQL. Code de sortie : " + exitCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors du chargement du fichier SQL.");
         }
     }
+
 
     private static boolean verifyDatabase() {
         System.out.println("Vérification de la base de données..." + URL + "/" + DB_NAME);
