@@ -15,8 +15,12 @@ public class OpenAI {
     private String prompt;
     private String currentUser;
     
+    private static MemoryController memoryController;
+
     @Autowired
-    private MemoryController memoryController;
+    public void setMemoryController(MemoryController memoryController) {
+        OpenAI.memoryController = memoryController;
+    }
 
     private OkHttpClient createHttpClient() {//Créer un client HTTP avec un timeout de 30 secondes
         return new OkHttpClient.Builder()

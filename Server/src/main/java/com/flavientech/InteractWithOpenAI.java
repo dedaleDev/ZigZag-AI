@@ -8,18 +8,22 @@ import com.flavientech.controller.MemoryController;
 
 public class InteractWithOpenAI {
 
-    @Autowired
     private static MemoryController memoryController;
+
+    @Autowired
+    public void setMemoryController(MemoryController memoryController) {
+        InteractWithOpenAI.memoryController = memoryController;
+    }
     
-        /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
-         * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.
-         -----------------------------------------------------------------------------------------------------------------------------------------*/
-        public static String run(String apiKeyOpenAi, String currentUser, String userRequest) {
-            System.out.println("Waiting for inference...");
-            OpenAI api = new OpenAI(apiKeyOpenAi);
-            api.setCurrentUser(currentUser);
-    
-            String context = memoryController.getLongMemory(currentUser).toString();
+    /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
+     * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.
+     -----------------------------------------------------------------------------------------------------------------------------------------*/
+    public static String run(String apiKeyOpenAi, String currentUser, String userRequest) {
+        System.out.println("Waiting for inference...");
+        OpenAI api = new OpenAI(apiKeyOpenAi);
+        api.setCurrentUser(currentUser);
+
+        String context = memoryController.getLongMemory(currentUser).toString();
         System.out.println("Context : " + context);
         String initialRequest = currentUser.concat(" te demande : ").concat(userRequest);
         String apiResponse = api.sendRequest(initialRequest, context);
