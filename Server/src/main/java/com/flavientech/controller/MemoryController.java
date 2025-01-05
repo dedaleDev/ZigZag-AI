@@ -2,7 +2,6 @@ package com.flavientech.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.flavientech.entity.FlashMemory;
@@ -12,8 +11,11 @@ import com.flavientech.service.MemoryService;
 @Controller
 public class MemoryController {
 
-    @Autowired
-    private MemoryService memoryService;
+    private final MemoryService memoryService;
+
+    public MemoryController(MemoryService memoryService) {
+        this.memoryService = memoryService;
+    }
 
     public void refreshFlashMemory(String newMemory) {
         memoryService.refreshFlashMemory(newMemory);
