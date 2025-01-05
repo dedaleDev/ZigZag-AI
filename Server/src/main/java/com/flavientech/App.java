@@ -13,7 +13,7 @@ public class App implements AudioFileListener {
     private String apiKeyWeather;
     private String comArduino;
     
-    private boolean dbOk = false;
+    public boolean ready = false;
 
     private ArduinoSerial arduinoSerial;
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -35,9 +35,10 @@ public class App implements AudioFileListener {
         System.out.println("           __/ |            __/ |_____              ");
         System.out.println("          |___/            |___/______|             ");
 
-        this.dbOk = DatabaseInitializer.initialize();
-        if (apiKeyPicoVoice == null || apiKeyOpenAi == null || apiKeyWeather == null || comArduino == null || !dbOk) {
+        this.ready = DatabaseInitializer.initialize();
+        if (apiKeyPicoVoice == null || apiKeyOpenAi == null || apiKeyWeather == null || comArduino == null || !ready) {
             System.out.println("\u001B[31mErreur lors du chargement de la configuration. Vérifiez que le fichier Server/src/main/resources/application.properties est correctement configuré.\u001B[0m");
+            this.ready = false;
             return;
         }
 
@@ -196,6 +197,9 @@ public class App implements AudioFileListener {
 
     public static void main(String[] args) {
         App app = new App();
+        if (!app.ready) {
+            return;
+        }
         while (!app.isRunning()) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Que voulez-vous lancer ?");

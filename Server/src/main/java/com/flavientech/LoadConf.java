@@ -38,6 +38,12 @@ public class LoadConf {
     }
 
     public static String getDatabaseSource() {
+        if (properties.getProperty("spring.datasource.url") == null) {
+            throw new RuntimeException("Database source URL not found in application.properties");
+        }
+        if (properties.getProperty("spring.datasource.url").endsWith("/")){//si le dernier caractère est un slash  on le retire avant de retourner la valeur
+            return properties.getProperty("spring.datasource.url").substring(0, properties.getProperty("spring.datasource.url").length() - 1);
+        }
         return properties.getProperty("spring.datasource.url");
     }
 

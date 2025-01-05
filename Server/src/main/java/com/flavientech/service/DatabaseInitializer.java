@@ -106,6 +106,7 @@ public class DatabaseInitializer {
     }
 
     private static boolean verifyDatabase() {
+        System.out.println("Vérification de la base de données..." + URL + "/" + DB_NAME);
         try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
 
@@ -114,29 +115,11 @@ public class DatabaseInitializer {
             for (String table : tables) {
                 ResultSet rs = stmt.executeQuery("SHOW TABLES LIKE '" + table + "';");
                 if (!rs.next()) {
-                    System.out.println("La table " + table + " n'existe pas.");
+                    //affiche en ROUGE que la table n'existe pas
+                    System.out.println("\033[31m" + "La table " + table + " n'existe pas." + "\033[0m");
                     return false;
                 }
             }
-
-            // Vérifier le nombre de lignes dans chaque table (exemple)
-            String[][] tableChecks = {
-                {"flashmemory", "SELECT COUNT(*) FROM flashmemory"},
-                {"longmemory", "SELECT COUNT(*) FROM longmemory"},
-                {"user", "SELECT COUNT(*) FROM user"}
-            };
-
-            for (String[] check : tableChecks) {
-                ResultSet rs = stmt.executeQuery(check[1]);
-                if (rs.next()) {
-                    int count = rs.getInt(1);
-                    if (count == 0) {
-                        System.out.println("La table " + check[0] + " est vide.");
-                        return false;
-                    }
-                }
-            }
-
             return true;
 
         } catch (Exception e) {
