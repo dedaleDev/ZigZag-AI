@@ -9,25 +9,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.flavientech.service.UserService;
 
+@Component
 public class EagleController extends Thread {
 
     private static final String SCRIPT_PATH = PathChecker.checkPath("voiceRecognition.py");
-    private static final String USERS_DIR = PathChecker.getCachesDir() +"users";
+    private static final String USERS_DIR = PathChecker.getCachesDir() + "users";
+
     private static EagleController instance;
+
     private final UserService userService;
 
+    /**
+     * Constructeur avec injection de dépendances pour UserService.
+     */
     @Autowired
     public EagleController(UserService userService) {
         this.userService = userService;
-        instance = this; // Assigner l’instance courante pour y accéder statiquement
+        instance = this; // Assigner l'instance uniquement lorsque Spring initialise le bean
     }
 
+    /**
+     * Retourne l'instance statique de EagleController.
+     */
     public static EagleController getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("EagleController n'a pas encore été initialisé par Spring.");
+        }
         return instance;
     }
+
     /**
      * Exécute la commande Python pour l'enrôlement d'un utilisateur.
      *
@@ -42,8 +56,8 @@ public class EagleController extends Thread {
 
         List<String> command = buildEnrollCommand(accessKey, userName);
         System.out.println("Enroll: " + command);
-        float processTraceback =  executeProcess(command);
-        checkNewUser();
+        float processTraceback = executeProcess(command);
+        getInstance().checkNewUser(); // Accès à l'instance
         return processTraceback;
     }
 
@@ -74,11 +88,9 @@ public class EagleController extends Thread {
      *
      * @return Liste des utilisateurs ou null si aucun utilisateur trouvé.
      */
-
     public static List<String> getUsersVoiceList() {
-        return getInstance().userService.getAllUsernames();
+        return getInstance().userService.getAllUsernames(); // Accès à l'instance
     }
-
 
     public static List<String> getUsersVoiceListInFolder() {
         File directory = new File(USERS_DIR);
@@ -114,21 +126,16 @@ public class EagleController extends Thread {
 
     /**
      * Check si un nouvel utilisateur a été enrollé, si oui, le rajoute à la liste des utilisateurs.
-     * @return
-     **/
-    public static void checkNewUser() {
+     */
+    public void checkNewUser() {
         List<String> users = getUsersVoiceListInFolder();
-        List<String> usersDB = getUsersVoiceList();
+        List<String> usersDB = userService.getAllUsernames();
         for (String user : users) {
             if (!usersDB.contains(user)) {
-                getInstance().userService.createUser(user);
+                userService.createUser(user);
             }
         }
     }
-
-
-
-
 
     /**
      * Construit la commande pour l'enrôlement.
