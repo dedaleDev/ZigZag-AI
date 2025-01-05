@@ -43,7 +43,7 @@ CREATE TABLE `longmemory` (
   `Id` int(11) NOT NULL,
   `User` int(50) NOT NULL,
   `Date` date NOT NULL,
-  `Résumé` varchar(60) NOT NULL
+  `Summary` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

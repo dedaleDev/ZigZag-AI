@@ -10,7 +10,7 @@ public class FlashMemory {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user", nullable = false)
     private User user;
 
     @Column(length = 500)

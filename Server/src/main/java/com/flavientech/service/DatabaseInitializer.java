@@ -93,7 +93,6 @@ public class DatabaseInitializer {
                     stmt.executeUpdate(query);
                 }
             }
-            System.out.println("Fichier SQL chargé avec succès dans la base de données " + DB_NAME + ".");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erreur lors du chargement du fichier SQL.");
@@ -102,7 +101,6 @@ public class DatabaseInitializer {
 
 
     private static boolean verifyDatabase() {
-        System.out.println("Vérification de la base de données..." + URL + "/" + DB_NAME);
         try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
 
