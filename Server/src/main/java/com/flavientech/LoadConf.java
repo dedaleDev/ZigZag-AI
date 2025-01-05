@@ -13,7 +13,7 @@ public class LoadConf {
         try (FileInputStream input = new FileInputStream(CONFIG_FILE_PATH)) {
             properties.load(input);
         } catch (IOException e) {
-            throw new RuntimeException("Error while loading config file, please create or rename and complete the conf.example.properties file to " + CONFIG_FILE_PATH);
+            throw new RuntimeException("\nError while loading config file, please create or rename and complete the ZigZag/Server/src/main/java/resources/application.example.properties file to application.properties\n");
         }
     }
 

@@ -115,7 +115,7 @@ public class OpenAI {
     }
 
     private String getInfos() {
-        return String.format("Utilisateur actuel : %s | Infos : %s | Rappel : %s | Conversations précédentes : %s",currentUser, Time.getDateTime(), Memory.getLongMemory(), Memory.getFlashMemory());
+        return String.format("Utilisateur actuel : %s | Infos : %s | Rappel : %s | Conversations précédentes : %s",currentUser, Time.getDateTime(), MemoryController.getLongMemory(this.currentUser), MemoryController.getFlashMemory());
     }
 
     public String specialFunction(String response, String apiKeyWeather, String question) {

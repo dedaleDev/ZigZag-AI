@@ -21,6 +21,7 @@ Arduino/**/*.txt
 # Cache files in Server directory
 Server/src/main/caches/*.txt
 Server/src/main/caches/*.wav
+Server/src/main/caches/users/*.wav
 
 # Package files
 *.jar

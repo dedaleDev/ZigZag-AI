@@ -12,6 +12,7 @@
 
  - Java 22.0.2 or highter
  - Maven
+ - mysql or mariabd
 
 Importation dans Eclispe : 
 File > Import > Browse 

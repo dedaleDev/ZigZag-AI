@@ -8,11 +8,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flavientech.service.UserService;
+
 public class EagleController extends Thread {
 
     private static final String SCRIPT_PATH = PathChecker.checkPath("voiceRecognition.py");
     private static final String USERS_DIR = PathChecker.getCachesDir() +"users";
-
+    @Autowired
+    private static UserService userService;
     /**
      * Exécute la commande Python pour l'enrôlement d'un utilisateur.
      *
@@ -27,8 +32,9 @@ public class EagleController extends Thread {
 
         List<String> command = buildEnrollCommand(accessKey, userName);
         System.out.println("Enroll: " + command);
-
-        return executeProcess(command);
+        float processTraceback =  executeProcess(command);
+        checkNewUser();
+        return processTraceback;
     }
 
     /**
@@ -54,11 +60,17 @@ public class EagleController extends Thread {
     }
 
     /**
-     * Récupère la liste des utilisateurs enrôlés (fichiers .eagle).
+     * Récupère la liste des utilisateurs enrôlés (fichiers .eagle) dans la base de donnée.
      *
-     * @return Liste des utilisateurs ou null si aucun fichier trouvé.
+     * @return Liste des utilisateurs ou null si aucun utilisateur trouvé.
      */
+
     public static List<String> getUsersVoiceList() {
+        return userService.getAllUsernames();
+    }
+
+
+    public static List<String> getUsersVoiceListInFolder() {
         File directory = new File(USERS_DIR);
         if (!directory.exists() || !directory.isDirectory()) {
             return null;
@@ -81,13 +93,29 @@ public class EagleController extends Thread {
     /**
      * Supprime un utilisateur de la liste des utilisateurs enrôlés.
      *
-     * @param userName Nom de l'utilisateur à supprimer.
+     * @param username Nom de l'utilisateur à supprimer.
      * @return Retourne true si l'utilisateur est supprimé avec succès.
      */
-    public static boolean deleteUser(String userName) {
-        File file = new File(USERS_DIR + "/" + userName + ".eagle");
+    public static boolean deleteUser(String username) {
+        userService.deleteUserByUsername(username);
+        File file = new File(USERS_DIR + "/" + username + ".eagle");
         return file.delete();
     }
+
+    /**
+     * Check si un nouvel utilisateur a été enrollé, si oui, le rajoute à la liste des utilisateurs.
+     * @return
+     **/
+    public static void checkNewUser() {
+        List<String> users = getUsersVoiceListInFolder();
+        List<String> usersDB = getUsersVoiceList();
+        for (String user : users) {
+            if (!usersDB.contains(user)) {
+                userService.createUser(user);
+            }
+        }
+    }
+
 
 
 

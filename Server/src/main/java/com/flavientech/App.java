@@ -192,9 +192,9 @@ public class App implements AudioFileListener {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Que voulez-vous lancer ?");
             System.out.println("1. Serveur Web");
-            System.out.println("2. Arduino");
-            System.out.println("3. Les deux");
-            System.out.print("Entrez votre choix (1/2/3) : ");
+            System.out.println("2. Arduino et Serveur Web");
+            System.out.println("3. Quitter");
+            System.out.print("Entrez votre choix (1/2) : ");
             int choix;
             try {
                 choix = Integer.parseInt(scanner.nextLine());
@@ -215,16 +215,7 @@ public class App implements AudioFileListener {
                         System.out.println("Erreur lors du démarrage du serveur web : " + e.getMessage());
                     }
                     break;
-                case 2: // Démarrer l'Arduino
-                    try {
-                        app.setRunning(true);
-                        Thread appThread = new Thread(() -> app.run());
-                        appThread.start();
-                    } catch (Exception e) {
-                        System.out.println("Erreur lors de l'exécution de la partie Arduino." + e.getMessage());
-                    }
-                    break;
-                case 3:// Démarrer les deux
+                case 2:// Démarrer les deux
                     app.setRunning(true);
                     try {
                         Thread appThread = new Thread(() -> app.run());
@@ -237,6 +228,9 @@ public class App implements AudioFileListener {
                     } catch (Exception e) {
                         System.out.println("Erreur lors du démarrage du serveur web : " + e.getMessage());
                     }
+                    break;
+                case 3:// Quitter
+                    System.out.println("Fermeture de l'application...");
                     break;
                 default:
                     System.out.println("\u001B[31mChoix invalide. Veuillez entrer 1, 2 ou 3.\u001B[0m");

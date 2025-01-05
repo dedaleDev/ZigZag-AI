@@ -13,12 +13,13 @@ public class InteractWithOpenAI {
         OpenAI api = new OpenAI(apiKeyOpenAi);
         api.setCurrentUser(currentUser);
 
-        String context = Memory.getLongMemory();
+        String context = MemoryController.getLongMemory(currentUser).toString();
+        System.out.println("Context : " + context);
         String initialRequest = currentUser.concat(" te demande : ").concat(userRequest);
         String apiResponse = api.sendRequest(initialRequest, context);
 
         // Rafraîchir la mémoire avec la nouvelle conversation
-        Memory.refreshFlashMemory("Question précédentes : ".concat(userRequest).concat("\nTu avais répondu : ").concat(api.cleanResponse(apiResponse).split("@")[0]));
+        MemoryController.refreshFlashMemory("Question précédentes : ".concat(userRequest).concat("\nTu avais répondu : ").concat(api.cleanResponse(apiResponse).split("@")[0]));
 
         // --------   Vérifier s'il y a une action spéciale à effectuer
         //String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest); //à compléter si le temps
@@ -36,7 +37,7 @@ public class InteractWithOpenAI {
     
         //met à jour la mémoire avec la réponse finale
         if (finalResponse != null) {
-                finalResponse = Memory.addData(api.cleanText(finalResponse));
+                finalResponse = MemoryController.refreshLongMemoryAndCleanAnswer(api.cleanText(finalResponse));
                 return finalResponse;
         } else {
             finalResponse = "Oups, j'ai glissé chef ! Mon cerveau a dérapé... Je reviens vers vous dans un instant, une fois les dégâts réparés.";
