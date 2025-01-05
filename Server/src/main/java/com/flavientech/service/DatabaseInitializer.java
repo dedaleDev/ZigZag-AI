@@ -19,20 +19,28 @@ public class DatabaseInitializer {
     private static final String DB_NAME = LoadConf.getDatabaseDb();
     private static final String SQL_FILE = PathChecker.checkPath("zigzag.sql");
 
-    public static void initialize() {
+    public static boolean initialize() {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
              
             String checkDbExists = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" + DB_NAME + "'";
             var rs = stmt.executeQuery(checkDbExists);
             if (!rs.next()) {
-                String createDb = "CREATE DATABASE " + DB_NAME;
+                String createDb = "CREATE DATABASE IF NOT EXISTS" + DB_NAME;
                 stmt.executeUpdate(createDb);
                 executeSqlFile(conn, SQL_FILE);
             }
         } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            if (e instanceof SQLException) {
+                System.err.println("\u001B[31mDatabase error: " + e.getMessage() + "\u001B[0m");
+            } else if (e instanceof IOException) {
+                System.err.println("\u001B[31mFile error: " + e.getMessage() + "\u001B[0m");
+            } else {
+                System.err.println("\u001B[31mUnexpected error: " + e.getMessage() + "\u001B[0m");
+            }
+            return false;
         }
+        return true;
     }
 
     private static void executeSqlFile(Connection conn, String filePath) throws IOException, SQLException {

@@ -1,28 +1,37 @@
 //Auteur: Flavien Diéval
 package com.flavientech;
 
+import com.flavientech.service;
+import com.flavientech.service.DatabaseInitializer;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+
+import org.springframework.boot.sql.init.DatabaseInitializationSettings;
 
 public class App implements AudioFileListener {
     private String apiKeyPicoVoice;
     private String apiKeyOpenAi;
     private String apiKeyWeather;
     private String comArduino;
+    
+    private boolean dbOk = false;
 
     private ArduinoSerial arduinoSerial;
     private final CountDownLatch latch = new CountDownLatch(1);
 
     private boolean isRunning;
     public App() {
-    this.isRunning = false;
+        this.isRunning = false;
         this.apiKeyPicoVoice = LoadConf.getApiKeyPicoVoice();
         this.apiKeyOpenAi = LoadConf.getApiKeyOpenAi();
         this.apiKeyWeather = LoadConf.getApiKeyWeather();
         this.comArduino = LoadConf.getComArduino();
 
-        if (apiKeyPicoVoice == null || apiKeyOpenAi == null || apiKeyWeather == null || comArduino == null) {
+        this.dbOk = DatabaseInitializer.initialize();
+
+        if (apiKeyPicoVoice == null || apiKeyOpenAi == null || apiKeyWeather == null || comArduino == null || !dbOk) {
             System.out.println("\u001B[31mErreur lors du chargement de la configuration. Vérifiez que le fichier Server/src/main/resources/application.properties est correctement configuré.\u001B[0m");
             return;
         }
@@ -41,6 +50,7 @@ public class App implements AudioFileListener {
                 "API OpenAI    : " + apiKeyOpenAi + "\n" +
                 "API Weather   : " + apiKeyWeather + "\n" +
                 "COM Arduino   : " + comArduino + "\n" +
+                "DB : " + LoadConf.getDatabaseSource() + "\n" +
                 "-----------------------------------\u001B[0m");
     }
 
