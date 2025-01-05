@@ -18,7 +18,7 @@ public class DatabaseInitializer {
     private static final String URL = LoadConf.getDatabaseSource();
     private static final String USER = LoadConf.getDatabaseUsername();
     private static final String PASSWORD = LoadConf.getDatabasePassword();
-    private static final String DB_NAME = LoadConf.getDatabaseName();
+    private static final String DB_NAME = URL.substring(URL.lastIndexOf("/") + 1);
     private static final String SQL_FILE = PathChecker.checkPath("zigzag.sql");
 
     public static boolean initialize() {
