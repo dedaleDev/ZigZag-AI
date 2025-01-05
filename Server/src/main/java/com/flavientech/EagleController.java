@@ -16,8 +16,18 @@ public class EagleController extends Thread {
 
     private static final String SCRIPT_PATH = PathChecker.checkPath("voiceRecognition.py");
     private static final String USERS_DIR = PathChecker.getCachesDir() +"users";
+    private static EagleController instance;
+    private final UserService userService;
+
     @Autowired
-    private static UserService userService;
+    public EagleController(UserService userService) {
+        this.userService = userService;
+        instance = this; // Assigner l’instance courante pour y accéder statiquement
+    }
+
+    public static EagleController getInstance() {
+        return instance;
+    }
     /**
      * Exécute la commande Python pour l'enrôlement d'un utilisateur.
      *
@@ -66,7 +76,7 @@ public class EagleController extends Thread {
      */
 
     public static List<String> getUsersVoiceList() {
-        return userService.getAllUsernames();
+        return getInstance().userService.getAllUsernames();
     }
 
 
@@ -97,7 +107,7 @@ public class EagleController extends Thread {
      * @return Retourne true si l'utilisateur est supprimé avec succès.
      */
     public static boolean deleteUser(String username) {
-        userService.deleteUserByUsername(username);
+        getInstance().userService.deleteUserByUsername(username);
         File file = new File(USERS_DIR + "/" + username + ".eagle");
         return file.delete();
     }
@@ -111,7 +121,7 @@ public class EagleController extends Thread {
         List<String> usersDB = getUsersVoiceList();
         for (String user : users) {
             if (!usersDB.contains(user)) {
-                userService.createUser(user);
+                getInstance().userService.createUser(user);
             }
         }
     }
