@@ -26,7 +26,7 @@ public class DatabaseInitializer {
             String checkDbExists = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" + DB_NAME + "'";
             var rs = stmt.executeQuery(checkDbExists);
             if (!rs.next()) {
-                String createDb = "CREATE DATABASE IF NOT EXISTS" + DB_NAME;
+                String createDb = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
                 stmt.executeUpdate(createDb);
                 executeSqlFile(conn, SQL_FILE);
             }
