@@ -85,7 +85,7 @@ public class DatabaseInitializer {
         }
 
         // Étape 2 : Charger le fichier SQL via JDBC
-        try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
             String sql = new String(Files.readAllBytes(Paths.get(SQL_FILE)));
             for (String query : sql.split(";")) {
@@ -101,7 +101,7 @@ public class DatabaseInitializer {
 
 
     private static boolean verifyDatabase() {
-        try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
 
             // Vérifier l'existence des tables
