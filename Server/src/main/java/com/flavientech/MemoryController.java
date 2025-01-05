@@ -34,8 +34,8 @@ public class MemoryController {
         return fullData;
     }
 
-    public static void addFlashMemory(Long userId, String request, String answer) {
-        memoryService.createFlashMemory(userId, request, answer);
+    public static void addFlashMemory(String request, String answer) {
+        memoryService.createFlashMemory(request, answer);
     }
 
     public static void addLongMemory(Long userId, String summary) {

@@ -72,7 +72,7 @@ public class MemoryService {
         return longMemoryRepository.save(longMemory);
     }
     
-    public FlashMemory createFlashMemory(Long userId, String request, String answer) {
+    public FlashMemory createFlashMemory(String request, String answer) {
         FlashMemory flashMemory = new FlashMemory();
         flashMemory.setRequest(request);
         flashMemory.setAnswer(answer);
