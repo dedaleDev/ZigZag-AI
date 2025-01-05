@@ -35,11 +35,12 @@ public class App implements AudioFileListener {
         System.out.println("           __/ |            __/ |_____              ");
         System.out.println("          |___/            |___/______|             ");
 
+        this.dbOk = DatabaseInitializer.initialize();
         if (apiKeyPicoVoice == null || apiKeyOpenAi == null || apiKeyWeather == null || comArduino == null || !dbOk) {
             System.out.println("\u001B[31mErreur lors du chargement de la configuration. Vérifiez que le fichier Server/src/main/resources/application.properties est correctement configuré.\u001B[0m");
             return;
         }
-        this.dbOk = DatabaseInitializer.initialize();
+
 
         System.out.println("\u001B[32m\nConfiguration chargée avec succès !\n" +
                 "-----------------------------------\n" +
