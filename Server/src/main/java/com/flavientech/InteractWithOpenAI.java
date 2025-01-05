@@ -11,9 +11,10 @@ public class InteractWithOpenAI {
     private static MemoryController memoryController;
 
     @Autowired
-    public void setMemoryController(MemoryController memoryController) {
+    public InteractWithOpenAI(MemoryController memoryController) {
         InteractWithOpenAI.memoryController = memoryController;
     }
+
     
     /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
      * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.

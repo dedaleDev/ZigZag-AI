@@ -14,13 +14,10 @@ public class OpenAI {
     private final String API_KEY;
     private String prompt;
     private String currentUser;
-    
-    private static MemoryController memoryController;
+
 
     @Autowired
-    public void setMemoryController(MemoryController memoryController) {
-        OpenAI.memoryController = memoryController;
-    }
+    private MemoryController memoryController;
 
     private OkHttpClient createHttpClient() {//Créer un client HTTP avec un timeout de 30 secondes
         return new OkHttpClient.Builder()
@@ -29,7 +26,6 @@ public class OpenAI {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
-
 
     public OpenAI(String API_KEY) {
         this.API_KEY = API_KEY;
