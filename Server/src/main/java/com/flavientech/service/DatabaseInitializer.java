@@ -31,6 +31,12 @@ public class DatabaseInitializer {
                 System.out.println("La base de données " + SQL_FILE + " n'existe pas. Création en cours...");
                 createDatabaseAndLoadSQL();
                 System.out.println("Base de données " + DB_NAME + " créée et chargée avec succès.");
+
+                // Vérification de la base de données
+                if (!verifyDatabase()) {
+                    throw new RuntimeException("La vérification de la base de données a échoué.");
+                }
+                System.out.println("Vérification de la base de données réussie.");
             } else {
                 System.out.println("La base de données " + DB_NAME + " existe déjà.");
             }
@@ -93,6 +99,46 @@ public class DatabaseInitializer {
             System.out.println("Fichier SQL chargé avec succès dans la base de données " + DB_NAME + ".");
         } else {
             throw new RuntimeException("Erreur lors du chargement du fichier SQL. Code de sortie : " + exitCode);
+        }
+    }
+
+    private static boolean verifyDatabase() {
+        try (Connection conn = DriverManager.getConnection(URL + "/" + DB_NAME, USER, PASSWORD);
+             Statement stmt = conn.createStatement()) {
+
+            // Vérifier l'existence des tables
+            String[] tables = {"flashmemory", "longmemory", "user"};
+            for (String table : tables) {
+                ResultSet rs = stmt.executeQuery("SHOW TABLES LIKE '" + table + "';");
+                if (!rs.next()) {
+                    System.out.println("La table " + table + " n'existe pas.");
+                    return false;
+                }
+            }
+
+            // Vérifier le nombre de lignes dans chaque table (exemple)
+            String[][] tableChecks = {
+                {"flashmemory", "SELECT COUNT(*) FROM flashmemory"},
+                {"longmemory", "SELECT COUNT(*) FROM longmemory"},
+                {"user", "SELECT COUNT(*) FROM user"}
+            };
+
+            for (String[] check : tableChecks) {
+                ResultSet rs = stmt.executeQuery(check[1]);
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    if (count == 0) {
+                        System.out.println("La table " + check[0] + " est vide.");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
