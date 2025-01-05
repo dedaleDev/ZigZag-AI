@@ -74,7 +74,6 @@ public class MemoryService {
     
     public FlashMemory createFlashMemory(Long userId, String request, String answer) {
         FlashMemory flashMemory = new FlashMemory();
-        flashMemory.setUser(userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found")));
         flashMemory.setRequest(request);
         flashMemory.setAnswer(answer);
         return flashMemoryRepository.save(flashMemory);

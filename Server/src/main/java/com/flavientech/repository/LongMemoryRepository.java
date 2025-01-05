@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LongMemoryRepository extends JpaRepository<LongMemory, Long> {
     List<LongMemory> findByUserId(Long userId);
-    List<LongMemory> findByUsername(String username);
+    List<LongMemory> findByUser(String username);
 }

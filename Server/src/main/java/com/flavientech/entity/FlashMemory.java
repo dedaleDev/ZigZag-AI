@@ -9,10 +9,6 @@ public class FlashMemory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
-    private User user;
-
     @Column(length = 500)
     private String request;
 
@@ -27,14 +23,6 @@ public class FlashMemory {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getRequest() {
@@ -57,7 +45,6 @@ public class FlashMemory {
     public String toString() {
         return "FlashMemory{" +
                 "id=" + id +
-                ", user=" + user +
                 ", request='" + request + '\'' +
                 ", answer='" + answer + '\'' +
                 '}';
