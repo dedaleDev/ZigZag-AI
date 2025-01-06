@@ -167,21 +167,16 @@ While some features require the Arduino setup, ZigZag also functions independent
 
 - Plateformio (ONLY FOR ARDUINO COMPLETE SETUP)
 
-2. Configure the Server
+1. Configure the Server
 Navigate to Server/src/main/resources.
 Copy application.exemple.properties and rename it to application.properties.
 Update the file with your configurations (e.g., database credentials, API keys).
 
-4. Install Dependencies
-Backend:
-```plaintext
-mvn install
-```
-6. Configure Arduino
+2. Configure Arduino (optional)
 Place  Arduino/v44k1q05.img on the SD card.
 Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
 
-5. Run the Application
+3. Run the Application
 Start the backend server on Eclipse :
     - File > Import > Maven > Existing Maven Project > Browse 
     - Select the folder of ZigZag
@@ -199,6 +194,8 @@ Push Buttons:
 Button 1: Start/End recording.
 Button 2: Enroll new user
 LED: Indicates system status.
+
+![links](https://github.com/user-attachments/assets/ccf79922-ece2-4f68-b99e-373805b47cbf)
 
 📜 API Credits
 OpenAI: Language model for intelligent conversations.
