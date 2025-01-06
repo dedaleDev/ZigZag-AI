@@ -30,31 +30,37 @@ public class OnlineSearch {
         StringBuilder result = new StringBuilder();
 
         try {
-            // Vérifie le statut
-            if (!root.optString("status").equalsIgnoreCase("success")) {
-                return "Le statut n'est pas 'success'.";
-            }
+            // Naviguer dans l'arborescence JSON jusqu'au tableau des items
+            JSONObject data = root.getJSONObject("data");
+            JSONObject resultObj = data.getJSONObject("result");
+            JSONArray mainline = resultObj.getJSONArray("mainline");
 
-            // Accède aux items
-            JSONObject resultObj = root.getJSONObject("data").getJSONObject("result");
-            JSONObject itemsObj = resultObj.getJSONObject("items");
-            JSONArray mainline = itemsObj.getJSONArray("mainline");
             for (int i = 0; i < mainline.length(); i++) {
-                JSONObject mainlineItem = mainline.getJSONObject(i);
-                JSONArray itemsArray = mainlineItem.getJSONArray("items");
-                for (int j = 0; j < itemsArray.length(); j++) {
-                    JSONObject item = itemsArray.getJSONObject(j);
-                    String title = item.optString("title", "Titre non disponible");
-                    String desc = item.optString("desc", "Description non disponible");
-                    result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
+                JSONObject mainlineObject = mainline.getJSONObject(i);
+
+                // Vérifier que le type est "web"
+                if (mainlineObject.getString("type").equals("web")) {
+                    JSONArray items = mainlineObject.getJSONArray("items");
+
+                    // Parcourir les éléments du tableau "items"
+                    for (int j = 0; j < items.length(); j++) {
+                        JSONObject item = items.getJSONObject(j);
+
+                        // Extraire le titre et la description
+                        String title = item.optString("title", "N/A");
+                        String desc = item.optString("desc", "N/A");
+
+                        // Ajouter au résultat au format attendu
+                        result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
+                    }
                 }
             }
-
         } catch (Exception e) {
-            return "Erreur lors du traitement du JSON OnlineSearch: " + e;
+            e.printStackTrace();
+            return "Erreur lors du traitement du JSON : " + e.getMessage();
         }
-        System.out.println("Result OnlineSearch : " + result.toString());
-        return result.toString();
+
+        return result.toString().trim(); // Supprimer les espaces ou sauts de ligne en trop
     }
 
     public static String search(String Keyword, String apiKeyOpenAI, String question){
