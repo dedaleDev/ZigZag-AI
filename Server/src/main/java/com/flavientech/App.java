@@ -111,7 +111,7 @@ public class App implements AudioFileListener {
                 }
                 
                 // --------------- Appel à l'API OpenAI ---------------
-                String openAIResponse = InteractWithOpenAI.run(this.apiKeyOpenAi, currentSpeakingUser, userRequest);
+                String openAIResponse = InteractWithOpenAI.run(this.apiKeyOpenAi,this.apiKeyWeather, currentSpeakingUser, userRequest);
                 // --------------- Synthèse vocale de la réponse ---------------
                 if (openAIResponse != null) {
                     new TextToSpeech(openAIResponse);

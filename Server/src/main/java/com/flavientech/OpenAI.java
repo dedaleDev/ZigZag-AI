@@ -122,17 +122,6 @@ public class OpenAI {
     }
 
     public String specialFunction(String response, String apiKeyWeather, String question) {
-        try {
-            JSONObject json = new JSONObject(response);
-            String content = json.getJSONArray("choices")
-                                 .getJSONObject(0)
-                                 .getJSONObject("message")
-                                 .getString("content");
-            response = content;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         if (response == null) return null;
         if (response.contains("&Weather")){
             WeatherService weather = new WeatherService(response, apiKeyWeather);

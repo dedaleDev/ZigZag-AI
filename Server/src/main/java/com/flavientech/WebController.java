@@ -39,8 +39,9 @@ public class WebController {
     
     @PostMapping("/api/request")
     public ResponseEntity<Map<String, String>> receiveRequestJson(@RequestBody Map<String, String> requestJson) {
-        String apiKeyOpenAi = null;
-        apiKeyOpenAi = LoadConf.getApiKeyOpenAi();
+        String apiKeyOpenAi = LoadConf.getApiKeyOpenAi();
+        String apiKeyOpenWeather = LoadConf.getApiKeyOpenAi();
+        
         if (apiKeyOpenAi == null) {
             //send error message
             Map<String, String> response = new HashMap<>();
@@ -52,7 +53,7 @@ public class WebController {
         System.out.println("Données reçues : " + requestJson);
         
         // Envoyer la requête à ZigZag : 
-        String openAIResponse = InteractWithOpenAI.run(apiKeyOpenAi, requestJson.get("name").toString(), requestJson.get("message").toString());
+        String openAIResponse = InteractWithOpenAI.run(apiKeyOpenAi, apiKeyOpenWeather, requestJson.get("name").toString(), requestJson.get("message").toString());
         // Créez une réponse JSON
         Map<String, String> response = new HashMap<>();
         response.put("status", "success");

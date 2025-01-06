@@ -10,7 +10,7 @@ public class InteractWithOpenAI {
     /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
      * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.
      -----------------------------------------------------------------------------------------------------------------------------------------*/
-    public static String run(String apiKeyOpenAi, String currentUser, String userRequest) {
+    public static String run(String apiKeyOpenAi, String apiKeyWeather, String currentUser, String userRequest) {
         System.out.println("Waiting for inference...");
         OpenAI api = new OpenAI(apiKeyOpenAi);
         api.setCurrentUser(currentUser);
@@ -24,7 +24,6 @@ public class InteractWithOpenAI {
         db.updateFlashMemory(userRequest, api.cleanResponse(apiResponse).split("@")[0]);
 
         // --------   Vérifier s'il y a une action spéciale à effectuer
-        //String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest); //à compléter si le temps
         try {
             JSONObject json = new JSONObject(apiResponse);
             String content = json.getJSONArray("choices")
@@ -35,7 +34,8 @@ public class InteractWithOpenAI {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String finalResponse = apiResponse;
+        String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest); //à compléter si le temps
+        //String finalResponse = apiResponse;
     
         //met à jour la mémoire avec la réponse finale
         if (finalResponse != null) {
