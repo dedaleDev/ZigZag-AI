@@ -27,6 +27,7 @@ public class OnlineSearch {
     }
 
     private static String decodeJson(JSONObject root) {
+        System.out.println(root);
         StringBuilder result = new StringBuilder();
 
         try {
