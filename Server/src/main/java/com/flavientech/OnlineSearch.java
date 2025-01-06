@@ -36,7 +36,7 @@ public class OnlineSearch {
             }
 
             // Accède aux items
-            JSONObject resultObj = root.getJSONObject("result");
+            JSONObject resultObj = root.getJSONObject("data").getJSONObject("result");
             JSONArray mainline = resultObj.getJSONArray("items").getJSONObject(0).getJSONArray("items");
 
             // Parcourt les items pour récupérer les titres et descriptions

@@ -1,0 +1,181 @@
+{
+    "status": "success",
+    "data": {
+      "query": {
+        "locale": "fr_fr",
+        "query": "invité d'honneur rencontres photo chabeuil 2024",
+        "offset": 0,
+        "queryContext": {
+          "originalQuery": "invité d'honneur rencontres photo chabeuil 2024"
+        }
+      },
+      "search_id": "0c185301-cc52-11ef-9be4-e534abd01704",
+      "result": {
+        "denied": 0,
+        "total": 1,
+        "items": {
+          "headline": [],
+          "mainline": [
+            {
+              "serpContextId": 1000,
+              "type": "web",
+              "count": 10,
+              "items": [
+                {
+                  "title": "Les Rencontres de la photo de Chabeuil (dans la Drôme)",
+                  "favicon": "hpp://s.qwant.com/v1/fav/iK-VryserJvat-mw3g2RLw_6edibbHnTzqNhuEsyZWlUVjn0SFU5xHcaC1ykK-hNQk6SLc-lysZPTi4vYzMPYZBw0rBhTOzcO2joqvF6Ih0:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://les-rencontres-de-la-photo-chabeuil.fr/fr/accueil",
+                  "urlPingSuffix": "DevEx,5113.1",
+                  "thumbnailUrl": "hpp://s1.qwant.com/thumbr/0x0/8/5/00e60e13ca62a692f8eed40acea470826943fb4178645ef5fc934c2a8eaa05/th.jpg?u=hpp%3A%2F%2Fwww.bing.com%2Fth%3Fid%3DOIP.x-wywGSItlH56XtJmKpLoQHaF7%26w%3D160%26h%3D160%26c%3D7%26pid%3D5.1&q=0&b=1&p=0&a=0",
+                  "source": "hpp://les-rencontres-de-la-photo-chabeuil.fr/fr/accueil",
+                  "desc": "Nous nous tournons dorénavant vers l'édition 2025, et invitons les photographes qui le souhaitent à nous faire parvenir leur dossier de candidature avant le 15 février 2024. du 1er décembre 2024 au 15 février 2025. CLIC : renseignements pour candidater.",
+                  "_id": "7244bad9aa81ac33707df27317654554",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "23 eme édition des Rencontres de la PHOTO DE CHABEUIL 2024 Du 12 au 15 ...",
+                  "favicon": "hpp://s.qwant.com/v1/fav/iK-VryserJvat-mw3g2RLw_6edibbHnTzqNhuEsyZWlUVjn0SFU5xHcaC1ykK-hNQk6SLc-lysZPTi4vYzMPYZBw0rBhTOzcO2joqvF6Ih0:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://les-rencontres-de-la-photo-chabeuil.fr/clients/2700/fichiers/userfiles/files/Re%CC%81glement%20candidature%20photogaphes%202024.pdf",
+                  "urlPingSuffix": "DevEx,5131.1",
+                  "source": "hpp://les-rencontres-de-la-photo-chabeuil.fr/clients/2700/fichiers/userfiles/files...",
+                  "desc": "Un invité d’honneur, des photographes sélectionnés, des conférences et des stages sont proposés avec pour objectif de favoriser la rencontre entre les photographes et le public. La sélection des photographes: Candidatures du 1 décembre 2023 au 15 février 2024 La manifestation est ouverte à tout candidat professionnel ou amateur ou ...",
+                  "_id": "cd3d2db82a9c83d76ccd29cad4a1ebc7",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "23èmes Rencontres de la photo - Ville de Chabeuil",
+                  "favicon": "hpp://s.qwant.com/v1/fav/4s65MtC1m23FZ6aXkPnB7qC7irtz0d-KGksAHocCeQ-gL8w_RBdO5CBIWlMPAkuTkJk2lXk2f3P4BhJ9KVZa3A:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://mairie-chabeuil.com/21emes-Rencontres-de-la-photo.html",
+                  "urlPingSuffix": "DevEx,5154.1",
+                  "source": "hpp://mairie-chabeuil.com/21emes-Rencontres-de-la-photo.html",
+                  "desc": "Françoise Huguier nous a fait l’immense plaisir d’accepter d’être notre invitée d’honneur, elle accompagne les 24 photographes lauréats venus de toute la France sélectionnés parmi plus de 200 dossiers de candidatures. Les membres de Clic’Image présentent leur exposition consacrée au \"Mouvement\".",
+                  "_id": "22794242e03e955496c052e30b82ffa5",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "LES RENCONTRES DE LA PHOTO à CHABEUIL",
+                  "favicon": "hpp://s.qwant.com/v1/fav/iK-VryserJvat-mw3g2RLw_6edibbHnTzqNhuEsyZWlUVjn0SFU5xHcaC1ykK-hNQk6SLc-lysZPTi4vYzMPYZBw0rBhTOzcO2joqvF6Ih0:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://les-rencontres-de-la-photo-chabeuil.fr/clients/2700/fichiers/userfiles/files/dossier%20de%20presse%20Rencontres%20Photo2024bis-4.pdf",
+                  "urlPingSuffix": "DevEx,5173.1",
+                  "source": "hpp://les-rencontres-de-la-photo-chabeuil.fr/clients/2700/fichiers/userfiles/files...",
+                  "desc": "LES RENCONTRES DE LA PHOTO à CHABEUIL 23e édition dans la Drôme du 12 au 15 SEPTEMBRE 2024 de 10h à 19h Françoise Huguier InvItée d’honneur PHOTOS DES LAURÉA TS Photo club CLIC’IMAGE 26120 chabeuil - Drôme Toutes les expositions sont en entrée libre ! www.les-rencontres-de-la-photo-chabeuil.fr www.facebook.com/rencontresdelaphoto",
+                  "_id": "8e1644f53778e4aa91ed6c4ba6bd3894",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Découvrez le programme des Rencontres de la photo de Chabeuil ... - Actu",
+                  "favicon": "hpp://s.qwant.com/v1/fav/4NAXcz7UeIZ6RqXa_k-GC3C5vXdelpf7ewki4ALtxwqxrgqccwEjGHqcxhUGYPLD:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://actu.fr/auvergne-rhone-alpes/chabeuil_26064/decouvrez-le-programme-des-rencontres-de-la-photo-de-chabeuil-dans-la-drome_61565765.html",
+                  "urlPingSuffix": "DevEx,5197.1",
+                  "source": "hpp://actu.fr/auvergne-rhone-alpes/chabeuil_26064/decouvrez-le-programme-des...",
+                  "desc": "Du 12 au 15 septembre 2024, la ville de Chabeuil dans la Drôme accueille les Rencontres de la photo, dont Françoise Huguier est l'invitée d'honneur.",
+                  "_id": "f99f6c93c1e04df414936265d65f6cbd",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Les Rencontres de la Photo de Chabeuil - Eric Ribot",
+                  "favicon": "hpp://s.qwant.com/v1/fav/HrsUPnhvS1BCmmkIDUjnn9h32WO3PdEVfGgtzogjp8rQHyQUN8sMkw9ipL4kQg2bdEn62PrMouPJLhtfYfm6AA:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://www.ericribot.fr/expositions/les-rencontres-de-la-photo-de-chabeuil/",
+                  "urlPingSuffix": "DevEx,5218.1",
+                  "source": "hpp://www.ericribot.fr/expositions/les-rencontres-de-la-photo-de-chabeuil",
+                  "desc": "Les Rencontres de la Photo de Chabeuil ont l’honneur et l’immense plaisir de vous annoncer la présence de la grande photographe Françoise Huguier comme invitée d’honneur 2024. La 23eme édition se déroulera du 12 au 15 septembre 2024.",
+                  "_id": "391b9223332a4829449ff56d6d46c5fe",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Chabeuil Les Rencontres de la photo, du 12 au 15 septembre",
+                  "favicon": "hpp://s.qwant.com/v1/fav/FTS0C5ZD5KN_1MpVjTMeIFCoFJBoiOb06uGdbghvcRlQUJ8c9iB7OYP8QTirl0SL1YGCb4yKdo0DEOT_qzzfYA:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://www.ledauphine.com/culture-loisirs/2024/09/09/les-rencontres-de-la-photo-du-12-au-15-septembre",
+                  "urlPingSuffix": "DevEx,5242.1",
+                  "source": "hpp://www.ledauphine.com/culture-loisirs/2024/09/09/les-rencontres-de-la-photo-du-12...",
+                  "desc": "Devenues un rendez-vous incontournable des amateurs d’art, les Rencontres de la photo de Chabeuil rempilent pour une 23 e édition, du jeudi 12 au dimanche 15 septembre, pour mettre à...",
+                  "_id": "4c2320831b07a9e2514f893f9d7db154",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Appel à candidature - Chabeuil 2024 - Chabeuil 2024 - Fédération ...",
+                  "favicon": "hpp://s.qwant.com/v1/fav/qRvCcbTKOlWrTUYf-7uET_r8GvysfOid0hiD-JM78ymKlTmTgfPGcNZJIKzLcCoE6uW2Wn_iBFwxucesxrDk-g:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://federation-photo.fr/evenement/appel-a-candidature-chabeuil-2024/",
+                  "urlPingSuffix": "DevEx,5270.1",
+                  "thumbnailUrl": "hpp://s1.qwant.com/thumbr/0x0/2/8/3dd57a3fa6a799aa65ee9457c146ffcb180cdbd1b167cf9350d3e6f346a9aa/th.jpg?u=hpp%3A%2F%2Fwww.bing.com%2Fth%3Fid%3DOIP.jYpN6RDOIVRYBpycYujnlQHaGH%26w%3D160%26h%3D160%26c%3D7%26pid%3D5.1&q=0&b=1&p=0&a=0",
+                  "source": "hpp://federation-photo.fr/evenement/appel-a-candidature-chabeuil-2024",
+                  "desc": "Nous nous tournons dorénavant vers l'édition 2024, et invitons les photographes qui le souhaitent à nous faire parvenir leur dossier de candidature avant le 15 février 2024. Les dossiers de candidatures (Règlement et Fiche de renseignement) sont à télécharger sur le site web des Rencontres: NOUS VOUS ATTENDONS! »",
+                  "_id": "5ebcdc0a9edfe4c5cc6c52e7a3a0e7a0",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "L’ événement photographique Incontournable de la rentrée est de retour",
+                  "favicon": "hpp://s.qwant.com/v1/fav/4NAXcz7UeIZ6RqXa_k-GCzvTpHaXcnFQoCd2ZU8wEoeNl54SnSNDKx-2hxyLLvkT:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://cooa.fr/le-mag/chronique/55683/l-evenement-photographique-incontournable-de-la-rentree-est-de-retour/",
+                  "urlPingSuffix": "DevEx,5293.1",
+                  "source": "hpp://cooa.fr/le-mag/chronique/55683/l-evenement-photographique-incontournable-de-la...",
+                  "desc": "Du 12 au 15 septembre 2024, la ville de Chabeuil accueillera les 23ème Rencontres de la Photo, un événement devenu incontournable pour les amateurs et professionnels de la photographie. Cette année, l’invitée d’honneur n’est autre que Françoise Huguier, une figure emblématique de la photographie contemporaine.",
+                  "_id": "f567469374a4398931af4f13a4509544",
+                  "isFamilyFriendly": true
+                },
+                {
+                  "title": "Rencontres de la photo de Chabeuil, Chabeuil (2024) - Find Local Businesses",
+                  "favicon": "hpp://s.qwant.com/v1/fav/4nyqrNf6j1ayqw0A4jrWtYmzzEPwvdKqjsAm8p3NakRtqPZfxzDrsrxuMReUDd3mKTBypQbprMtdjNxXaIHfyA:f57b609d64291580641cf6e2ac180774",
+                  "url": "hpp://www.findglocal.com/FR/Chabeuil/614908935272974/Rencontres-de-la-photo-de-Chabeuil",
+                  "urlPingSuffix": "DevEx,5315.1",
+                  "source": "hpp://www.findglocal.com/FR/Chabeuil/614908935272974/Rencontres-de-la-photo-de-Chabeuil",
+                  "desc": "Les Rencontres de la photo de Chabeuil 2024 se préparent maintenant. Elles auront lieu du 12 septembre au 15 septembre 2024. Les candidatures pour exposer commencent le 1 décembre 2023. Les documents seront disponibles très prochainement sur notre site internet.",
+                  "_id": "8f814f591e202b7a3910b9c9248a78a2",
+                  "isFamilyFriendly": true
+                }
+              ]
+            }
+          ],
+          "sidebar": [],
+          "bottomline": []
+        },
+        "filters": {
+          "freshness": {
+            "label": "Freshness",
+            "name": "freshness",
+            "type": "dropdown",
+            "selected": "all",
+            "values": [
+              {
+                "value": "all",
+                "label": "All time",
+                "translate": true
+              },
+              {
+                "value": "day",
+                "label": "Past 24 hours",
+                "translate": true
+              },
+              {
+                "value": "week",
+                "label": "Past week",
+                "translate": true
+              },
+              {
+                "value": "month",
+                "label": "Past month",
+                "translate": true
+              }
+            ]
+          }
+        },
+        "lastPage": false,
+        "onlyProductAds": false,
+        "topClassification": {
+          "query": [
+            "news"
+          ],
+          "intention": [
+            "wiki"
+          ],
+          "ads": [
+            "News_and_Politics_/_National_News"
+          ]
+        }
+      },
+      "cache": {
+        "status": "missed",
+        "key": "86d3e11cc94c37783d638c7185cc67126"
+      }
+    }
+  }
