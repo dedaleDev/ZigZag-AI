@@ -14,10 +14,10 @@ public class InteractWithOpenAI {
         System.out.println("Waiting for inference...");
         OpenAI api = new OpenAI(apiKeyOpenAi);
         api.setCurrentUser(currentUser);
-
         DatabaseController db = new DatabaseController();
         String context = db.getLongMemory(currentUser).toString();
-        String initialRequest = currentUser.concat(" te demande : ").concat(userRequest);
+        String initialRequest = "L'utilisateur : \""+ currentUser.concat("\" te demande : ").concat(userRequest);
+        System.out.println("Request : " + initialRequest);
         String apiResponse = api.sendRequest(initialRequest, context);
 
         // Rafraîchir la mémoire avec la nouvelle conversation

@@ -99,11 +99,7 @@ public class App implements AudioFileListener {
                 String currentSpeakingUser = userDetectionFuture.get();
                 System.out.println("Utilisateur courant : " + currentSpeakingUser);
                 String userRequest = SpeechToTextFuture.get();
-
-                long endTime = System.currentTimeMillis();
-                System.out.println("Temps d'exécution de la detection d'utilisateur + STT : " + (endTime - startTime) + " ms");
                 // ---------------Patience user  ---------------
-
                 Random random = new Random();
                 if (random.nextInt(3) < 2) { // 2 fois sur 3
                     int randomNumber = random.nextInt(11); // Nombre aléatoire entre 0 et 10
