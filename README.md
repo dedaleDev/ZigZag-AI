@@ -112,18 +112,18 @@ The project is divided into two main components: **Arduino** and **Server**.
 
 
 ```
-Explanation of the Project Tree
+### Explanation of the Project Tree
 
 Server
 /src/main/java/com/flavientech: Core server-side logic, including API integration, database management, and speech-to-text processing.
 In this case, you have mainly : 
-App.java : the main of the project.
-EagleController.java : Speacker detection managment.
-ArduinoSerial.java : Serial link with the Arduino UNO R3
-OpenAI.java and InteractWithOpenAI.java : manage and process  communication with GPT4o-Mini
-WebController.java : Spring boot website controller.
-DatabaseController.java : JDBC database managment.
-OnlineAPITools.java : interact with differents API.
+- App.java : the main of the project.
+- EagleController.java : Speacker detection managment.
+- ArduinoSerial.java : Serial link with the Arduino UNO R3
+- OpenAI.java and InteractWithOpenAI.java : manage and process  communication with GPT4o-Mini
+- WebController.java : Spring boot website controller.
+- DatabaseController.java : JDBC database managment.
+- OnlineAPITools.java : interact with differents API.
 
 /src/main/resources: Configuration files, web assets (HTML, CSS, JS).
 /src/main/caches: Temporary files for processing audio.
@@ -135,9 +135,11 @@ platformio.ini: Configuration file for compiling the Arduino code using Platform
 v44k1q05.img: Pre-loaded audio processing file required for recording. ADD THIS IN YOUR SD CARD FOR RECORD.
 
 
+---
 
-🛠️ Installation and Setup
-Prerequisites
+## 🛠️ Installation and Setup
+
+### Prerequisites
 Hardware Requirements:
 Arduino UNO R3
 VS1053B audio module
