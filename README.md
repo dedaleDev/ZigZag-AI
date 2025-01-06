@@ -34,38 +34,84 @@ The project is divided into two main components: **Arduino** and **Server**.
 
 ```plaintext
 ├── Arduino
-│   ├── ZigZag_Arduino
-│   │   ├── include
-│   │   │   └── README
-│   │   ├── lib
-│   │   │   └── README
-│   │   ├── platformio.ini
-│   │   ├── src
-│   │   │   ├── main.cpp
-│   │   │   ├── mainRecorder.bak
-│   │   │   └── mainSender.bak
-│   │   └── test
-│   │       └── README
-│   └── v44k1q05.img
+│   ├── ZigZag_Arduino
+│   │   ├── include
+│   │   │   └── README
+│   │   ├── lib
+│   │   │   └── README
+│   │   ├── platformio.ini
+│   │   ├── src
+│   │   │   ├── main.cpp
+│   │   │   ├── mainRecorder.bak
+│   │   │   └── mainSender.bak
+│   │   └── test
+│   │       └── README
+│   └── v44k1q05.img
 ├── LICENSE
 ├── README.md
 └── Server
     ├── pom.xml
     ├── src
-    │   ├── main
-    │   │   ├── caches
-    │   │   ├── java/com/flavientech
-    │   │   │   ├── App.java
-    │   │   │   ├── ArduinoSerial.java
-    │   │   │   └── ...
-    │   │   ├── resources
-    │   │   │   ├── application.properties
-    │   │   │   ├── templates
-    │   │   │   │   ├── index.html
-    │   │   │   │   └── settings.html
-    │   │   │   └── static
-    │   │   └── sounds
-    │   │       └── ...
+    │   └── main
+    │       ├── caches
+    │       │   ├── users
+    │       ├── java
+    │       │   └── com
+    │       │       └── flavientech
+    │       │           ├── App.java
+    │       │           ├── ArduinoSerial.java
+    │       │           ├── AudioFileListener.java
+    │       │           ├── EagleController.java
+    │       │           ├── InteractWithOpenAI.java
+    │       │           ├── LoadConf.java
+    │       │           ├── OnlineAPITools.java
+    │       │           ├── OnlineSearch.java
+    │       │           ├── OpenAI.java
+    │       │           ├── PathChecker.java
+    │       │           ├── PhysicalInfo.java
+    │       │           ├── PythonController.java
+    │       │           ├── SoundPlayer.java
+    │       │           ├── SpeechToText.java
+    │       │           ├── TextToSpeech.java
+    │       │           ├── Time.java
+    │       │           ├── WeatherService.java
+    │       │           ├── WebController.java
+    │       │           ├── WebServer.java
+    │       │           ├── edgeTTS.py
+    │       │           ├── oggToWav.py
+    │       │           ├── recorder.py
+    │       │           ├── service
+    │       │           │   ├── DatabaseController.java
+    │       │           │   └── DatabaseInitializer.java
+    │       │           └── voiceRecognition.py
+    │       ├── models
+    │       │   ├── ZigZag-leopard-v2.0.0-24-09-13--08-11-50.pv
+    │       │   ├── eagleVoices.txt
+    │       │   └── promptGPT4o-Mini.txt
+    │       ├── resources
+    │       │   ├── application.exemple.properties
+    │       │   ├── application.properties //WRITE YOUR CONFIGURATION HERE
+    │       │   ├── static
+    │       │   │   ├── css
+    │       │   │   │   ├── index.css
+    │       │   │   │   └── settings.css
+    │       │   │   ├── img
+    │       │   │   │   ├── ZigZagLogo.png
+    │       │   │   │   ├── back.svg
+    │       │   │   │   ├── send_button.svg
+    │       │   │   │   └── settings_button.svg
+    │       │   │   └── js
+    │       │   │       ├── index.js
+    │       │   │       └── settings.js
+    │       │   ├── templates
+    │       │   │   ├── error.html
+    │       │   │   ├── index.html
+    │       │   │   └── settings.html
+    │       │   └── zigzag.sql
+    │       └── sounds
+
+
+```
 Explanation of the Project Tree
 Arduino
 ZigZag_Arduino: Contains the Arduino code for handling audio recording, playback, and interaction with ZigZag.
