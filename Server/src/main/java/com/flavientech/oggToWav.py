@@ -1,5 +1,7 @@
 import sys
 from pydub import AudioSegment
+import os
+
 
 def convert_ogg_to_wav(input_file, output_file):
     try:
@@ -31,4 +33,7 @@ def main():
     convert_ogg_to_wav(input_file, output_file)
 
 if __name__ == "__main__":
+    if os.name == "nt":
+        if "ffmpeg" not in os.environ["PATH"]:
+            os.environ["PATH"] += ";C:\\ffmpeg\\bin"
     main()
