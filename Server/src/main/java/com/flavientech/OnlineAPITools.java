@@ -8,44 +8,9 @@ import java.net.URISyntaxException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.util.Random;
 
 public class OnlineAPITools {
     
-    
-
-
-    // Liste des User-Agents pour rotation
-    private static final String[] USER_AGENTS = {
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
-    };
-
-
-    // Obtenir un User-Agent aléatoire
-    public static String getRandomUserAgent() {
-        Random rand = new Random();
-        return USER_AGENTS[rand.nextInt(USER_AGENTS.length)];
-    }
-
-    // Pause aléatoire pour éviter les détections
-    public static void randomPause(int minMillis, int maxMillis) {
-        Random rand = new Random();
-        int pauseTime = rand.nextInt(maxMillis - minMillis + 1) + minMillis;
-        try {
-            Thread.sleep(pauseTime);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     // Backoff exponentiel
     public static void exponentialBackoff(int attempt) {
         try {
@@ -55,72 +20,6 @@ public class OnlineAPITools {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    // Méthode pour récupérer le contenu HTML d'une page avec gestion des erreurs
-    public static String fetchHTML(String urlString, int retryCount) {
-        int attempts = 0;
-        while (attempts < retryCount) {
-            try {
-                urlString = urlString.replaceAll(" ", "%20");
-                URI uri = new URI(urlString);
-                URL url = uri.toURL();
-
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-                connection.setInstanceFollowRedirects(false);
-                connection.setRequestProperty("User-Agent", getRandomUserAgent());
-                connection.setRequestProperty("Accept-Language", "fr-FR,fr;q=0.8,en-US;q=0.5,en;q=0.3");
-                connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                connection.setRequestProperty("Connection", "keep-alive");
-                connection.setRequestProperty("DNT", "1");
-                connection.setRequestProperty("Connection", "keep-alive");
-                connection.setRequestProperty("Upgrade-Insecure-Requests", "1");
-                connection.setRequestProperty("Sec-Fetch-Dest", "document");
-                connection.setRequestProperty("Sec-Fetch-Mode", "navigate");
-                connection.setRequestProperty("Sec-Fetch-Site", "none");
-                connection.setRequestProperty("Sec-Fetch-User", "?1");
-
-                int responseCode = connection.getResponseCode();
-
-                // Suivre manuellement les redirections
-                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                    String newUrl = connection.getHeaderField("Location");
-                    System.out.println("Redirection vers : " + newUrl);
-                    return fetchHTML(newUrl, retryCount);  // Récursion pour suivre la redirection
-                }
-
-                // Gérer les erreurs 403 et autres codes d'erreur
-                if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-                    System.out.println("Erreur 403 : Accès interdit à " + urlString);
-                    attempts++;
-                    exponentialBackoff(attempts);
-                    continue;  // Réessayer avec backoff
-                } else if (responseCode != HttpURLConnection.HTTP_OK) {
-                    System.out.println("Erreur dans la requête : " + responseCode + " " + connection.getResponseMessage());
-                    return null;
-                }
-
-                // Lire le contenu HTML si la réponse est OK
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String inputLine;
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                return response.toString();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                exponentialBackoff(attempts);  // Backoff en cas d'échec
-            }
-
-            attempts++;
-        }
-        System.out.println("Échec après " + retryCount + " tentatives. Abandon.");
-        return null;
     }
 
     // Méthode pour récupérer un JSONObject à partir d'une URL
@@ -133,7 +32,7 @@ public class OnlineAPITools {
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                connection.setRequestProperty("User-Agent", getRandomUserAgent());
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
                 connection.setRequestProperty("Accept-Language", "fr-FR,fr;q=0.8,en-US;q=0.5,en;q=0.3");
                 connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
                 connection.setRequestProperty("Connection", "keep-alive");
@@ -248,20 +147,5 @@ public class OnlineAPITools {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * Extract text from HTML content.
-     * @param html HTML content
-     * @return Extracted text
-     */
-    public static String extractTextFromHtml(String html) {
-        Document doc = Jsoup.parse(html);
-        Elements elements = doc.select("h1, h2, h3, p, a");
-        StringBuilder extractedText = new StringBuilder();
-        for (Element element : elements) {
-            extractedText.append(element.text()).append("\n");
-        }
-        return extractedText.toString().trim().replaceAll("\n", "");
     }
 }

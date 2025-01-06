@@ -7,16 +7,13 @@ import org.json.JSONObject;
 public class OnlineSearch {
     private static final String QWANT_API_URL = "https://api.qwant.com/v3/search/web";
     
-    private static String[] QwantSearch(String query, int nbResults){
+    private static String QwantSearch(String query){
         try {
             query = query.replace(" ", "%20");
             System.out.println(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr");
-            JSONObject resultAPI = OnlineAPITools.fetchUrl(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr",2);
-            String urls[] = new String[nbResults];
-            for (int i =0; i<nbResults; i++){
-                urls[i] = decodeJson(resultAPI,i);
-            }
-            return urls;
+            String resultAPI = OnlineAPITools.fetchUrl(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr",2).toString();
+            String descriptions = limitText(decodeJson(resultAPI), 2000);
+            return descriptions;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,65 +27,47 @@ public class OnlineSearch {
         return text;
     }
 
-    private static String decodeJson(JSONObject json, int id){
-        try{
-            JSONObject jsonObj = null;
-            JSONArray jsonArray = json.getJSONObject("data")
-            .getJSONObject("result")
-            .getJSONObject("items")
-            .getJSONArray("mainline");
-            for (int i = 0; i < jsonArray.length(); i++){
-                if (jsonArray.getJSONObject(i).getInt("serpContextId") ==1002){
-                    jsonObj = jsonArray.getJSONObject(i);
-                    break;
-                }
+    private  static String decodeJson(String json) {
+        StringBuilder result = new StringBuilder();
+
+        try {
+            // Parse le JSON
+            JSONObject root = new JSONObject(json);
+
+            // Vérifie le statut
+            if (!root.optString("status").equalsIgnoreCase("success")) {
+                return "Le statut n'est pas 'success'.";
             }
-            if (jsonObj == null){
-                System.out.println("Pas de résultats trouvés");
-                return null;
+
+            // Accède aux items
+            JSONObject resultObj = root.getJSONObject("result");
+            JSONArray mainline = resultObj.getJSONArray("items").getJSONObject(0).getJSONArray("items");
+
+            // Parcourt les items pour récupérer les titres et descriptions
+            for (int i = 0; i < mainline.length(); i++) {
+                JSONObject item = mainline.getJSONObject(i);
+                String title = item.optString("title", "Titre non disponible");
+                String desc = item.optString("desc", "Description non disponible");
+
+                // Ajoute les informations au résultat final
+                result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
             }
-            jsonObj= jsonObj
-            .getJSONArray("items")
-            .getJSONObject(0);
-            String url = jsonObj.getString("url");
-            System.out.println("URL : " + url);
-            return url;
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        } catch (Exception e) {
+            return "Erreur lors du traitement du JSON : " + e.getMessage();
         }
-        return null;
+        System.out.println("Result  OnlineSearch : " + result.toString());
+        return result.toString();
     }
 
     public static String search(String Keyword, String apiKeyOpenAI, String question){
-        String url[] = QwantSearch(Keyword,5); 
-        if (url == null) {
-            return "Une erreur est survenue lorsque je surfais sur le web ! ";
-        }
-        System.out.println("URLs : " + url[0] + "\n" + url[1]);
-        String html = "";
-        int minFetch = 2;
-        int maxFetch = 5;
-        for (String u : url) {
-            if (minFetch == 0){
-                break;
-            }
-            if (maxFetch == 0){
-                break;
-            }
-            String temp = OnlineAPITools.fetchHTML(u,1);
-            if (temp == null){
-                maxFetch--;
-                continue;
-            }
-            minFetch--;
-            html = html.concat(temp);
-            System.out.println("HTML Text : " + OnlineAPITools.extractTextFromHtml(html));
-        }
-        if (html == null) {
+        String web = QwantSearch(Keyword); 
+        if (web == null) {
             return "Une erreur est survenue lorsque je surfais sur le web ! ";
         }
         OpenAI openAI = new OpenAI(apiKeyOpenAI);
-        String prompt = "Ceci est la suite d'une requête spéciale (OnlineSearch) que tu as déclenchée précédemment pour répondre à la question : %s. Voici les informations extraites du web, analyse-les pour répondre à la question.%s".formatted(question,limitText(OnlineAPITools.extractTextFromHtml(html), 2000));
+        String prompt = "Ceci est la suite d'une requête spéciale (OnlineSearch) que tu as déclenchée précédemment pour répondre à la question : %s. Voici les informations extraites du web, analyse-les pour répondre à la question.%s".formatted(question,web);
+        System.out.println("Prompt Online Search: " + prompt);
         String result = openAI.sendCustomRequest(prompt);
         return openAI.cleanResponse(result).split("@")[0];   
     }
