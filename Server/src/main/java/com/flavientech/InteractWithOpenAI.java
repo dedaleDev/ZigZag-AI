@@ -2,20 +2,11 @@ package com.flavientech;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.flavientech.controller.MemoryController;
+import com.flavientech.service.DatabaseController;
 
 public class InteractWithOpenAI {
 
-    private static MemoryController memoryController;
-
-    @Autowired
-    public InteractWithOpenAI(MemoryController memoryController) {
-        InteractWithOpenAI.memoryController = memoryController;
-    }
-
-    
     /**------------------------------------------------------interactWithOpenAI------------------------------------------------------
      * Interagit avec l'API OpenAI pour obtenir une réponse à la requête de l'utilisateur.
      -----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -24,13 +15,13 @@ public class InteractWithOpenAI {
         OpenAI api = new OpenAI(apiKeyOpenAi);
         api.setCurrentUser(currentUser);
 
-        String context = memoryController.getLongMemory(currentUser).toString();
-        System.out.println("Context : " + context);
+        DatabaseController db = new DatabaseController();
+        String context = db.getLongMemory(currentUser).toString();
         String initialRequest = currentUser.concat(" te demande : ").concat(userRequest);
         String apiResponse = api.sendRequest(initialRequest, context);
 
         // Rafraîchir la mémoire avec la nouvelle conversation
-        memoryController.refreshFlashMemory("Question précédentes : ".concat(userRequest).concat("\nTu avais répondu : ").concat(api.cleanResponse(apiResponse).split("@")[0]));
+        db.updateFlashMemory(userRequest, api.cleanResponse(apiResponse).split("@")[0]);
 
         // --------   Vérifier s'il y a une action spéciale à effectuer
         //String finalResponse = api.specialFunction(apiResponse, apiKeyWeather, userRequest); //à compléter si le temps
@@ -48,12 +39,13 @@ public class InteractWithOpenAI {
     
         //met à jour la mémoire avec la réponse finale
         if (finalResponse != null) {
-                finalResponse = memoryController.refreshLongMemoryAndCleanAnswer(api.cleanText(finalResponse));
+                finalResponse = db.updateLongMemoryAndCleanAnswer(api.cleanText(finalResponse));
+                db.closeConnection();
                 return finalResponse;
         } else {
             finalResponse = "Oups, j'ai glissé chef ! Mon cerveau a dérapé... Je reviens vers vous dans un instant, une fois les dégâts réparés.";
+            db.closeConnection();
             return finalResponse;
         }
     }
-    
 }

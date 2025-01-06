@@ -6,18 +6,13 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.*;
 import org.json.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.flavientech.controller.MemoryController;
+import com.flavientech.service.DatabaseController;
 
 public class OpenAI {
     private final String API_KEY;
     private String prompt;
     private String currentUser;
-
-
-    @Autowired
-    private MemoryController memoryController;
 
     private OkHttpClient createHttpClient() {//Créer un client HTTP avec un timeout de 30 secondes
         return new OkHttpClient.Builder()
@@ -26,6 +21,7 @@ public class OpenAI {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
+
 
     public OpenAI(String API_KEY) {
         this.API_KEY = API_KEY;
@@ -121,7 +117,8 @@ public class OpenAI {
     }
 
     private String getInfos() {
-        return String.format("Utilisateur actuel : %s | Infos : %s | Rappel : %s | Conversations précédentes : %s",currentUser, Time.getDateTime(), memoryController.getLongMemory(this.currentUser), memoryController.getFlashMemory());
+        DatabaseController db = new DatabaseController();
+        return String.format("Utilisateur actuel : %s | Infos : %s | Rappel : %s | Conversations précédentes : %s",currentUser, Time.getDateTime(), db.getLongMemory(this.currentUser), db.getFlashMemory());
     }
 
     public String specialFunction(String response, String apiKeyWeather, String question) {

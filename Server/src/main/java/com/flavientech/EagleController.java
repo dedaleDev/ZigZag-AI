@@ -1,26 +1,27 @@
 package com.flavientech;
 
-import com.flavientech.controller.UserController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class EagleController {
+import com.flavientech.service.DatabaseController;
+
+public class EagleController extends Thread {
 
     private static final String SCRIPT_PATH = PathChecker.checkPath("voiceRecognition.py");
-    private static final String USERS_DIR = PathChecker.getCachesDir() + "users";
+    private static final String USERS_DIR = PathChecker.getCachesDir() +"users";
 
-    private static UserController userController;
-
-    @Autowired
-    public EagleController(UserController userController) {
-        EagleController.userController = userController;
-    }
-
+    /**
+     * Exécute la commande Python pour l'enrôlement d'un utilisateur.
+     *
+     * @param accessKey Clé d'accès pour l'authentification.
+     * @param userName  Nom de l'utilisateur à enrôler.
+     * @return Retourne -1 si une erreur survient ou si le nom d'utilisateur est null.
+     */
     /**
      * Enrôle un utilisateur (base de données + fichier).
      *
@@ -32,24 +33,26 @@ public class EagleController {
         if (userName == null || accessKey == null) {
             return -1;
         }
-
-        // Crée l'utilisateur dans la base de données
-        if (userController.getUserByUsername(userName).isEmpty()) {
-            userController.createUser(userName);
-        }
-
+        
         List<String> command = buildEnrollCommand(accessKey, userName);
         System.out.println("Enroll: " + command);
-        return executeProcess(command);
+        float result = executeProcess(command);
+        if (result != -1) {
+            // Crée l'utilisateur dans la base de données
+            DatabaseController db = new DatabaseController();
+            db.newUser(userName);
+            db.closeConnection();
+        }
+        return result;
     }
 
     /**
-     * Teste un fichier audio avec le modèle de l'utilisateur.
+     * Exécute la commande Python pour tester un fichier audio avec le modèle de l'utilisateur.
      *
-     * @param accessKey Clé d'accès.
-     * @param userName  Nom d'utilisateur.
-     * @param audioPath Chemin du fichier audio.
-     * @return Score ou -1 si erreur.
+     * @param accessKey Clé d'accès pour l'authentification.
+     * @param userName  Nom de l'utilisateur.
+     * @param audioPath Chemin du fichier audio à tester.
+     * @return Retourne le score de l'audio ou -1 si une erreur est rencontrée.
      */
     public static float runTest(String accessKey, String userName, String audioPath) {
         if (audioPath == null || userName == null || accessKey == null) {
@@ -66,37 +69,11 @@ public class EagleController {
     }
 
     /**
-     * Liste les utilisateurs enrôlés (base de données).
-     */
-    public static List<String> getUsersVoicesList() {
-        return userController.getAllUsernames();
-    }
-
-    /**
-     * Supprime un utilisateur (base de données + fichiers).
+     * Récupère la liste des utilisateurs enrôlés (fichiers .eagle).
      *
-     * @param userName Nom d'utilisateur.
+     * @return Liste des utilisateurs ou null si aucun fichier trouvé.
      */
-    public static void deleteUser(String userName) {
-        if (userName == null) {
-            return;
-        }
-
-        // Supprime l'utilisateur de la base de données
-        userController.deleteUserByUsername(userName);
-
-        // Supprime les fichiers associés
-        File userFile = new File(USERS_DIR + "/" + userName + ".eagle");
-        if (userFile.exists()) {
-            userFile.delete();
-        }
-    }
-
     public static List<String> getUsersVoiceList() {
-        return userController.getAllUsernames(); // Accès à l'instance
-    }
-
-    public static List<String> getUsersVoiceListInFolder() {
         File directory = new File(USERS_DIR);
         if (!directory.exists() || !directory.isDirectory()) {
             return null;
@@ -116,7 +93,34 @@ public class EagleController {
         return users;
     }
 
-    // Méthodes privées pour construire les commandes Python
+    
+    /**
+     * Supprime un utilisateur (base de données + fichiers).
+     *
+     * @param userName Nom d'utilisateur.
+     */
+    public static void deleteUser(String userName) {
+        if (userName == null) {
+            return;
+        }
+
+        // Supprime l'utilisateur de la base de données
+        DatabaseController db = new DatabaseController();
+        db.deleteUser(userName);
+        db.closeConnection();
+
+        // Supprime les fichiers associés
+        File userFile = new File(USERS_DIR + "/" + userName + ".eagle");
+        if (userFile.exists()) {
+            userFile.delete();
+        }
+    }
+
+
+
+    /**
+     * Construit la commande pour l'enrôlement.
+     */
     private static List<String> buildEnrollCommand(String accessKey, String userName) {
         List<String> command = new ArrayList<>();
         command.add("python3");
@@ -126,12 +130,15 @@ public class EagleController {
         command.add("--user_name");
         command.add(userName.trim());
         command.add("--audio_path");
-        command.add(PathChecker.getCachesDir() + "enroll.wav");
+        command.add(PathChecker.getCachesDir()+ "enroll.wav");
         command.add("--output_profile_path");
         command.add(USERS_DIR + "/" + userName.trim() + ".eagle");
         return command;
     }
 
+    /**
+     * Construit la commande pour le test audio.
+     */
     private static List<String> buildTestCommand(String accessKey, String userName, String audioPath) {
         List<String> command = new ArrayList<>();
         command.add("python3");
@@ -145,6 +152,9 @@ public class EagleController {
         return command;
     }
 
+    /**
+     * Exécute un processus et hérite de la console pour afficher la sortie.
+     */
     private static float executeProcess(List<String> command) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -160,29 +170,33 @@ public class EagleController {
         return -1;
     }
 
+    /**
+     * Exécute un processus et retourne le score si disponible dans la sortie.
+     */
     private static float executeProcessAndGetScore(List<String> command) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.redirectErrorStream(true);
-
+            processBuilder.redirectErrorStream(true);  // Redirige stderr vers stdout pour capturer les deux
+    
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder output = new StringBuilder();
             String line;
-
+    
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
-                System.out.println(line);
+                System.out.println(line);  // Affiche la sortie en temps réel
             }
-
+    
             int exitCode = process.waitFor();
             System.out.println("Process terminé avec le code : " + exitCode);
-
+    
+            // Vérifions si la sortie contient un score final de reconnaissance vocale
             String outputStr = output.toString();
             if (outputStr.contains("Score final:")) {
                 return Float.parseFloat(outputStr.substring(outputStr.indexOf("Score final:") + 13).trim());
             }
-
+    
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
