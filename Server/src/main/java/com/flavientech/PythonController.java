@@ -30,7 +30,7 @@ public class PythonController {
     /**
      * Exécute un processus et hérite de la console pour afficher la sortie.
      */
-    private static boolean executeProcess(List<String> command) {
+    private static boolean executeProcess(List<String> command, boolean verbose) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             //processBuilder.command().forEach(System.out::println);
@@ -39,13 +39,16 @@ public class PythonController {
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
-
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);  // Affiche la sortie en temps réel
+            if (verbose) {
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);  // Affiche la sortie en temps réel
+                }
             }
 
             int exitCode = process.waitFor();
-            System.out.println("Process terminé avec le code : " + exitCode);
+            if (verbose) {
+                System.out.println("Process terminé avec le code : " + exitCode);
+            }
             return exitCode == 0;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -56,7 +59,7 @@ public class PythonController {
     public boolean runPythonScript(String... args) {
         List<String> command = buildConvertCommand(args);
         //display command : 
-        return executeProcess(command);
+        return executeProcess(command, true);
     }
 
 
@@ -127,7 +130,7 @@ public class PythonController {
         command.add("show");
         command.add(dependency);
 
-        return executeProcess(command);
+        return executeProcess(command, false);
     }
 
 
@@ -142,7 +145,7 @@ public class PythonController {
         command.add("install");
         command.add(dependency);
 
-        return executeProcess(command);
+        return executeProcess(command, true);
     }
 
 }
