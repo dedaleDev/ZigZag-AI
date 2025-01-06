@@ -203,5 +203,15 @@ public class PythonController {
         return false;
     }
 
+    public static boolean isFFmpegInstalled() {
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{"ffmpeg", "-version"});
+            int exitCode = process.waitFor();
+            return exitCode == 0;
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
