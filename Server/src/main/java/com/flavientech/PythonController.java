@@ -19,7 +19,7 @@ public class PythonController {
      */
     private List<String> buildConvertCommand(String... args) {
         List<String> command = new ArrayList<>();
-        command.add("python3");
+        command.add(getPythonCommand());
         command.add(SCRIPT_PATH.trim());
         for (String arg : args) {
             command.add(arg.trim());

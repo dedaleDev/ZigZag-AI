@@ -140,7 +140,7 @@ public class EagleController extends Thread {
      */
     private static List<String> buildTestCommand(String accessKey, String userName, String audioPath) {
         List<String> command = new ArrayList<>();
-        command.add("python3");
+        command.add(PythonController.getPythonCommand());
         command.add(SCRIPT_PATH);
         command.add("test");
         command.add(accessKey);
