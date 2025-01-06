@@ -89,7 +89,7 @@ public class PythonController {
          * Vérifie et installe les dépendances Python nécessaires.
          */
         public static boolean checkAndInstallDependencies() {
-        String[] dependencies = {"edge-tts", "pydub", "PyAudio", "pveagle"};
+        String[] dependencies = {"edge-tts", "pydub", "pyaudio", "pveagle"};
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         
         for (String dependency : dependencies) {
