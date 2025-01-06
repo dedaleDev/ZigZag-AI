@@ -83,4 +83,67 @@ public class PythonController {
         }
         throw new RuntimeException("\033[31mPython n'est pas installé sur votre système. Veuillez l'installer pour continuer.\033[0m");
     }
+
+
+        /**
+         * Vérifie et installe les dépendances Python nécessaires.
+         */
+        public static boolean checkAndInstallDependencies() {
+        String[] dependencies = {"edge-tts", "pydub", "PyAudio", "pveagle"};
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        
+        for (String dependency : dependencies) {
+            if (!isDependencyInstalled(dependency)) {
+            System.out.println("La dépendance " + dependency + " n'est pas installée. Voulez-vous tenter une installation automatique ? (y/n)");
+            try {
+                String response = reader.readLine().trim().toLowerCase();
+                if ("y".equals(response)) {
+                if (!installDependency(dependency)) {
+                    System.out.println("Échec de l'installation de la dépendance : " + dependency);
+                    return false;
+                }
+                } else {
+                System.out.println("Installation de la dépendance " + dependency + " annulée par l'utilisateur.");
+                return false;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            } else {
+            System.out.println("La dépendance est déjà installée : " + dependency);
+            }
+        }
+        return true;
+        }
+
+        /**
+     * Vérifie si une dépendance Python est installée.
+     */
+    private static boolean isDependencyInstalled(String dependency) {
+        List<String> command = new ArrayList<>();
+        command.add(getPythonCommand());
+        command.add("-m");
+        command.add("pip");
+        command.add("show");
+        command.add(dependency);
+
+        return executeProcess(command);
+    }
+
+
+    /**
+     * Installe une dépendance Python via pip.
+     */
+    private static boolean installDependency(String dependency) {
+        List<String> command = new ArrayList<>();
+        command.add(getPythonCommand());
+        command.add("-m");
+        command.add("pip");
+        command.add("install");
+        command.add(dependency);
+
+        return executeProcess(command);
+    }
+
 }

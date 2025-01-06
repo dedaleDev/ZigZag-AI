@@ -42,6 +42,8 @@ public class App implements AudioFileListener {
             return;
         }
 
+        PythonController.checkAndInstallDependencies();
+
 
         System.out.println("\u001B[32m\nConfiguration chargée avec succès !\n" +
                 "-----------------------------------\n" +
