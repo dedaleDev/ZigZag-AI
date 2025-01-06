@@ -50,7 +50,7 @@ public class OnlineSearch {
             }
 
         } catch (Exception e) {
-            return "Erreur lors du traitement du JSON : " + e.getMessage();
+            return "Erreur lors du traitement du JSON OnlineSearch: " + e;
         }
         System.out.println("Result OnlineSearch : " + result.toString());
         return result.toString();
