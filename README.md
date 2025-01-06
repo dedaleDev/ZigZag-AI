@@ -167,14 +167,14 @@ While some features require the Arduino setup, ZigZag also functions independent
 
 - Plateformio (ONLY FOR ARDUINO COMPLETE SETUP)
 
-1. Configure the Server
+1. ⚠️ Configure the Server
 Navigate to Server/src/main/resources.
 Copy application.exemple.properties and rename it to application.properties.
 Update the file with your configurations (e.g., database credentials, API keys).
 
 2. Configure Arduino (optional)
-Place  Arduino/v44k1q05.img on the SD card.
-Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
+> Place  Arduino/v44k1q05.img on the SD card.
+> Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
 
 3. Run the Application
 Start the backend server on Eclipse :
@@ -190,10 +190,11 @@ Here’s how to set up the Arduino hardware:
 
 - EGBO VS1053B Audio Module:
     Connect to Arduino following this Pinout Guide. If you have shield, you just have to plug it. DON'T FORGET PLUGIN
-Push Buttons:
-Button 1: Start/End recording.
-Button 2: Enroll new user
-LED: Indicates system status.
+- Push Buttons:
+- Button 1: Start/End recording.
+- Button 2: Enroll new user
+- LED: Indicates system status.
+- Resistance and cables.
 
 ![links](https://github.com/user-attachments/assets/ccf79922-ece2-4f68-b99e-373805b47cbf)
 
