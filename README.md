@@ -161,11 +161,11 @@ While some features require the Arduino setup, ZigZag also functions independent
     ```
 
 - Maven, Apache, MySQL/MariaDB
-- FFmpeg (for audio processing):
+- FFmpeg (ONLY FOR ARDUINO COMPLETE SETUP):
     Download: FFmpeg on windows : https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
     Add bin folder to environment variables.
 
-- Plateformio
+- Plateformio (ONLY FOR ARDUINO COMPLETE SETUP)
 
 2. Configure the Server
 Navigate to Server/src/main/resources.
@@ -178,11 +178,11 @@ Backend:
 mvn install
 ```
 6. Configure Arduino
-Place v44k1q05.img on the SD card.
+Place  Arduino/v44k1q05.img on the SD card.
 Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
 
 5. Run the Application
-Start the backend server:
+Start the backend server on Eclipse :
     - File > Import > Maven > Existing Maven Project > Browse 
     - Select the folder of ZigZag
     - Click on "Finish"
@@ -194,7 +194,7 @@ Select "Serveur Web" ou "Arduino + Serveur Web" and access on the configured url
 Here’s how to set up the Arduino hardware:
 
 - EGBO VS1053B Audio Module:
-    Connect to Arduino following this Pinout Guide. If you have shield, you just have to plug it.
+    Connect to Arduino following this Pinout Guide. If you have shield, you just have to plug it. DON'T FORGET PLUGIN
 Push Buttons:
 Button 1: Start/End recording.
 Button 2: Enroll new user
@@ -207,8 +207,5 @@ OpenWeather: Weather updates.
 Picovoice: Voice recognition models.
 Edge TTS: Text-to-speech.
 FFmpeg: Audio processing.
-
-📜 License
-This project is licensed under the Apache License.
 
 Enjoy ZigZag AI! 🚀
