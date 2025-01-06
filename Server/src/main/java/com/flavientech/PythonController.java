@@ -87,11 +87,20 @@ public class PythonController {
     }
 
 
-        /**
-         * Vérifie et installe les dépendances Python nécessaires.
-         */
-        public static boolean checkAndInstallDependencies() {
+    /**
+     * Vérifie et installe les dépendances Python nécessaires.
+     * @return true si les dépendances sont installés et python compatible, false sinon.
+    **/
+    public static boolean checkAndInstallDependencies() {
+        if (!isPythonVersionCompatible()) {
+            System.out.println("La version de Python doit être 3.12.1 ou ultérieure.");
+            return false;
+        }
         String[] dependencies = {"edge-tts", "pydub", "pyaudio", "pveagle"};
+        if (isPython13()) {
+            dependencies = new String[]{"edge-tts", "pydub", "pyaudio", "pveagle", "audioop-lts"};
+        }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         
         for (String dependency : dependencies) {
@@ -147,5 +156,52 @@ public class PythonController {
 
         return executeProcess(command, true);
     }
+
+    public static boolean isPython13() {
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{getPythonCommand(), "--version"});
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String versionOutput = reader.readLine();
+            process.waitFor();
+    
+            if (versionOutput != null && versionOutput.startsWith("Python")) {
+                String version = versionOutput.split(" ")[1];
+                String[] versionParts = version.split("\\.");
+                int major = Integer.parseInt(versionParts[0]);
+                int minor = Integer.parseInt(versionParts[1]);
+    
+                return (major > 3) || (major == 3 && minor >= 13);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    // ...existing code...
+
+    /**
+     * Vérifie si la version de Python est 3.12.0 ou ultérieure.
+     */
+    public static boolean isPythonVersionCompatible() {
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{getPythonCommand(), "--version"});
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String versionOutput = reader.readLine();
+            process.waitFor();
+
+            if (versionOutput != null && versionOutput.startsWith("Python")) {
+                String version = versionOutput.split(" ")[1];
+                String[] versionParts = version.split("\\.");
+                int major = Integer.parseInt(versionParts[0]);
+                int minor = Integer.parseInt(versionParts[1]);
+
+                return (major > 3) || (major == 3 && minor >= 12);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }
