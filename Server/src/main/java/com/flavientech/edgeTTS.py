@@ -5,6 +5,11 @@ import sys
 import subprocess
 from pathlib import Path
 
+
+if os.name == "nt":
+    if "ffmpeg" not in os.environ["PATH"]:
+        os.environ["PATH"] += ";C:\\ffmpeg\\bin"
+
 def get_caches_dir():
     current_dir = Path(os.getcwd())
     caches_dir = current_dir / "Server/src/main/caches"

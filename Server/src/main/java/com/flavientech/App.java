@@ -231,10 +231,6 @@ public class App implements AudioFileListener {
                     }
                     break;
                 case 2:// Démarrer les deux
-                    if (!PythonController.isFFmpegInstalled()) {
-                        System.out.println("\u001B[31mErreur : ffmpeg n'est pas installé sur votre système. Veuillez l'installer pour continuer.\u001B[0m");
-                        break;
-                    }
                     app.setRunning(true);
                     try {
                         Thread appThread = new Thread(() -> app.run());

@@ -202,22 +202,4 @@ public class PythonController {
         }
         return false;
     }
-
-    public static boolean isFFmpegInstalled() {
-        try {
-            Process process = Runtime.getRuntime().exec(new String[]{"ffmpeg", "-version"});
-            int exitCode = process.waitFor();
-            if (exitCode != 0 && System.getProperty("os.name").toLowerCase().contains("win")) {
-                ProcessBuilder processBuilder = new ProcessBuilder();
-                processBuilder.environment().put("PATH", System.getenv("PATH") + ";C:\\ffmpeg\\bin");
-                process = processBuilder.command("ffmpeg", "-version").start();
-                exitCode = process.waitFor();
-            }
-            return exitCode == 0;
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
 }
