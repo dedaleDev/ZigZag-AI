@@ -169,12 +169,12 @@ While some features require the Arduino setup, ZigZag also functions independent
 
 1. ⚠️ Configure the Server
 Navigate to Server/src/main/resources.
-Copy application.exemple.properties and rename it to application.properties.
+Copy **application.exemple.properties** and rename it to **application.properties**.
 Update the file with your configurations (e.g., database credentials, API keys).
 
 2. Configure Arduino (optional)
-> Place  Arduino/v44k1q05.img on the SD card.
-> Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
+ Place  Arduino/v44k1q05.img on the SD card.
+ Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
 
 3. Run the Application
 Start the backend server on Eclipse :
