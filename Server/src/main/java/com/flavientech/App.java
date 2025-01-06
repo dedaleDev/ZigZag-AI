@@ -103,7 +103,7 @@ public class App implements AudioFileListener {
                 long endTime = System.currentTimeMillis();
                 System.out.println("Temps d'exécution de la detection d'utilisateur + STT : " + (endTime - startTime) + " ms");
                 // ---------------Patience user  ---------------
-                
+
                 Random random = new Random();
                 if (random.nextInt(3) < 2) { // 2 fois sur 3
                     int randomNumber = random.nextInt(11); // Nombre aléatoire entre 0 et 10
@@ -210,6 +210,7 @@ public class App implements AudioFileListener {
         if (!app.ready) {
             return;
         }
+        System.setProperty("file.encoding", "UTF-8");
         while (!app.isRunning()) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Que voulez-vous lancer ?");
