@@ -10,7 +10,7 @@ public class OnlineSearch {
         try {
             query = query.replace(" ", "%20");
             System.out.println(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr");
-            String resultAPI = OnlineAPITools.fetchUrl(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr",2).toString();
+            JSONObject resultAPI = OnlineAPITools.fetchUrl(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr",2);
             String descriptions = limitText(decodeJson(resultAPI), 2000);
             return descriptions;
         } catch (Exception e) {
@@ -26,13 +26,10 @@ public class OnlineSearch {
         return text;
     }
 
-    private  static String decodeJson(String json) {
+    private static String decodeJson(JSONObject root) {
         StringBuilder result = new StringBuilder();
 
         try {
-            // Parse le JSON
-            JSONObject root = new JSONObject(json);
-
             // Vérifie le statut
             if (!root.optString("status").equalsIgnoreCase("success")) {
                 return "Le statut n'est pas 'success'.";
@@ -55,7 +52,7 @@ public class OnlineSearch {
         } catch (Exception e) {
             return "Erreur lors du traitement du JSON : " + e.getMessage();
         }
-        System.out.println("Result  OnlineSearch : " + result.toString());
+        System.out.println("Result OnlineSearch : " + result.toString());
         return result.toString();
     }
 
