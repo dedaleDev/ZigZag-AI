@@ -31,46 +31,46 @@ public class OnlineSearch {
     
         try {
             // Naviguer dans l'arborescence JSON jusqu'au tableau des items
-            JSONObject data = root.optJSONObject("data");
-            System.out.println("Data : " + data);
-            if (data == null) {
-                return "Erreur : Clé 'data' absente dans le JSON.";
-            }
-    
-            JSONObject resultObj = data.optJSONObject("result");
+            JSONObject resultObj = root.optJSONObject("result");
+            System.out.println("Result : " + resultObj);
             if (resultObj == null) {
                 return "Erreur : Clé 'result' absente dans le JSON.";
             }
-    
-            JSONArray mainline = resultObj.optJSONArray("mainline");
-            if (mainline == null) {
-                return "Erreur : Clé 'mainline' absente ou non valide dans 'result'.";
+
+            JSONObject items = resultObj.optJSONObject("items");
+            if (items == null) {
+                return "Erreur : Clé 'items' absente dans 'result'.";
             }
-    
+
+            JSONArray mainline = items.optJSONArray("mainline");
+            if (mainline == null) {
+                return "Erreur : Clé 'mainline' absente ou non valide dans 'items'.";
+            }
+
             for (int i = 0; i < mainline.length(); i++) {
                 JSONObject mainlineObject = mainline.optJSONObject(i);
                 if (mainlineObject == null) {
                     continue; // Passer si l'objet est null
                 }
-    
+
                 // Vérifier que le type est "web"
                 if ("web".equals(mainlineObject.optString("type"))) {
-                    JSONArray items = mainlineObject.optJSONArray("items");
-                    if (items == null) {
+                    JSONArray itemsArray = mainlineObject.optJSONArray("items");
+                    if (itemsArray == null) {
                         continue; // Passer si 'items' est absent ou non valide
                     }
-    
+
                     // Parcourir les éléments du tableau "items"
-                    for (int j = 0; j < items.length(); j++) {
-                        JSONObject item = items.optJSONObject(j);
+                    for (int j = 0; j < itemsArray.length(); j++) {
+                        JSONObject item = itemsArray.optJSONObject(j);
                         if (item == null) {
                             continue; // Passer si l'élément est null
                         }
-    
+
                         // Extraire le titre et la description
                         String title = item.optString("title", "N/A");
                         String desc = item.optString("desc", "N/A");
-    
+
                         // Ajouter au résultat au format attendu
                         result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
                     }
