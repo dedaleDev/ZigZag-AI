@@ -37,16 +37,17 @@ public class OnlineSearch {
 
             // Accède aux items
             JSONObject resultObj = root.getJSONObject("data").getJSONObject("result");
-            JSONArray mainline = resultObj.getJSONArray("items").getJSONObject(0).getJSONArray("items");
-
-            // Parcourt les items pour récupérer les titres et descriptions
+            JSONObject itemsObj = resultObj.getJSONObject("items");
+            JSONArray mainline = itemsObj.getJSONArray("mainline");
             for (int i = 0; i < mainline.length(); i++) {
-                JSONObject item = mainline.getJSONObject(i);
-                String title = item.optString("title", "Titre non disponible");
-                String desc = item.optString("desc", "Description non disponible");
-
-                // Ajoute les informations au résultat final
-                result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
+                JSONObject mainlineItem = mainline.getJSONObject(i);
+                JSONArray itemsArray = mainlineItem.getJSONArray("items");
+                for (int j = 0; j < itemsArray.length(); j++) {
+                    JSONObject item = itemsArray.getJSONObject(j);
+                    String title = item.optString("title", "Titre non disponible");
+                    String desc = item.optString("desc", "Description non disponible");
+                    result.append("titre : \"").append(title).append("\" / description : \"").append(desc).append("\"\n");
+                }
             }
 
         } catch (Exception e) {
