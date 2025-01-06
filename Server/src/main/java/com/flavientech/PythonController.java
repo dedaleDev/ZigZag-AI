@@ -33,6 +33,7 @@ public class PythonController {
     private static boolean executeProcess(List<String> command) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
+            //processBuilder.command().forEach(System.out::println);
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
