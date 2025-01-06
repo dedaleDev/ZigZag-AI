@@ -169,7 +169,7 @@ public class PythonController {
                 String[] versionParts = version.split("\\.");
                 int major = Integer.parseInt(versionParts[0]);
                 int minor = Integer.parseInt(versionParts[1]);
-    
+                System.out.println("Python version : " + major + "." + minor);
                 return (major > 3) || (major == 3 && minor >= 13);
             }
         } catch (IOException | InterruptedException e) {
