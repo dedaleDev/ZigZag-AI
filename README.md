@@ -139,66 +139,66 @@ v44k1q05.img: Pre-loaded audio processing file required for recording. ADD THIS 
 
 ## 🛠️ Installation and Setup
 
+While some features require the Arduino setup, ZigZag also functions independently for basic interactions.  
+
 ### Prerequisites
-Hardware Requirements:
-Arduino UNO R3
-VS1053B audio module
-2 push buttons
-1 LED
-1 SD card (FAT32, max 16GB)
-Breadboard and jumper wires
-Software Requirements:
-Java: Version 22.0.2 or later
-Python: Version 3.12.1 or later
-Required Python packages:
-bash
+**Hardware Requirements (optional) :**
+- Arduino UNO R3
+- EGBO VS1053B audio module
+- 2 push buttons
+- 1 LED
+- 1 SD card (FAT32, max 16GB)
+- Breadboard and jumper wires
 
-Copier
-pip install edge-tts pydub PyAudio pveagle
-pip install audioop-lts  # For Python 3.13+
-Maven, Apache, MySQL/MariaDB
-FFmpeg (for audio processing):
-Download: FFmpeg Essentials
-Add bin folder to environment variables.
-Setup Steps
-1. Clone the Repository
-bash
+**Software Requirements:**
+- Java: Version 22.0.2 or later
+- Python: Version 3.12.1 or later
+    Required Python packages:
+    
+    ```plaintext
+    pip install edge-tts pydub PyAudio pveagle
+    pip install audioop-lts  # For Python 3.13+
+    ```
 
-Copier
-git clone https://github.com/yourusername/ZigZag.git
-cd ZigZag
+- Maven, Apache, MySQL/MariaDB
+- FFmpeg (for audio processing):
+    Download: FFmpeg on windows : https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
+    Add bin folder to environment variables.
+
+- Plateformio
+
 2. Configure the Server
 Navigate to Server/src/main/resources.
 Copy application.exemple.properties and rename it to application.properties.
 Update the file with your configurations (e.g., database credentials, API keys).
-3. Install Dependencies
-Backend:
-bash
 
-Copier
+4. Install Dependencies
+Backend:
+```plaintext
 mvn install
-Frontend: Ensure all static assets are correctly configured.
-4. Configure Arduino
+```
+6. Configure Arduino
 Place v44k1q05.img on the SD card.
 Open Arduino/ZigZag_Arduino/platformio.ini in PlatformIO and upload the code to your Arduino board.
+
 5. Run the Application
 Start the backend server:
-bash
+    - File > Import > Maven > Existing Maven Project > Browse 
+    - Select the folder of ZigZag
+    - Click on "Finish"
+    - Go to App.java and run it.
 
-Copier
-java -jar target/zigzag-server.jar
-Access the web interface at http://localhost:8080.
+Select "Serveur Web" ou "Arduino + Serveur Web" and access on the configured url, default : http://localhost:8080.
+
 🤖 Arduino Connections
 Here’s how to set up the Arduino hardware:
 
-VS1053B Audio Module:
-Connect to Arduino following this Pinout Guide.
+- EGBO VS1053B Audio Module:
+    Connect to Arduino following this Pinout Guide. If you have shield, you just have to plug it.
 Push Buttons:
-Button 1: Start recording.
-Button 2: Stop recording.
-LED:
-Indicates system status.
-Tip: Use online services like Fritzing to create a visual wiring diagram for your setup.
+Button 1: Start/End recording.
+Button 2: Enroll new user
+LED: Indicates system status.
 
 📜 API Credits
 OpenAI: Language model for intelligent conversations.
@@ -207,17 +207,8 @@ OpenWeather: Weather updates.
 Picovoice: Voice recognition models.
 Edge TTS: Text-to-speech.
 FFmpeg: Audio processing.
-🖋️ How to Contribute
-Contributions are welcome! To get started:
 
-Fork the repository.
-Create a new branch:
-bash
-
-Copier
-git checkout -b feature-name
-Submit a pull request.
 📜 License
-This project is licensed under the MIT License.
+This project is licensed under the Apache License.
 
-Enjoy building with ZigZag AI! 🚀
+Enjoy ZigZag AI! 🚀
