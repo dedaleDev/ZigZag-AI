@@ -4,41 +4,25 @@
 
 ZigZag AI is a conversational assistant powered by **GPT4o-Mini** and designed for voice and text-based interactions. Its architecture combines hardware (Arduino) and software (Java, Python, SQL) to provide a seamless user experience. Whether you're interacting with ZigZag through voice commands or a web interface, its features ensure robust performance, extensibility, and security.
 
+Designed to provide both **voice-controlled** and **text-based interactions**. The project is divided into two main components:  
+
+1. **Arduino UNO R3**: A hardware controller enabling intuitive voice-based interactions.  
+2. **Web Server**: A graphical interface for text-based communication with ZigZag.
+
+While some features require the Arduino setup, ZigZag also functions independently for basic interactions.  
+
 ---
 
 ## 🌟 Features
 
-- **Voice Interaction**: Speak to ZigZag and hear it respond with a natural voice.
-- **User Voice Detection**: Identify users based on their voice tone.
+- **Voice Interaction**: Speak to ZigZag and hear it respond with a natural voice. (REQUIRED ARDUINO)
+- **User Voice Detection**: Identify users based on their voice tone.  (REQUIRED ARDUINO)
 - **LLM Integration**: Leverages OpenAI's GPT4o-Mini for intelligent conversation responses.
 - **Online Search**: Completes responses using **Qwant** search engine.
 - **Weather Service**: Retrieve current weather conditions via **OpenWeather** API.
 - **Contextual Conversations**: Stores and manages conversation contexts in an SQL database.
 - **Web Interface**: Text-based interaction via a web browser.
 - **Customizable AI Voices**: Personalize the assistant’s voice.
-
----
-
-## 🚀 Performance Goals
-
-- **Fast Response Times**: Optimized for minimal latency.
-- **Cost Efficiency**: Designed to minimize operational costs.
-
----
-
-## 🔒 Security and Privacy
-
-- **Local Data Processing**: Prioritizes local processing to avoid unnecessary external API calls.
-- **GDPR Compliance**: Ensures secure handling of user data while avoiding model training with user-specific data.
-
----
-
-## 🔧 Extensibility
-
-ZigZag is built with future scalability in mind. Its modular design allows for:
-
-- Adding new features without disrupting existing services.
-- Potential integration with additional APIs (e.g., Spotify, Matter IoT) in the future.
 
 ---
 
