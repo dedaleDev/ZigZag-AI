@@ -53,7 +53,6 @@ public class OnlineSearch {
         }
         OpenAI openAI = new OpenAI(apiKeyOpenAI);
         String prompt = "Ceci est la suite d'une requête spéciale (OnlineSearch) que tu as déclenchée précédemment pour répondre à la question : %s. Voici les informations extraites du web, analyse-les pour répondre à la question.%s".formatted(question,web);
-        System.out.println("Prompt Online Search: " + prompt);
         String result = openAI.sendCustomRequest(prompt);
         return openAI.cleanResponse(result).split("@")[0];   
     }
