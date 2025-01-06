@@ -116,21 +116,20 @@ public class EagleController extends Thread {
         }
     }
 
-
-
+    
     /**
      * Construit la commande pour l'enrôlement.
      */
     private static List<String> buildEnrollCommand(String accessKey, String userName) {
         List<String> command = new ArrayList<>();
-        command.add("python3");
+        command.add(PythonController.getPythonCommand());
         command.add(SCRIPT_PATH.trim());
         command.add("enroll");
         command.add(accessKey.trim());
         command.add("--user_name");
         command.add(userName.trim());
         command.add("--audio_path");
-        command.add(PathChecker.getCachesDir()+ "enroll.wav");
+        command.add(PathChecker.getCachesDir() + "enroll.wav");
         command.add("--output_profile_path");
         command.add(USERS_DIR + "/" + userName.trim() + ".eagle");
         return command;

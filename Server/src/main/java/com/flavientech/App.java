@@ -238,6 +238,8 @@ public class App implements AudioFileListener {
                     }
                     try {
                         WebServer.main(args);
+                        if (!WebServer.error)
+                            System.out.println("\u001B[32mServeur web démarré avec succès sur http://localhost:8080/\u001B[0m");
                     } catch (Exception e) {
                         System.out.println("Erreur lors du démarrage du serveur web : " + e.getMessage());
                     }

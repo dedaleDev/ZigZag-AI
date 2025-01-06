@@ -59,4 +59,28 @@ public class PythonController {
         //display command : 
         return executeProcess(command);
     }
+
+
+    /*
+        * Méthode pour obtenir la commande Python à utiliser.
+    */  
+    public static String getPythonCommand() {
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{"python3", "--version"});
+            if (process.waitFor() == 0) {
+                return "python3";
+            }
+        } catch (Exception e) {
+            // Ignore exception and try next command
+        }
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{"python", "--version"});
+            if (process.waitFor() == 0) {
+                return "python";
+            }
+        } catch (Exception e) {
+            // Ignore exception
+        }
+        throw new RuntimeException("\033[31mPython n'est pas installé sur votre système. Veuillez l'installer pour continuer.\033[0m");
+    }
 }
