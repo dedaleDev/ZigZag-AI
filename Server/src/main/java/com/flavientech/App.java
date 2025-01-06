@@ -102,6 +102,14 @@ public class App implements AudioFileListener {
 
                 long endTime = System.currentTimeMillis();
                 System.out.println("Temps d'exécution de la detection d'utilisateur + STT : " + (endTime - startTime) + " ms");
+                // ---------------Patience user  ---------------
+                
+                Random random = new Random();
+                if (random.nextInt(3) < 2) { // 2 fois sur 3
+                    int randomNumber = random.nextInt(11); // Nombre aléatoire entre 0 et 10
+                    new Thread(() -> new SoundPlayer(PathChecker.checkPath("wait" + randomNumber + ".wav"))).start();
+                }
+                
                 // --------------- Appel à l'API OpenAI ---------------
                 String openAIResponse = InteractWithOpenAI.run(this.apiKeyOpenAi, currentSpeakingUser, userRequest);
                 // --------------- Synthèse vocale de la réponse ---------------
