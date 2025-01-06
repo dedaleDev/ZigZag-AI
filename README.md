@@ -58,7 +58,7 @@ The project is divided into two main components: **Arduino** and **Server**.
     │       ├── java
     │       │   └── com
     │       │       └── flavientech
-    │       │           ├── App.java
+    │       │           ├── App.java //THE MAIN
     │       │           ├── ArduinoSerial.java
     │       │           ├── AudioFileListener.java
     │       │           ├── EagleController.java
@@ -113,14 +113,29 @@ The project is divided into two main components: **Arduino** and **Server**.
 
 ```
 Explanation of the Project Tree
-Arduino
-ZigZag_Arduino: Contains the Arduino code for handling audio recording, playback, and interaction with ZigZag.
-platformio.ini: Configuration file for compiling the Arduino code using PlatformIO.
-v44k1q05.img: Pre-loaded audio processing file required for recording.
+
 Server
 /src/main/java/com/flavientech: Core server-side logic, including API integration, database management, and speech-to-text processing.
-/src/main/resources: Configuration files, web assets (HTML, CSS, JS), and SQL scripts for database setup.
-/src/main/caches: Temporary files for processing audio and conversation context.
+In this case, you have mainly : 
+App.java : the main of the project.
+EagleController.java : Speacker detection managment.
+ArduinoSerial.java : Serial link with the Arduino UNO R3
+OpenAI.java and InteractWithOpenAI.java : manage and process  communication with GPT4o-Mini
+WebController.java : Spring boot website controller.
+DatabaseController.java : JDBC database managment.
+OnlineAPITools.java : interact with differents API.
+
+/src/main/resources: Configuration files, web assets (HTML, CSS, JS).
+/src/main/caches: Temporary files for processing audio.
+
+
+Arduino
+ZigZag_Arduino: Contains the Arduino code for handling audio recording, playback, and interaction with ZigZag Server by Serial link.
+platformio.ini: Configuration file for compiling the Arduino code using PlatformIO.
+v44k1q05.img: Pre-loaded audio processing file required for recording. ADD THIS IN YOUR SD CARD FOR RECORD.
+
+
+
 🛠️ Installation and Setup
 Prerequisites
 Hardware Requirements:
