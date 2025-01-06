@@ -1,7 +1,10 @@
 package com.flavientech;
 
-import org.json.JSONArray;
+import java.util.regex.Pattern;
+
 import org.json.JSONObject;
+
+import java.util.regex.Matcher;
 
 public class OnlineSearch {
     private static final String QWANT_API_URL = "https://api.qwant.com/v3/search/web";
@@ -11,7 +14,7 @@ public class OnlineSearch {
             query = query.replace(" ", "%20");
             System.out.println(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr");
             JSONObject resultAPI = OnlineAPITools.fetchUrl(QWANT_API_URL + "?q=" + query + "&count=10&offset=0&locale=fr_fr",2);
-            String descriptions = limitText(decodeJson(resultAPI), 2000);
+            String descriptions = limitText(extractTitleAndDesc(resultAPI.toString()), 2000);
             return descriptions;
         } catch (Exception e) {
             e.printStackTrace();
@@ -26,41 +29,21 @@ public class OnlineSearch {
         return text;
     }
 
-    private static String decodeJson(JSONObject root) {
-        System.out.println(root);
+    public static String extractTitleAndDesc(String input) {
+        // Pattern pour trouver les clés "title" et "desc" avec leurs valeurs associées
+        Pattern pattern = Pattern.compile("\"(title|desc)\":\"([^\"]*)\"");
+        Matcher matcher = pattern.matcher(input);
+
         StringBuilder result = new StringBuilder();
 
-        try {
-            // Récupérer les éléments principaux de l'objet JSON
-            JSONObject resultObject = root.getJSONObject("result");
-            JSONObject itemsObject = resultObject.getJSONObject("items");
-            JSONArray mainlineArray = itemsObject.getJSONArray("mainline");
-
-            // Parcourir les éléments "mainline"
-            for (int i = 0; i < mainlineArray.length(); i++) {
-                JSONObject mainlineItem = mainlineArray.getJSONObject(i);
-                if (mainlineItem.has("items")) {
-                    JSONArray itemArray = mainlineItem.getJSONArray("items");
-
-                    // Parcourir les objets individuels dans "items"
-                    for (int j = 0; j < itemArray.length(); j++) {
-                        JSONObject item = itemArray.getJSONObject(j);
-                        String title = item.optString("title", "Titre non disponible");
-                        String description = item.optString("desc", "Description non disponible");
-
-                        // Ajouter le titre et la description au résultat
-                        result.append("Titre: ").append(title).append("\n");
-                        result.append("Description: ").append(description).append("\n");
-                        result.append("----\n");
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Erreur lors du traitement du JSON.";
+        // On parcourt toutes les correspondances dans la chaîne
+        while (matcher.find()) {
+            String key = matcher.group(1); // Récupère "title" ou "desc"
+            String value = matcher.group(2); // Récupère la valeur associée
+            result.append(key).append(": ").append(value).append("\n");
         }
 
-        return result.toString();
+        return result.toString().trim(); // Retourne le résultat sans espace ou ligne vide à la fin
     }
 
     public static String search(String Keyword, String apiKeyOpenAI, String question){
